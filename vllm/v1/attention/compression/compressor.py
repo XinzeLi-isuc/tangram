@@ -28,6 +28,7 @@ from vllm.v1.attention.compression.gate_capture import (
     _wrap_forward_with_gate_capture,
 )
 from vllm.v1.attention.compression.selection_level import (
+    SelectionContext,
     SelectionLevel,
     make_selection_level,
 )
@@ -97,6 +98,9 @@ class _LayerCompressState:
     # chunk's (possibly budget-sliced) sub-chunks; consumed at the boundary
     # step. Equals one step's score in the common unsliced case.
     pending_score: torch.Tensor | None = None
+    # scalar float32: CAKE layer preference accumulated across sub-chunks.
+    # Reset after each boundary step. None for non-CAKE scorers.
+    pending_preference: torch.Tensor | None = None
 
 
 @dataclass
@@ -236,6 +240,11 @@ class KVCompressor:
         num_q_per_kv: int,
         snap_window: int,
         snap_kernel: int,
+        cake_window_size: int = 32,
+        cake_kernel_size: int = 5,
+        cake_gamma: float = 1.0,
+        cake_tau1: float = 1.0,
+        cake_tau2: float = 1.0,
         ea_use_covariance: bool = True,
         ea_use_vnorm: bool = True,
         ea_n_future_positions: int = 512,
@@ -258,6 +267,11 @@ class KVCompressor:
             head_size=self.head_size,
             snap_window=snap_window,
             snap_kernel=snap_kernel,
+            cake_window_size=cake_window_size,
+            cake_kernel_size=cake_kernel_size,
+            cake_gamma=cake_gamma,
+            cake_tau1=cake_tau1,
+            cake_tau2=cake_tau2,
             ea_use_covariance=ea_use_covariance,
             ea_use_vnorm=ea_use_vnorm,
             ea_n_future_positions=ea_n_future_positions,
@@ -327,11 +341,17 @@ class KVCompressor:
         req_id: str,
         layer_idx: int,
         score: torch.Tensor,
+        *,
+        layer_preference: torch.Tensor | None = None,
     ) -> None:
         """Stash the scorer-produced ``[num_kv_heads_per_layer, sub_chunk_len]``
         score, accumulating across budget-sliced sub-chunks until the boundary
         step consumes it. Source-agnostic (FastKVZip gate or SnapKV); both feed
         the same buffer.
+
+        When ``layer_preference`` is provided (CAKE scorer), it is stored per-layer
+        for non-uniform budget allocation. The preference is accumulated via
+        token-weighted averaging across sub-chunks.
 
         Concurrency lets the scheduler split one compression chunk into several
         forward steps (the token budget is shared), and the scorer scores only
@@ -357,6 +377,22 @@ class KVCompressor:
         prev = layer_state.pending_score
         layer_state.pending_score = (
             score if prev is None else torch.cat([prev, score], dim=1))
+
+        # Store layer preference (CAKE scorer only)
+        if layer_preference is not None:
+            prev_pref = layer_state.pending_preference
+            if prev_pref is None:
+                layer_state.pending_preference = layer_preference.detach().clone()
+            else:
+                # Token-weighted average: combine with previous preference
+                # using the current chunk length as weight
+                chunk_len = score.shape[1]
+                prev_chunk_len = prev.shape[1] if prev is not None else 0
+                total = prev_chunk_len + chunk_len
+                if total > 0:
+                    weighted = (prev_pref * prev_chunk_len
+                                + layer_preference * chunk_len) / total
+                    layer_state.pending_preference = weighted
 
     def prepare_keep_decision(
         self,
@@ -500,9 +536,16 @@ class KVCompressor:
             req.cached_sorted_indices = self._rank_positions(
                 eval_scores, num_layers, num_kv_heads, num_groups)
             if adjusted_ratio > 0.0:
+                # Collect layer preferences for CAKE budget allocation
+                pref_context = None
+                layer_prefs = self._collect_preferences(req, num_layers)
+                if layer_prefs is not None:
+                    pref_context = SelectionContext(
+                        layer_preferences=layer_prefs)
                 req.cached_k_new_cpu = self.level.compute_counts(
                     eval_scores, adjusted_ratio, self.member_to_cluster,
-                    num_layers, num_kv_heads, num_groups)
+                    num_layers, num_kv_heads, num_groups,
+                    context=pref_context)
             else:
                 req.cached_k_new_cpu = None
         else:
@@ -713,6 +756,8 @@ class KVCompressor:
                     "— receive_score must run first.")
             fresh = state.pending_score
             state.pending_score = None
+            # Also consume pending_preference (CAKE scorer)
+            state.pending_preference = None
             if fresh.shape[1] != chunk_len:
                 raise ValueError(
                     f"layer {layer_idx}: pending_score chunk_len "
@@ -744,6 +789,29 @@ class KVCompressor:
                      dtype=dtype, device=device))
         prev_locked = torch.stack(locked_list, dim=0)
         return pending, prior, prev_locked
+
+    def _collect_preferences(
+        self,
+        req: "_RequestCompressState",
+        num_layers: int,
+    ) -> torch.Tensor | None:
+        """Collect CAKE layer preferences into a ``[num_layers]`` tensor.
+
+        Returns ``None`` when no layer has a preference (non-CAKE scorer).
+        """
+        pref_list: list[float] = []
+        has_pref = False
+        for layer_idx in range(num_layers):
+            state = req.layer_states.get(layer_idx)
+            p = state.pending_preference if state is not None else None
+            if p is not None:
+                has_pref = True
+                pref_list.append(p.item() if hasattr(p, 'item') else float(p))
+            else:
+                pref_list.append(0.0)
+        if not has_pref:
+            return None
+        return torch.tensor(pref_list, dtype=torch.float32)
 
     def attach_scorers(
         self,
@@ -874,13 +942,20 @@ class KVCompressor:
                     if end <= start:
                         continue
                     value_slice = None if value is None else value[start:end]
-                    score = _scorer(
+                    result = _scorer(
                         query[start:end],
                         key[start:end],
                         value_slice,
                         module=_parent,
                         position_offset=pos_offsets.get(req, 0),
                     )
-                    self.receive_score(req, _idx, score)
+                    # Handle CakeScoreOutput (carries token scores + layer preference)
+                    if hasattr(result, 'token_scores') and hasattr(result, 'layer_preference'):
+                        self.receive_score(
+                            req, _idx, result.token_scores,
+                            layer_preference=result.layer_preference,
+                        )
+                    else:
+                        self.receive_score(req, _idx, result)
 
         return score_qk

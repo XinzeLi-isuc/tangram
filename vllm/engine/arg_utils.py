@@ -569,6 +569,8 @@ class EngineArgs:
     compression_ea_n_future_positions: int = \
         CacheConfig.compression_ea_n_future_positions
     compression_ea_epsilon: float = CacheConfig.compression_ea_epsilon
+    compression_cake_tau1: float = CacheConfig.compression_cake_tau1
+    compression_cake_tau2: float = CacheConfig.compression_cake_tau2
     compression_retention_dump: str | None = \
         CacheConfig.compression_retention_dump
     multi_turn: bool = CacheConfig.multi_turn
@@ -1031,6 +1033,14 @@ class EngineArgs:
         cache_group.add_argument(
             "--compression-ea-epsilon",
             **cache_kwargs["compression_ea_epsilon"],
+        )
+        cache_group.add_argument(
+            "--compression-cake-tau1",
+            **cache_kwargs["compression_cake_tau1"],
+        )
+        cache_group.add_argument(
+            "--compression-cake-tau2",
+            **cache_kwargs["compression_cake_tau2"],
         )
         cache_group.add_argument(
             "--compression-retention-dump",
@@ -1569,6 +1579,8 @@ class EngineArgs:
             compression_ea_n_future_positions=(
                 self.compression_ea_n_future_positions),
             compression_ea_epsilon=self.compression_ea_epsilon,
+            compression_cake_tau1=self.compression_cake_tau1,
+            compression_cake_tau2=self.compression_cake_tau2,
             compression_retention_dump=self.compression_retention_dump,
             multi_turn=self.multi_turn,
         )

@@ -270,6 +270,13 @@ class CacheConfig:
     uneven per-layer value-norm scale that epsilon introduces biases the budget
     toward high-norm layers. Only used when ``compression_scorer ==
     "expected_attention"``."""
+    compression_cake_tau1: float = 1.0
+    """CAKE: tau1 exponent for entropy in layer preference (higher = more
+    entropy-driven budget). Only used when ``compression_scorer == "cake"``."""
+    compression_cake_tau2: float = 1.0
+    """CAKE: tau2 exponent for temporal variance in layer preference (higher =
+    more variance-driven budget). Only used when ``compression_scorer ==
+    "cake"``."""
 
     compression_retention_dump: str | None = None
     """Offline profiling only. When set to a directory path, the engine attaches
@@ -352,6 +359,8 @@ class CacheConfig:
             "compression_ea_use_vnorm",
             "compression_ea_n_future_positions",
             "compression_ea_epsilon",
+            "compression_cake_tau1",
+            "compression_cake_tau2",
             "compression_retention_dump",
             # Cluster map relabels physical KV placement only; it does not
             # change the compiled graph shape or kernel selection.
