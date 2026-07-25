@@ -18,6 +18,7 @@ from torch import nn
 from vllm.v1.attention.compression.keydiff import KeyDiffScorer
 from vllm.v1.attention.compression.qk_scorer_base import QKScorer
 from vllm.v1.attention.compression.snapkv import SnapKVScorer
+from vllm.v1.attention.compression.cake import CakeScorer
 from vllm.v1.attention.compression.streamingllm import StreamingLLMScorer
 from vllm.v1.attention.compression.expected_attention import (
     ExpectedAttentionScorer,
@@ -34,6 +35,7 @@ _QK_SCORERS: dict[str, type[QKScorer]] = {
     cls.name: cls
     for cls in (
         SnapKVScorer,
+        CakeScorer,
         KeyDiffScorer,
         StreamingLLMScorer,
         TOVAScorer,
@@ -54,6 +56,11 @@ def build_qk_scorer(
     head_size: int,
     snap_window: int,
     snap_kernel: int,
+    cake_window_size: int = 32,
+    cake_kernel_size: int = 5,
+    cake_gamma: float = 1.0,
+    cake_tau1: float = 1.0,
+    cake_tau2: float = 1.0,
     ea_use_covariance: bool = True,
     ea_use_vnorm: bool = True,
     ea_n_future_positions: int = 512,
@@ -75,6 +82,17 @@ def build_qk_scorer(
             head_size=head_size,
             snap_window=snap_window,
             snap_kernel=snap_kernel,
+        )
+    if name == "cake":
+        return CakeScorer(
+            num_kv_heads=num_kv_heads,
+            num_q_per_kv=num_q_per_kv,
+            head_size=head_size,
+            cake_window_size=cake_window_size,
+            cake_kernel_size=cake_kernel_size,
+            cake_gamma=cake_gamma,
+            cake_tau1=cake_tau1,
+            cake_tau2=cake_tau2,
         )
     if name == "keydiff":
         return KeyDiffScorer(

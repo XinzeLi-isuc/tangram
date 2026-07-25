@@ -54,6 +54,7 @@ The four threshold-based levels are the 2x2 of these axes:
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 import numpy as np
 import torch
@@ -62,6 +63,17 @@ from vllm.distributed.parallel_state import (
     get_tensor_model_parallel_world_size,
     get_tp_group,
 )
+
+
+@dataclass
+class SelectionContext:
+    """Optional context carrying per-request metadata to the selection level.
+
+    Currently only used by ``CakeLayerLevel`` to receive per-layer CAKE
+    preference scores for non-uniform budget allocation. ``None`` fields
+    mean the context is unused (legacy levels ignore it).
+    """
+    layer_preferences: torch.Tensor | None = None  # [num_layers] float32
 
 
 class SelectionLevel(ABC):
@@ -92,6 +104,7 @@ class SelectionLevel(ABC):
         num_layers: int,
         num_kv_heads: int,
         num_groups: int,
+        context: SelectionContext | None = None,
     ) -> np.ndarray:
         """Return the kept COUNT ``[num_layers, num_groups]`` (int64, on CPU).
 
@@ -126,6 +139,7 @@ class _HeadLevel(SelectionLevel):
         num_layers: int,
         num_kv_heads: int,
         num_groups: int,
+        context: SelectionContext | None = None,
     ) -> np.ndarray:
         per_head_k_new = self._per_head_counts(
             eval_scores, adjusted_ratio, num_layers, num_kv_heads)
@@ -306,6 +320,7 @@ class _ClusterLevel(SelectionLevel):
         num_layers: int,
         num_kv_heads: int,
         num_groups: int,
+        context: SelectionContext | None = None,
     ) -> np.ndarray:
         if get_tensor_model_parallel_world_size() > 1:
             raise NotImplementedError(
@@ -427,11 +442,123 @@ class UniformLevel(SelectionLevel):
         num_layers: int,
         num_kv_heads: int,
         num_groups: int,
+        context: SelectionContext | None = None,
     ) -> np.ndarray:
         eval_len = eval_scores.shape[-1]
         k_uniform = int(eval_len * adjusted_ratio)
         return np.full(
             (num_layers, num_groups), k_uniform, dtype=np.int64)
+
+
+class CakeLayerLevel(SelectionLevel):
+    """CAKE-inspired non-uniform budget allocation (axis 1).
+
+    Distributes the total KV budget across layers proportionally to CAKE
+    layer preference scores, so layers with more diverse or unstable attention
+    patterns keep more tokens. This is the budget-allocation counterpart of
+    ``CakeScorer`` (axis 2).
+
+    The allocation follows the same floor → cap → redistribute → align pattern
+    as ``allocate_cake_budgets`` in ``scripts/cake_algorithm.py``, adapted for
+    Tangram's per-(layer, group) ``kept_lengths`` layout.
+
+    Requires ``context.layer_preferences`` (``[num_layers]`` float32) from
+    the compressor. When preferences are unavailable, falls back to uniform.
+    """
+
+    name = "cake_layer"
+    cluster_map_scope = None  # No cluster map needed; works with any grouping
+
+    def compute_counts(
+        self,
+        eval_scores: torch.Tensor,
+        adjusted_ratio: float,
+        member_to_cluster: torch.Tensor,
+        num_layers: int,
+        num_kv_heads: int,
+        num_groups: int,
+        context: SelectionContext | None = None,
+    ) -> np.ndarray:
+        eval_len = eval_scores.shape[-1]
+        total_budget = int(eval_len * num_layers * adjusted_ratio)
+        num_clusters = num_layers * num_groups
+
+        # Get layer preferences from context; fallback to uniform
+        layer_prefs = None
+        if context is not None and context.layer_preferences is not None:
+            layer_prefs = context.layer_preferences.cpu().numpy()
+        
+        if layer_prefs is None or layer_prefs.sum() <= 0:
+            # Uniform fallback: same budget per (layer, group)
+            k_uniform = max(1, int(eval_len * adjusted_ratio))
+            return np.full((num_layers, num_groups), k_uniform, dtype=np.int64)
+
+        # 1. Proportional allocation: budget per layer ∝ preference
+        pref_norm = layer_prefs / layer_prefs.sum()
+        raw_budgets = pref_norm * total_budget
+
+        # 2. Floor, then distribute remainder
+        budgets = np.floor(raw_budgets).astype(np.int64)
+        remainder = int(total_budget - budgets.sum())
+        if remainder > 0:
+            fractional = raw_budgets - budgets
+            top = np.argsort(-fractional)[:remainder]
+            budgets[top] += 1
+
+        # 3. Cap each layer's budget at eval_len (per-cluster cap)
+        #    Distribute each layer's budget equally across its groups
+        excess = np.maximum(budgets - eval_len, 0)
+        budgets = np.minimum(budgets, eval_len)
+
+        # 4. Redistribute excess from capped layers
+        total_excess = excess.sum()
+        if total_excess > 0:
+            under = eval_len - budgets
+            valid = under > 0
+            if valid.any():
+                num_valid = valid.sum()
+                per_layer = total_excess // num_valid
+                extra = total_excess % num_valid
+                budgets[valid] += per_layer
+                if extra > 0:
+                    valid_idx = np.where(valid)[0]
+                    top_extra = valid_idx[np.argsort(-under[valid])[:extra]]
+                    budgets[top_extra] += 1
+                # Re-clip after redistribution
+                budgets = np.minimum(budgets, eval_len)
+
+        # 5. Final adjustment to match total_budget exactly
+        diff = int(total_budget - budgets.sum())
+        max_iter = 10000
+        while diff != 0 and max_iter > 0:
+            max_iter -= 1
+            if diff > 0:
+                room = eval_len - budgets
+                candidates = np.where(room > 0)[0]
+                if len(candidates) == 0:
+                    break
+                idx = candidates[np.argmax(room[candidates])]
+                budgets[idx] += 1
+                diff -= 1
+            else:
+                candidates = np.where(budgets > 0)[0]
+                if len(candidates) == 0:
+                    break
+                idx = candidates[np.argmax(budgets[candidates])]
+                budgets[idx] -= 1
+                diff += 1
+
+        # 6. Spread each layer's budget across its groups
+        #    For simplicity, divide evenly (floor + remainder)
+        per_group = np.zeros((num_layers, num_groups), dtype=np.int64)
+        for l in range(num_layers):
+            layer_budget = budgets[l]
+            base = layer_budget // num_groups
+            extra_g = layer_budget % num_groups
+            per_group[l, :extra_g] = base + 1
+            per_group[l, extra_g:] = base
+
+        return per_group
 
 
 #: Axis-1 registry: ``compression_level`` value -> level class. Adding a level
@@ -442,6 +569,7 @@ _LEVELS: dict[str, type[SelectionLevel]] = {
     CrossLayerClusterLevel.name: CrossLayerClusterLevel,
     PerLayerClusterLevel.name: PerLayerClusterLevel,
     UniformLevel.name: UniformLevel,
+    CakeLayerLevel.name: CakeLayerLevel,
 }
 
 #: Valid ``compression_level`` values, so the accepted set lives in one place
