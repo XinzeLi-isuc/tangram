@@ -1,0 +1,46 @@
+[
+  {
+    "name": "one-shot_short",
+    "scorer": "cake",
+    "level": "cake_layer",
+    "ratio": 0.5,
+    "chunk_size": 2048,
+    "success": true,
+    "elapsed_s": 1.77,
+    "output_len": 64,
+    "output_text": " KV cache compression is a technique used to reduce the size of the cache in a key-value (KV) store. It works by compressing the data stored in the cache, allowing for more efficient use of memory and"
+  },
+  {
+    "name": "one-shot_large_chunk",
+    "scorer": "cake",
+    "level": "cake_layer",
+    "ratio": 0.5,
+    "chunk_size": 4096,
+    "success": true,
+    "elapsed_s": 1.76,
+    "output_len": 64,
+    "output_text": " KV cache compression is a technique used to reduce the size of the cache in a key-value (KV) store. It works by compressing the data stored in the cache, allowing for more efficient use of memory and"
+  },
+  {
+    "name": "chunked_1024",
+    "scorer": "cake",
+    "level": "cake_layer",
+    "ratio": 0.5,
+    "chunk_size": 1024,
+    "success": true,
+    "elapsed_s": 2.07,
+    "output_len": 64,
+    "output_text": " By doing so, \nCAKE can adapt to the unique attention patterns of each layer, leading to better compression ratios \nand improved model quality.\n\nIn summary, KV cache compression is a critical techniqu"
+  },
+  {
+    "name": "chunked_512",
+    "scorer": "cake",
+    "level": "cake_layer",
+    "ratio": 0.5,
+    "chunk_size": 512,
+    "success": true,
+    "elapsed_s": 2.1,
+    "output_len": 64,
+    "output_text": " \n\nIn conclusion, KV cache compression is a critical technique for efficient large language model inference. \nCAKE is a recent method that approaches this problem by analyzing layer-specific attention"
+  }
+]

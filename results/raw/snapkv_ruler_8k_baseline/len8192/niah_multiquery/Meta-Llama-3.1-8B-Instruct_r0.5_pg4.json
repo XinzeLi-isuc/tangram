@@ -1,0 +1,1365 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "niah_multiquery",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "snapkv",
+  "compression_level": "crosslayer_cluster",
+  "compression_ea_epsilon": null,
+  "ratio": 0.5,
+  "page_group_size": 4,
+  "max_tokens": 128,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.95,
+  "generation_time_sec": 69.3239,
+  "benchmark": {
+    "elapsed_sec": 69.3239,
+    "num_conversations": 50,
+    "total_input_tokens": 377338,
+    "total_output_tokens": 2707,
+    "request_throughput_per_s": 0.7213,
+    "output_throughput_tok_per_s": 39.0486,
+    "total_token_throughput_tok_per_s": 5482.1615,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.25,
+    0.5,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.75,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7541,
+      "output_tokens": 45,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 4194548 (mindless-concert)\n- 8935169 (freezing-gig)\n- 3219824 (round-mover)\n- 8930103 (worried-colt)",
+      "answers": [
+        "4194548",
+        "8935169",
+        "3219824",
+        "8930103"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7553,
+      "output_tokens": 53,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 6692553 (x-rated-comptroller)\n2. 4191175 (eminent-spirit)\n3. 5171761 (coherent-beauty)\n4. 7754864 (axiomatic-tremor)",
+      "answers": [
+        "6692553",
+        "4191175",
+        "5171761",
+        "7754864"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7550,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- For scattered-eaglet: 2642635\n- For capricious-dugout: 4965789\n- For boiling-compensation: 8434500\n- For aromatic-male: 1247595",
+      "answers": [
+        "2642635",
+        "4965789",
+        "8434500",
+        "1247595"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7556,
+      "output_tokens": 55,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For loutish-inventor: 1036161\n2. For onerous-insolence: 5785687\n3. For narrow-ticket: 9164991\n4. For madly-packet: 5449368",
+      "answers": [
+        "1036161",
+        "5785687",
+        "9164991",
+        "5449368"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7553,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. available-placebo: 1841248\n2. purring-obligation: 9910817\n3. didactic-opium: 1954280\n4. somber-catsup: 8999183",
+      "answers": [
+        "1841248",
+        "9910817",
+        "1954280",
+        "8999183"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7553,
+      "output_tokens": 62,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For sweltering-piccolo:\n   - 2375453\n\n2. For smooth-pasture:\n   - 1666754\n\n3. For cowardly-constitution:\n   - 5130808\n\n4. For mute-cupboard:\n   - 9770838",
+      "answers": [
+        "2375453",
+        "1666754",
+        "5130808",
+        "9770838"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7547,
+      "output_tokens": 52,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For orange-conversion: 6304573\n2. For blue-eyed-curse: 4576135\n3. For bloody-pole: 1156287\n4. For ordinary-linguistics: 2677407",
+      "answers": [
+        "6304573",
+        "4576135",
+        "1156287",
+        "2677407"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7541,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n- 9874152 is not mentioned in the text, but 9874152 is not the correct answer for different-abbey. The correct answer is 9874152 is not the correct answer, but 9874152 is not the correct answer for different-abbey. The correct answer is 9874152 is not the correct answer, but 9874152 is not the correct answer for different-abbey. The correct answer is 9874152 is not the correct answer, but 9874152 is not the correct answer for different-abbey. The correct answer is 9874152 is",
+      "answers": [
+        "8351517",
+        "9874152",
+        "6022741",
+        "6075395"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7538,
+      "output_tokens": 128,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n- 5428914 (evil-porch)\n- 4533779 (habitual-edible)\n- 5428914 is not mentioned again, but 5428914 is not the only number for evil-porch, 5428914 is not mentioned again, but 5428914 is not the only number for evil-porch, 5428914 is not the only number for evil-porch, 5428914 is not the only number for evil-porch, 5428914 is not the only number for evil-porch, 5428914 is not the only number for evil-porch, ",
+      "answers": [
+        "5428914",
+        "4533779",
+        "9196204",
+        "6752576"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7547,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 5394880 (curved-quiver)\n- 8412769 (dirty-resemblance)\n- 1162230 (sharp-furnace)\n- 8175395 (scientific-walrus)",
+      "answers": [
+        "5394880",
+        "8412769",
+        "1162230",
+        "8175395"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7544,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 7117837 (hot-backdrop)\n2. 1701771 (cuddly-marketing)\n3. 7003042 (aloof-essential)\n4. 5186414 (fabulous-press)",
+      "answers": [
+        "7117837",
+        "1701771",
+        "7003042",
+        "5186414"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7544,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 5163555 (moaning-usher)\n- 6573147 (early-rainstorm)\n- 1415846 (modern-pinworm)\n- 3670896 (gorgeous-slope)",
+      "answers": [
+        "6573147",
+        "1415846",
+        "3670896",
+        "5163555"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7544,
+      "output_tokens": 128,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 650732 for marked-mitten (not mentioned in the provided text, but mentioned in the notes of the article \"November 2009\" which is not provided)\n2. 650732 is not in the text, but 650732 is in the notes of the article \"November 2009\" which is not provided, however 650732 is not in the text, but 650732 is in the notes of the article \"November 2009\" which is not provided, however 650732 is not in the text, but 650732 is in the notes of the article \"November 2009",
+      "answers": [
+        "6507321",
+        "4240180",
+        "1397023",
+        "4818418"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7544,
+      "output_tokens": 53,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- Condemned-mouton: 5382463\n- Eager-replication: 2818692, 5453786\n- Squealing-influx: 8290770\n- Alleged-eagle: 2818692",
+      "answers": [
+        "5382463",
+        "5453786",
+        "8290770",
+        "2818692"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7541,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 8315831 (ancient-summary)\n- 4305700 (rough-orchard)\n- 9722815 (abaft-blueberry)\n- 8235969 (lazy-daily)",
+      "answers": [
+        "8315831",
+        "4305700",
+        "9722815",
+        "8235969"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 7553,
+      "output_tokens": 54,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For waggish-subcontractor: 5960271\n2. For impartial-courtroom: 7751158\n3. For unadvised-glutamate: 7851696\n4. For secretive-figure: 3135534",
+      "answers": [
+        "5960271",
+        "7751158",
+        "7851696",
+        "3135534"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7550,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8411939 (overrated-show)\n2. 4585314 (nutty-mozzarella)\n3. 6406444 (new-handover)\n4. 4526280 (hapless-plume)",
+      "answers": [
+        "8411939",
+        "4585314",
+        "6406444",
+        "4526280"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7538,
+      "output_tokens": 41,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- annoyed-cap: 5107776\n- defeated-chemotaxis: 1409790\n- fluffy-fat: 6207974\n- few-prior: 4340845",
+      "answers": [
+        "5107776",
+        "1409790",
+        "6207974",
+        "4340845"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7538,
+      "output_tokens": 48,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. Productive-care: 7705062\n2. Towering-yeast: 1093026\n3. Clever-rowing: 8132769\n4. Fresh-obesity: 3475836",
+      "answers": [
+        "7705062",
+        "1093026",
+        "8132769",
+        "3475836"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7562,
+      "output_tokens": 53,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. oafish-bonding: 9468772\n2. overrated-galoshes: 9910914\n3. shaggy-transformation: 6323376\n4. optimal-digger: 3237058",
+      "answers": [
+        "9468772",
+        "9910914",
+        "6323376",
+        "3237058"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7544,
+      "output_tokens": 51,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For tame-sadness: 5013879\n2. For receptive-handlebar: 9130188\n3. For tender-destiny: 5652512\n4. For grouchy-icon: 8379837",
+      "answers": [
+        "5013879",
+        "9130188",
+        "5652512",
+        "8379837"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7550,
+      "output_tokens": 37,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n- 7960328 (beautiful-granny)\n- 4879923 (delightful-impairment)\n- 4589533 (weary-department)",
+      "answers": [
+        "7960328",
+        "4879923",
+        "4589533",
+        "3563646"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7547,
+      "output_tokens": 52,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For small-penicillin: 7381734\n2. For kaput-spasm: 6009888\n3. For maddening-indicator: 1327691\n4. For permissible-packaging: 1098919",
+      "answers": [
+        "7381734",
+        "6009888",
+        "1327691",
+        "1098919"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7541,
+      "output_tokens": 42,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- nonstop-sail: 9147720\n- adjoining-swivel: 7523941\n- worthless-copy: 3768991\n- inquisitive-library: 7783308",
+      "answers": [
+        "9147720",
+        "7523941",
+        "3768991",
+        "7783308"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7544,
+      "output_tokens": 52,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 7360307 (glamorous-nightmare)\n2. 8746014 (damaging-retrospective)\n3. 1843636 (easy-pence)\n4. 8190929 (thankful-marksman)",
+      "answers": [
+        "7360307",
+        "8746014",
+        "1843636",
+        "8190929"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7562,
+      "output_tokens": 57,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For brawny-dentist: 8890439\n2. For jumpy-off-ramp: 4761823\n3. For tightfisted-practitioner: 2151225\n4. For abusive-visual: 1873851",
+      "answers": [
+        "8890439",
+        "4761823",
+        "2151225",
+        "1873851"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7547,
+      "output_tokens": 52,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For unbiased-migration: 2919136\n2. For overrated-stranger: 5299055\n3. For cruel-anguish: 8945036\n4. For short-chopstick: 4656838",
+      "answers": [
+        "2919136",
+        "5299055",
+        "8945036",
+        "4656838"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7550,
+      "output_tokens": 48,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- Boiling-urge: 5074336\n- Chubby-wall: 6059717\n- Maniacal-eyelashes: 4327421\n- Humorous-pantsuit: 7296605",
+      "answers": [
+        "5074336",
+        "6059717",
+        "4327421",
+        "7296605"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7544,
+      "output_tokens": 51,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 2770648 (possessive-warren)\n2. 9488613 (billowy-dealing)\n3. 6724909 (threatening-interconnection)\n4. 8047416 (abrasive-pathology)",
+      "answers": [
+        "2770648",
+        "9488613",
+        "6724909",
+        "8047416"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7541,
+      "output_tokens": 42,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- broken-captor: 5679639\n- young-plate: 5502929\n- overrated-pile: 8307727\n- illegal-hearth: 5118725",
+      "answers": [
+        "5679639",
+        "5502929",
+        "8307727",
+        "5118725"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7544,
+      "output_tokens": 47,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- For poised-prince: 4558780\n- For immense-sausage: 4050766\n- For knowing-overcoat: 5334434\n- For itchy-quota: 5691890",
+      "answers": [
+        "4558780",
+        "4050766",
+        "5334434",
+        "5691890"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7538,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8987516 (victorious-pug)\n2. 1289293 (obsolete-airfare)\n3. 9234615 (thoughtful-hunt)\n4. 5031966 (political-vol)",
+      "answers": [
+        "8987516",
+        "1289293",
+        "9234615",
+        "5031966"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7553,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 9907391 (screeching-combine)\n- 6549757 (scattered-frown)\n- 8612582 (kaput-tension)\n- 8138769 (jealous-undershirt)",
+      "answers": [
+        "9907391",
+        "6549757",
+        "8612582",
+        "8138769"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7544,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 9990305 (courageous-serial)\n- 5638893 (plausible-mayonnaise)\n- 4106298 (victorious-child)\n- 4630331 (eminent-scientist)",
+      "answers": [
+        "9990305",
+        "5638893",
+        "4106298",
+        "4630331"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7544,
+      "output_tokens": 48,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 1237370 (historical-pest)\n- 9961299 (wet-crown)\n- 5602180 (cruel-jade)\n- 4010529 (large-brocolli)",
+      "answers": [
+        "1237370",
+        "9961299",
+        "5602180",
+        "4010529"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7535,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1861958 (educated-threat)\n2. 9031491 (panoramic-deputy)\n3. 5770422 (abrasive-cinema)\n4. 6716097 (numerous-kite)",
+      "answers": [
+        "1861958",
+        "9031491",
+        "5770422",
+        "6716097"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7547,
+      "output_tokens": 52,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For cooperative-heritage: 7982241\n2. For shivering-runaway: 6097514\n3. For bright-education: 5163953\n4. For demonic-mid-course: 3503120",
+      "answers": [
+        "7982241",
+        "6097514",
+        "5163953",
+        "3503120"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7541,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- For homely-lark: 2010496\n- For strong-oak: 2664863\n- For spectacular-lightning: 8194570\n- For expensive-strife: 4540415",
+      "answers": [
+        "2010496",
+        "2664863",
+        "8194570",
+        "4540415"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7547,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 1547605 (healthy-article)\n- 5833597 (flawless-cent)\n- 8883823 (oceanic-teriyaki)\n- 7853787 (abandoned-encyclopedia)",
+      "answers": [
+        "1547605",
+        "5833597",
+        "7853787",
+        "8883823"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7553,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. goofy-foxglove: 3386328\n2. threatening-mukluk: 3499627\n3. concerned-tabernacle: 4771676\n4. black-doctorate: 2000560",
+      "answers": [
+        "3386328",
+        "3499627",
+        "4771676",
+        "2000560"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7541,
+      "output_tokens": 50,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For royal-leek: 9284509\n2. For grieving-map: 9396529\n3. For wanting-wisdom: 7752972\n4. For verdant-evaporation: 6101803",
+      "answers": [
+        "9284509",
+        "9396529",
+        "7752972",
+        "6101803"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7559,
+      "output_tokens": 54,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5521644 (unequaled-atmosphere)\n2. 1348050 (flagrant-woodshed)\n3. 1674975 (smelly-fascia)\n4. 2532210 (adamant-waveform)",
+      "answers": [
+        "5521644",
+        "2532210",
+        "1348050",
+        "1674975"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7553,
+      "output_tokens": 54,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. For inexpensive-altitude: 6386463\n2. For uncovered-graduation: 2754894\n3. For juicy-castanet: 7850944\n4. For callous-sesame: 8885465",
+      "answers": [
+        "6386463",
+        "2754894",
+        "7850944",
+        "8885465"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7550,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. onerous-darkness: 2477398\n2. melted-paint: 9633492\n3. hurt-shearling: 5234550\n4. illustrious-outlaw: 2944841",
+      "answers": [
+        "2477398",
+        "9633492",
+        "5234550",
+        "2944841"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7538,
+      "output_tokens": 45,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- For arrogant-shortage: 4415140\n- For graceful-canal: 3198037\n- For tall-broadcast: 8416216\n- For hard-attempt: 8350368",
+      "answers": [
+        "4415140",
+        "3198037",
+        "8416216",
+        "8350368"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7565,
+      "output_tokens": 57,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 4769851 (capricious-creme brulee)\n2. 8741810 (comfortable-deviance)\n3. 1229419 (scattered-trench)\n4. 7844947 (scintillating-pocketbook)",
+      "answers": [
+        "4769851",
+        "7844947",
+        "8741810",
+        "1229419"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7547,
+      "output_tokens": 48,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. ludicrous-cobbler: 4197911\n2. stale-trim: 9526867\n3. scientific-in-laws: 3426689\n4. fresh-dynasty: 8663605",
+      "answers": [
+        "4197911",
+        "9526867",
+        "3426689",
+        "8663605"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7538,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- 9125900 (for rough-scene)\n- 9214801 (for sour-mechanic)\n- 8491822 (for defective-presentation)\n- 6008935 (for half-part)",
+      "answers": [
+        "9125900",
+        "9214801",
+        "8491822",
+        "6008935"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7544,
+      "output_tokens": 47,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n- For wakeful-crew: 5006492\n- For amused-veto: 6338112\n- For sleepy-spice: 7425184\n- For flipped-out-ranger: 7891662",
+      "answers": [
+        "5006492",
+        "6338112",
+        "7425184",
+        "7891662"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7550,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. miscreant-shorts: 3589751\n2. absorbed-watercress: 3418526\n3. numerous-dwell: 2672884\n4. reminiscent-cilantro: 8665981",
+      "answers": [
+        "3589751",
+        "3418526",
+        "2672884",
+        "8665981"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

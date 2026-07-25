@@ -1,0 +1,1665 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "cwe",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "cake",
+  "compression_level": "cake_layer",
+  "compression_ea_epsilon": null,
+  "ratio": 0.25,
+  "page_group_size": 4,
+  "max_tokens": 120,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.848,
+  "generation_time_sec": 71.6258,
+  "benchmark": {
+    "elapsed_sec": 71.6258,
+    "num_conversations": 50,
+    "total_input_tokens": 398790,
+    "total_output_tokens": 2356,
+    "request_throughput_per_s": 0.6981,
+    "output_throughput_tok_per_s": 32.8932,
+    "total_token_throughput_tok_per_s": 5600.5764,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    0.9,
+    0.9,
+    0.5,
+    0.4,
+    0.7,
+    1.0,
+    0.8,
+    0.4,
+    1.0,
+    0.9,
+    1.0,
+    0.4,
+    0.9,
+    0.5,
+    1.0,
+    1.0,
+    1.0,
+    0.9,
+    0.8,
+    1.0,
+    0.5,
+    0.9,
+    0.9,
+    1.0,
+    0.7,
+    1.0,
+    1.0,
+    0.9,
+    1.0,
+    1.0,
+    0.8,
+    0.6,
+    1.0,
+    0.9,
+    1.0,
+    0.9,
+    0.9,
+    0.9,
+    1.0,
+    1.0,
+    0.6,
+    0.9,
+    0.6,
+    0.9,
+    0.7,
+    1.0,
+    0.8,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7890,
+      "output_tokens": 45,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. radio 2. buyer 3. madam 4. shipyard 5. marshmallow 6. acknowledgment 7. fight 8. viability 9. custard 10. radio",
+      "answers": [
+        "acknowledgment",
+        "marshmallow",
+        "viability",
+        "fight",
+        "custard",
+        "shipyard",
+        "madam",
+        "radio",
+        "buyer",
+        "lush"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 8039,
+      "output_tokens": 46,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. chasuble 2. decimal 3. tusk 4. canal 5. duster 6. lend 7. reluctance 8. immortal 9. sponge 10. chateau",
+      "answers": [
+        "decimal",
+        "nightmare",
+        "lend",
+        "sponge",
+        "reluctance",
+        "immortal",
+        "duster",
+        "tusk",
+        "canal",
+        "chasuble"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7943,
+      "output_tokens": 41,
+      "score": 0.5,
+      "correct": true,
+      "prediction": " \n1. skill 2. physical 3. shutdown 4. podcast 5. prosecution 6. skill 7. skill 8. skill 9. skill 10. skill",
+      "answers": [
+        "motionless",
+        "physical",
+        "cleat",
+        "peep",
+        "prosecution",
+        "shutdown",
+        "ruthless",
+        "podcast",
+        "bring",
+        "skill"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 8005,
+      "output_tokens": 41,
+      "score": 0.4,
+      "correct": false,
+      "prediction": " \n\n1. function 2. vegetation 3. deployment 4. prince 5. function 6. function 7. function 8. function 9. function 10. function",
+      "answers": [
+        "vegetation",
+        "ectoderm",
+        "function",
+        "deployment",
+        "sidecar",
+        "neglect",
+        "triumph",
+        "tamale",
+        "prince",
+        "ablaze"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 8018,
+      "output_tokens": 48,
+      "score": 0.7,
+      "correct": true,
+      "prediction": " \n1. budget 2. anything 3. industrialization 4. gainful 5. medal 6. pajamas 7. bowtie 8. industrialization 9. industrialization 10. industrialization",
+      "answers": [
+        "industrialization",
+        "darn",
+        "bowtie",
+        "budget",
+        "pajamas",
+        "anything",
+        "gainful",
+        "rheumatism",
+        "pitcher",
+        "medal"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 8017,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. knowledge \n2. collectivization \n3. switchboard \n4. nationality \n5. trigger \n6. wooden \n7. worshiper \n8. forte \n9. suspenders \n10. detector",
+      "answers": [
+        "suspenders",
+        "wooden",
+        "worshiper",
+        "knowledge",
+        "detector",
+        "trigger",
+        "nationality",
+        "forte",
+        "switchboard",
+        "collectivization"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7872,
+      "output_tokens": 42,
+      "score": 0.8,
+      "correct": true,
+      "prediction": " \n\n1. chemistry 2. backbone 3. formula 4. retailer 5. premise 6. wingman 7. eliminate 8. restroom 9. chemistry 10. backbone",
+      "answers": [
+        "restroom",
+        "wingman",
+        "chemistry",
+        "dart",
+        "premise",
+        "retailer",
+        "marriage",
+        "formula",
+        "backbone",
+        "eliminate"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7878,
+      "output_tokens": 45,
+      "score": 0.4,
+      "correct": false,
+      "prediction": " \n1. shingle 2. succotash 3. rectangle 4. planula 5. rectangle 6. rectangle 7. rectangle 8. rectangle 9. rectangle 10. rectangle",
+      "answers": [
+        "succotash",
+        "cheerful",
+        "thrust",
+        "accusation",
+        "homely",
+        "roasted",
+        "rectangle",
+        "shingle",
+        "planula",
+        "switch"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 8011,
+      "output_tokens": 47,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. component \n2. gender \n3. era \n4. schnitzel \n5. boot \n6. oak \n7. vinyl \n8. crabby \n9. complicity \n10. rehospitalization",
+      "answers": [
+        "vinyl",
+        "era",
+        "gender",
+        "rehospitalization",
+        "crabby",
+        "boot",
+        "oak",
+        "schnitzel",
+        "complicity",
+        "component"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7807,
+      "output_tokens": 46,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. education 2. numismatist 3. haversack 4. footwear 5. lizard 6. contributor 7. subscription 8. install 9. compare 10. joint",
+      "answers": [
+        "install",
+        "education",
+        "haversack",
+        "numismatist",
+        "footwear",
+        "contributor",
+        "fright",
+        "lizard",
+        "compare",
+        "joint"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 8055,
+      "output_tokens": 45,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n1. netbook 2. cent 3. huge 4. oceanic 5. hug 6. acoustic 7. ruling 8. bathtub 9. connotation 10. toot",
+      "answers": [
+        "bathtub",
+        "huge",
+        "toot",
+        "ruling",
+        "netbook",
+        "connotation",
+        "acoustic",
+        "hug",
+        "cent",
+        "oceanic"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7869,
+      "output_tokens": 41,
+      "score": 0.4,
+      "correct": false,
+      "prediction": " \n\n1. importance 2. evidence 3. receive 4. interrupt 5. importance 6. importance 7. importance 8. importance 9. importance 10. importance",
+      "answers": [
+        "mime",
+        "interrupt",
+        "moldy",
+        "importance",
+        "evidence",
+        "hold",
+        "bless",
+        "omission",
+        "receive",
+        "pole"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 8012,
+      "output_tokens": 44,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n1. desk \n2. redirect \n3. routine \n4. screening \n5. eviction \n6. ex-husband \n7. netball \n8. controversy \n9. addicted \n10. independence",
+      "answers": [
+        "netball",
+        "addicted",
+        "rim",
+        "desk",
+        "screening",
+        "ex-husband",
+        "routine",
+        "redirect",
+        "eviction",
+        "controversy"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7954,
+      "output_tokens": 112,
+      "score": 0.5,
+      "correct": true,
+      "prediction": " \n\n1. reading (appears 71 times) \n2. familiar (appears 64 times) \n3. airforce (appears 57 times) \n4. behave (appears 56 times) \n5. exhaust (appears 55 times) \n6. reading (appears 71 times) \n7. reading (appears 71 times) \n8. reading (appears 71 times) \n9. reading (appears 71 times) \n10. reading (appears 71 times)",
+      "answers": [
+        "stab",
+        "wit",
+        "reading",
+        "afterlife",
+        "costume",
+        "airforce",
+        "behave",
+        "familiar",
+        "exhaust",
+        "sour"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 8054,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. script \n2. lack \n3. priority \n4. blackness \n5. lymphocyte \n6. impulse \n7. crusader \n8. flatboat \n9. dry \n10. corporatism",
+      "answers": [
+        "corporatism",
+        "flatboat",
+        "blackness",
+        "dry",
+        "crusader",
+        "priority",
+        "lymphocyte",
+        "script",
+        "lack",
+        "impulse"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 8023,
+      "output_tokens": 105,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. isogloss (appears 44 times)\n2. pepper (appears 43 times)\n3. faithful (appears 42 times)\n4. baker (appears 41 times)\n5. dashboard (appears 40 times)\n6. export (appears 39 times)\n7. ink (appears 38 times)\n8. bid (appears 37 times)\n9. leaf (appears 36 times)\n10. carpenter (appears 35 times)",
+      "answers": [
+        "faithful",
+        "export",
+        "bid",
+        "isogloss",
+        "pepper",
+        "carpenter",
+        "leaf",
+        "dashboard",
+        "baker",
+        "ink"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7975,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n1. important 2. exterior 3. wad 4. marry 5. ingrate 6. perfect 7. helpful 8. authentication 9. evocation 10. abrupt",
+      "answers": [
+        "authentication",
+        "perfect",
+        "wad",
+        "abrupt",
+        "important",
+        "ingrate",
+        "helpful",
+        "evocation",
+        "marry",
+        "exterior"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7920,
+      "output_tokens": 44,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. success 2. assessment 3. commission 4. helpful 5. nudge 6. flame 7. carpenter 8. slippery 9. appraise 10. success",
+      "answers": [
+        "appraise",
+        "commission",
+        "success",
+        "dislike",
+        "flame",
+        "carpenter",
+        "slippery",
+        "helpful",
+        "assessment",
+        "nudge"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7974,
+      "output_tokens": 43,
+      "score": 0.8,
+      "correct": true,
+      "prediction": " \n\n1. usual \n2. doctor \n3. designer \n4. colon \n5. entertain \n6. improvise \n7. praised \n8. elated \n9. usual \n10. doctor",
+      "answers": [
+        "floodplain",
+        "designer",
+        "interviewer",
+        "praised",
+        "improvise",
+        "colon",
+        "elated",
+        "usual",
+        "entertain",
+        "doctor"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7946,
+      "output_tokens": 45,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. drug 2. enjoy 3. installation 4. instrumentation 5. orient 6. paste 7. racism 8. yin 9. waterskiing 10. neighborly",
+      "answers": [
+        "orient",
+        "racism",
+        "waterskiing",
+        "yin",
+        "instrumentation",
+        "neighborly",
+        "installation",
+        "paste",
+        "enjoy",
+        "drug"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7890,
+      "output_tokens": 47,
+      "score": 0.5,
+      "correct": true,
+      "prediction": " \n1. plan 2. card 3. locust 4. mailing 5. satisfaction 6. locust 7. locust 8. locust 9. locust 10. locust",
+      "answers": [
+        "satisfaction",
+        "improve",
+        "mailing",
+        "radar",
+        "contour",
+        "breadfruit",
+        "card",
+        "plan",
+        "lend",
+        "locust"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7961,
+      "output_tokens": 43,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. average 2. relation 3. clapboard 4. complexity 5. farm 6. cuisine 7. invincible 8. baggage 9. slippery 10. relation",
+      "answers": [
+        "complexity",
+        "clapboard",
+        "lively",
+        "invincible",
+        "average",
+        "slippery",
+        "cuisine",
+        "farm",
+        "relation",
+        "baggage"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7983,
+      "output_tokens": 45,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. implement 2. jailhouse 3. tavern 4. dinghy 5. bud 6. scatter 7. newsstand 8. feather 9. spank 10. trigger",
+      "answers": [
+        "newsstand",
+        "jailhouse",
+        "feather",
+        "dinghy",
+        "tsunami",
+        "spank",
+        "implement",
+        "scatter",
+        "bud",
+        "tavern"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 8061,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. auto 2. girl 3. denim 4. cylinder 5. flashy 6. fishbone 7. sculpture 8. nonconformist 9. sorbet 10. degradation",
+      "answers": [
+        "degradation",
+        "sculpture",
+        "cylinder",
+        "denim",
+        "girl",
+        "sorbet",
+        "nonconformist",
+        "auto",
+        "fishbone",
+        "flashy"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7992,
+      "output_tokens": 43,
+      "score": 0.7,
+      "correct": true,
+      "prediction": " \n1. university \n2. pilaf \n3. rat \n4. victorious \n5. effector \n6. staircase \n7. collaboration \n8. internet \n9. university \n10. university",
+      "answers": [
+        "effector",
+        "pilaf",
+        "staircase",
+        "underground",
+        "rat",
+        "pump",
+        "collaboration",
+        "university",
+        "victorious",
+        "necklace"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7959,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. album 2. nurse 3. intent 4. hyphenation 5. acquaintance 6. pillbox 7. early 8. walk 9. associate 10. vanity",
+      "answers": [
+        "nurse",
+        "walk",
+        "album",
+        "pillbox",
+        "vanity",
+        "acquaintance",
+        "associate",
+        "intent",
+        "hyphenation",
+        "early"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 8093,
+      "output_tokens": 47,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. bookend 2. cirrus 3. expansionism 4. sideburns 5. weak 6. reflect 7. tattoo 8. fold 9. smuggling 10. coliseum",
+      "answers": [
+        "tattoo",
+        "expansionism",
+        "coliseum",
+        "cirrus",
+        "bookend",
+        "weak",
+        "smuggling",
+        "fold",
+        "reflect",
+        "sideburns"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 8055,
+      "output_tokens": 43,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n1. caddy 2. bay 3. med 4. variety 5. pastor 6. curly 7. bracelet 8. antiquity 9. promotion 10. bay",
+      "answers": [
+        "bracelet",
+        "antiquity",
+        "promotion",
+        "curly",
+        "variety",
+        "pastor",
+        "altar",
+        "bay",
+        "med",
+        "caddy"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 8087,
+      "output_tokens": 49,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rest 2. marxism 3. epee 4. wiseguy 5. vanilla 6. glow 7. grease 8. conga 9. recruit 10. diarist",
+      "answers": [
+        "conga",
+        "grease",
+        "vanilla",
+        "rest",
+        "epee",
+        "recruit",
+        "wiseguy",
+        "glow",
+        "diarist",
+        "marxism"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7983,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. flaky 2. cauliflower 3. opponent 4. caliber 5. wax 6. bright 7. fundraising 8. voter 9. incubation 10. burrow",
+      "answers": [
+        "opponent",
+        "cauliflower",
+        "incubation",
+        "fundraising",
+        "bright",
+        "voter",
+        "burrow",
+        "caliber",
+        "flaky",
+        "wax"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7905,
+      "output_tokens": 42,
+      "score": 0.8,
+      "correct": true,
+      "prediction": " \n\n1. hash 2. bookmark 3. discrimination 4. ease 5. charming 6. doubtful 7. ethereal 8. shred 9. discrimination 10. discrimination",
+      "answers": [
+        "bookmark",
+        "discrimination",
+        "hash",
+        "ethereal",
+        "doubtful",
+        "shame",
+        "shred",
+        "charming",
+        "ease",
+        "nonsense"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7952,
+      "output_tokens": 41,
+      "score": 0.6,
+      "correct": true,
+      "prediction": " \n1. tech 2. robotics 3. meaning 4. lime 5. furry 6. robotics 7. violation 8. robotics 9. tech 10. robotics",
+      "answers": [
+        "meaning",
+        "robotics",
+        "roast",
+        "furry",
+        "violation",
+        "oasis",
+        "dentist",
+        "providence",
+        "tech",
+        "lime"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 8016,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n1. setting \n2. analysis \n3. helo \n4. birdcage \n5. preference \n6. mandolin \n7. bush \n8. infinite \n9. swing \n10. deadpan",
+      "answers": [
+        "bush",
+        "swing",
+        "infinite",
+        "deadpan",
+        "setting",
+        "analysis",
+        "preference",
+        "birdcage",
+        "mandolin",
+        "helo"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 8053,
+      "output_tokens": 46,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. location 2. bicycle 3. harbour 4. easel 5. primate 6. raid 7. obsolete 8. stereotyped 9. wraparound 10. technician",
+      "answers": [
+        "easel",
+        "stereotyped",
+        "bicycle",
+        "raid",
+        "forego",
+        "obsolete",
+        "wraparound",
+        "primate",
+        "location",
+        "harbour"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7932,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. mill 2. veal 3. paste 4. yoyo 5. exclusive 6. atmosphere 7. cartoon 8. stage 9. swine 10. talk",
+      "answers": [
+        "swine",
+        "mill",
+        "cartoon",
+        "stage",
+        "talk",
+        "exclusive",
+        "paste",
+        "atmosphere",
+        "yoyo",
+        "veal"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 8031,
+      "output_tokens": 47,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n1. ketch 2. armpit 3. fishing 4. inspection 5. nexus 6. joey 7. excitement 8. bowling 9. maid 10. somersault",
+      "answers": [
+        "armpit",
+        "bowling",
+        "nexus",
+        "maid",
+        "joey",
+        "excitement",
+        "tune-up",
+        "fishing",
+        "inspection",
+        "ketch"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7969,
+      "output_tokens": 46,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. letter 2. aircraft 3. pennant 4. speakerphone 5. parsimonious 6. storey 7. garbage 8. improvement 9. newsletter 10. aircraft",
+      "answers": [
+        "pennant",
+        "letter",
+        "speakerphone",
+        "garbage",
+        "storey",
+        "grenade",
+        "improvement",
+        "aircraft",
+        "newsletter",
+        "parsimonious"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 8073,
+      "output_tokens": 49,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. possible 2. fennel 3. photograph 4. rambler 5. pea 6. membership 7. payee 8. lethal 9. strobe 10. fennel",
+      "answers": [
+        "membership",
+        "fennel",
+        "possible",
+        "outrigger",
+        "lethal",
+        "rambler",
+        "payee",
+        "pea",
+        "strobe",
+        "photograph"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7912,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. noun 2. percent 3. premium 4. underwire 5. SUV 6. modeling 7. berserk 8. compassionate 9. save 10. garter",
+      "answers": [
+        "modeling",
+        "premium",
+        "percent",
+        "save",
+        "SUV",
+        "compassionate",
+        "garter",
+        "berserk",
+        "underwire",
+        "noun"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7961,
+      "output_tokens": 44,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. field 2. future 3. bonus 4. bench 5. guarded 6. inversion 7. parsimonious 8. toot 9. slavery 10. generosity",
+      "answers": [
+        "field",
+        "parsimonious",
+        "bench",
+        "future",
+        "inversion",
+        "toot",
+        "generosity",
+        "slavery",
+        "guarded",
+        "bonus"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7925,
+      "output_tokens": 41,
+      "score": 0.6,
+      "correct": true,
+      "prediction": " \n\n1. riding 2. faculty 3. pan 4. secret 5. daylight 6. establish 7. riding 8. riding 9. riding 10. riding",
+      "answers": [
+        "pan",
+        "faculty",
+        "streamline",
+        "stool",
+        "whip",
+        "spokeswoman",
+        "establish",
+        "daylight",
+        "riding",
+        "secret"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 8107,
+      "output_tokens": 48,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. communication \n2. nectarine \n3. frigate \n4. brownie \n5. tuba \n6. shin \n7. reparation \n8. classification \n9. jackfruit \n10. diffuse",
+      "answers": [
+        "nectarine",
+        "frigate",
+        "reparation",
+        "shin",
+        "brownie",
+        "ballpark",
+        "diffuse",
+        "tuba",
+        "jackfruit",
+        "communication"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7946,
+      "output_tokens": 43,
+      "score": 0.6,
+      "correct": true,
+      "prediction": " \n\n1. depend \n2. location \n3. fortune \n4. geyser \n5. vice \n6. dialogue \n7. depend \n8. location \n9. fortune \n10. depend",
+      "answers": [
+        "soak",
+        "dialogue",
+        "resolve",
+        "depend",
+        "geyser",
+        "vice",
+        "location",
+        "bark",
+        "fortune",
+        "screamer"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7850,
+      "output_tokens": 42,
+      "score": 0.9,
+      "correct": true,
+      "prediction": " \n\n1. lion 2. slipper 3. marathon 4. helicopter 5. fool 6. charming 7. appearance 8. destiny 9. protect 10. marathon",
+      "answers": [
+        "protect",
+        "slipper",
+        "lion",
+        "marathon",
+        "helicopter",
+        "appearance",
+        "divide",
+        "destiny",
+        "charming",
+        "fool"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7844,
+      "output_tokens": 42,
+      "score": 0.7,
+      "correct": true,
+      "prediction": " \n\n1. multiply 2. exception 3. assignment 4. commander 5. grasp 6. download 7. spandex 8. exception 9. multiply 10. assignment",
+      "answers": [
+        "exception",
+        "spandex",
+        "download",
+        "prostrate",
+        "multiply",
+        "commander",
+        "disparity",
+        "grasp",
+        "assignment",
+        "exile"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7959,
+      "output_tokens": 43,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. longitude 2. vodka 3. debate 4. sister 5. vascular 6. hashtag 7. swimming 8. terror 9. exultant 10. surround",
+      "answers": [
+        "hashtag",
+        "sister",
+        "swimming",
+        "vodka",
+        "longitude",
+        "surround",
+        "terror",
+        "vascular",
+        "debate",
+        "exultant"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 8008,
+      "output_tokens": 44,
+      "score": 0.8,
+      "correct": true,
+      "prediction": " \n\n1. smolt 2. contract 3. coordination 4. merciful 5. appliance 6. birdhouse 7. crush 8. nightmare 9. contract 10. coordination",
+      "answers": [
+        "flicker",
+        "birdhouse",
+        "merciful",
+        "squatter",
+        "smolt",
+        "nightmare",
+        "appliance",
+        "crush",
+        "coordination",
+        "contract"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7944,
+      "output_tokens": 45,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. tract 2. doorpost 3. cartload 4. tactile 5. protocol 6. half 7. ingrate 8. oriented 9. die 10. fluke",
+      "answers": [
+        "die",
+        "doorpost",
+        "tactile",
+        "oriented",
+        "fluke",
+        "protocol",
+        "ingrate",
+        "tract",
+        "half",
+        "cartload"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 8078,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n1. entry 2. winter 3. chemotaxis 4. styling 5. grape 6. ashtray 7. med 8. beheading 9. adjoining 10. interpret",
+      "answers": [
+        "interpret",
+        "winter",
+        "adjoining",
+        "grape",
+        "beheading",
+        "ashtray",
+        "med",
+        "styling",
+        "entry",
+        "chemotaxis"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7999,
+      "output_tokens": 46,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. fibre 2. clockwork 3. operator 4. kettledrum 5. markup 6. mist 7. reserve 8. pistol 9. commonsense 10. decoder",
+      "answers": [
+        "reserve",
+        "clockwork",
+        "decoder",
+        "mist",
+        "commonsense",
+        "fibre",
+        "operator",
+        "kettledrum",
+        "pistol",
+        "markup"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

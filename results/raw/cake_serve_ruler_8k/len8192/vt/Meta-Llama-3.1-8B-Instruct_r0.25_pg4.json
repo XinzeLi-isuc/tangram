@@ -1,0 +1,1415 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "vt",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "cake",
+  "compression_level": "cake_layer",
+  "compression_ea_epsilon": null,
+  "ratio": 0.25,
+  "page_group_size": 4,
+  "max_tokens": 30,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.996,
+  "generation_time_sec": 67.4316,
+  "benchmark": {
+    "elapsed_sec": 67.4316,
+    "num_conversations": 50,
+    "total_input_tokens": 397663,
+    "total_output_tokens": 833,
+    "request_throughput_per_s": 0.7415,
+    "output_throughput_tok_per_s": 12.3533,
+    "total_token_throughput_tok_per_s": 5909.6336,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.8,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " HZYVC FQZBI ZUFVO PVGUU PHZZO",
+      "answers": [
+        "HZYVC",
+        "FQZBI",
+        "ZUFVO",
+        "PVGUU",
+        "PHZZO"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " JUPAG DKCBL JPLFP SXRHQ AZWLC",
+      "answers": [
+        "JUPAG",
+        "DKCBL",
+        "JPLFP",
+        "SXRHQ",
+        "AZWLC"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " BHQOI ZNLPC SWQTS FLFIL KCLRJ",
+      "answers": [
+        "BHQOI",
+        "ZNLPC",
+        "SWQTS",
+        "FLFIL",
+        "KCLRJ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7950,
+      "output_tokens": 15,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " CCTVO POIDJ RTWSZ PJPFR FCVJT",
+      "answers": [
+        "CCTVO",
+        "POIDJ",
+        "RTWSZ",
+        "PJPFR",
+        "FCVJT"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " AYVGE SIIAW OKDQA TFKIJ SUOCB",
+      "answers": [
+        "AYVGE",
+        "SIIAW",
+        "OKDQA",
+        "TFKIJ",
+        "SUOCB"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " RMLHT CLHRM RBKPA HFDGI ATEJS",
+      "answers": [
+        "RMLHT",
+        "CLHRM",
+        "RBKPA",
+        "HFDGI",
+        "ATEJS"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7953,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " WBAXW OOSKC AIUQV XCVGP NKIII",
+      "answers": [
+        "WBAXW",
+        "OOSKC",
+        "AIUQV",
+        "XCVGP",
+        "NKIII"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7951,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " NXJSV VGDFP TREUM TTLYO QQWQD",
+      "answers": [
+        "NXJSV",
+        "VGDFP",
+        "TREUM",
+        "TTLYO",
+        "QQWQD"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " PJBMA JHQZC PJPYT BXOEP NYLVV",
+      "answers": [
+        "PJBMA",
+        "JHQZC",
+        "PJPYT",
+        "BXOEP",
+        "NYLVV"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " SZNPJ XKURB QIIOK GWZPD CRXIR",
+      "answers": [
+        "SZNPJ",
+        "XKURB",
+        "QIIOK",
+        "GWZPD",
+        "CRXIR"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " OQIDS YZXCR NAIYI TEZEH UNOTN",
+      "answers": [
+        "OQIDS",
+        "YZXCR",
+        "NAIYI",
+        "TEZEH",
+        "UNOTN"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7955,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " EVUVE LKRGL HTLNI VMVJY ZMHJN",
+      "answers": [
+        "EVUVE",
+        "LKRGL",
+        "HTLNI",
+        "VMVJY",
+        "ZMHJN"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " BMJYS NDCEL NVCXV XYKKJ KCFIC",
+      "answers": [
+        "BMJYS",
+        "NDCEL",
+        "NVCXV",
+        "XYKKJ",
+        "KCFIC"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " XMVTM PXAFD YPLUG DGQQB VMNQO",
+      "answers": [
+        "XMVTM",
+        "PXAFD",
+        "YPLUG",
+        "DGQQB",
+        "VMNQO"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " GKRCZ BNNZO KMQZG AUITQ UTIBO",
+      "answers": [
+        "GKRCZ",
+        "BNNZO",
+        "KMQZG",
+        "AUITQ",
+        "UTIBO"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " BULHB FBYNZ OGTEJ UWIDJ XTXKZ",
+      "answers": [
+        "BULHB",
+        "FBYNZ",
+        "OGTEJ",
+        "UWIDJ",
+        "XTXKZ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " SCPVO ICRHP LRJBW JZHZY BQJURY",
+      "answers": [
+        "SCPVO",
+        "ICRHP",
+        "LRJBW",
+        "JZHZY",
+        "BQJUR"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " BUJJO PRYJT ONKQG CTMKO GGLZH",
+      "answers": [
+        "BUJJO",
+        "PRYJT",
+        "ONKQG",
+        "CTMKO",
+        "GGLZH"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7955,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " LXLCR VIJBO XWSYQ UNDFD UAOJU",
+      "answers": [
+        "LXLCR",
+        "VIJBO",
+        "XWSYQ",
+        "UNDFD",
+        "UAOJU"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7950,
+      "output_tokens": 15,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " KSMKK ODIBM NDVOP TDNWV NHEYF",
+      "answers": [
+        "KSMKK",
+        "ODIBM",
+        "NDVOP",
+        "TDNWV",
+        "NHEYF"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " QODHN NEYER SPVOV ABQOQ TKQMQ",
+      "answers": [
+        "QODHN",
+        "NEYER",
+        "SPVOV",
+        "ABQOQ",
+        "TKQMQ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " HBBLM FPIST WZDJO IMGGC HJPGW",
+      "answers": [
+        "HBBLM",
+        "FPIST",
+        "WZDJO",
+        "IMGGC",
+        "HJPGW"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " TMNMI AYNZF JBMWR MNWLW STJKO",
+      "answers": [
+        "TMNMI",
+        "AYNZF",
+        "JBMWR",
+        "MNWLW",
+        "STJKO"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7958,
+      "output_tokens": 19,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " KLOVQ PDCJZ OJDPK BBSUN DXDYI",
+      "answers": [
+        "KLOVQ",
+        "PDCJZ",
+        "OJDPK",
+        "BBSUN",
+        "DXDYI"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " VNSHV JRZPU SRAMZ UUPSP EQQVD",
+      "answers": [
+        "VNSHV",
+        "JRZPU",
+        "SRAMZ",
+        "UUPSP",
+        "EQQVD"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " AIDRK UXWTB DFIRN IEXIJ USQSP",
+      "answers": [
+        "AIDRK",
+        "UXWTB",
+        "DFIRN",
+        "IEXIJ",
+        "USQSP"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7958,
+      "output_tokens": 19,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " FZHHF SIJYU HDRJZ VYUHH SJLGM",
+      "answers": [
+        "FZHHF",
+        "SIJYU",
+        "HDRJZ",
+        "VYUHH",
+        "SJLGM"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " DQPGR NQBKS CUAOY KYWMF ZIQXC",
+      "answers": [
+        "DQPGR",
+        "NQBKS",
+        "CUAOY",
+        "KYWMF",
+        "ZIQXC"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7956,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " KVYAV UETWH AHPYI LQNXD NHVIT",
+      "answers": [
+        "KVYAV",
+        "UETWH",
+        "AHPYI",
+        "LQNXD",
+        "NHVIT"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7948,
+      "output_tokens": 14,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " OTEWX VNCRE DIGGG TYHSA QSBDH",
+      "answers": [
+        "OTEWX",
+        "VNCRE",
+        "DIGGG",
+        "TYHSA",
+        "QSBDH"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " JFYML ZJSXT UVTRP UNNJX CVXFN",
+      "answers": [
+        "JFYML",
+        "ZJSXT",
+        "UVTRP",
+        "UNNJX",
+        "CVXFN"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " RSMXL BDKOO RIAGA FBLSO BXZMH",
+      "answers": [
+        "RSMXL",
+        "BDKOO",
+        "RIAGA",
+        "FBLSO",
+        "BXZMH"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " LXJCZ WDWDZ KDZVT ZMSLJ FLEEW",
+      "answers": [
+        "LXJCZ",
+        "WDWDZ",
+        "KDZVT",
+        "ZMSLJ",
+        "FLEEW"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7949,
+      "output_tokens": 14,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " FCAPS BTKGF WBNHV TIPRI HDRFH",
+      "answers": [
+        "FCAPS",
+        "BTKGF",
+        "WBNHV",
+        "TIPRI",
+        "HDRFH"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7952,
+      "output_tokens": 13,
+      "score": 0.8,
+      "correct": true,
+      "prediction": " OBIQJ NSKHE MBKKN KGICL",
+      "answers": [
+        "OBIQJ",
+        "NSKHE",
+        "NGFWD",
+        "MBKKN",
+        "KGICL"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7956,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " GRPWE TSOMW IYAYZ DZMGP FXOUJ",
+      "answers": [
+        "GRPWE",
+        "TSOMW",
+        "IYAYZ",
+        "DZMGP",
+        "FXOUJ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " NMCZM VXJKO FDGYP KDIJV MRRGV",
+      "answers": [
+        "NMCZM",
+        "VXJKO",
+        "FDGYP",
+        "KDIJV",
+        "MRRGV"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7957,
+      "output_tokens": 19,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " SMXOQ BAWYR TKVGS ANJQR QMMAO",
+      "answers": [
+        "SMXOQ",
+        "BAWYR",
+        "TKVGS",
+        "ANJQR",
+        "QMMAO"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7955,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " ZAVRU XCCDE NVGKJ KOZFR WQWTC",
+      "answers": [
+        "ZAVRU",
+        "XCCDE",
+        "NVGKJ",
+        "KOZFR",
+        "WQWTC"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " QSCVQ IZZXX FXROH YRHOR EWAFD",
+      "answers": [
+        "QSCVQ",
+        "IZZXX",
+        "FXROH",
+        "YRHOR",
+        "EWAFD"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " GVKXI TDZSN ZBLVI TYKUA HZMJY",
+      "answers": [
+        "GVKXI",
+        "TDZSN",
+        "ZBLVI",
+        "TYKUA",
+        "HZMJY"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7956,
+      "output_tokens": 18,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " UHGBG JUEKJ CYLTC CLONC COPUW",
+      "answers": [
+        "UHGBG",
+        "JUEKJ",
+        "CYLTC",
+        "CLONC",
+        "COPUW"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7953,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " SOZGN REGGD EHHUJ YSMQL DAKVJ",
+      "answers": [
+        "SOZGN",
+        "REGGD",
+        "EHHUJ",
+        "YSMQL",
+        "DAKVJ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7949,
+      "output_tokens": 15,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " DIYFI ZZHSM OGJVK COPOR OYMSL",
+      "answers": [
+        "DIYFI",
+        "ZZHSM",
+        "OGJVK",
+        "COPOR",
+        "OYMSL"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7958,
+      "output_tokens": 19,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " QGRSU BZMKN XROUJ XNQCT RJQBZ",
+      "answers": [
+        "QGRSU",
+        "BZMKN",
+        "XROUJ",
+        "XNQCT",
+        "RJQBZ"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " CFTOR FJMRR DZMHX CVSJI UNJCS",
+      "answers": [
+        "CFTOR",
+        "FJMRR",
+        "DZMHX",
+        "CVSJI",
+        "UNJCS"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " VCWQR EZGEE OYGKE QLAPF PKSFT",
+      "answers": [
+        "VCWQR",
+        "EZGEE",
+        "OYGKE",
+        "QLAPF",
+        "PKSFT"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7952,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " JFCRM ZIKKC JLERU XPRIG DJDKP",
+      "answers": [
+        "JFCRM",
+        "ZIKKC",
+        "JLERU",
+        "XPRIG",
+        "DJDKP"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7951,
+      "output_tokens": 15,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " QSQZO MDILB JADVZ NMRKV MCATH",
+      "answers": [
+        "QSQZO",
+        "MDILB",
+        "JADVZ",
+        "NMRKV",
+        "MCATH"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7954,
+      "output_tokens": 17,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " UOUMN OGOZO TTLFL TQGWA GWCWD",
+      "answers": [
+        "UOUMN",
+        "OGOZO",
+        "TTLFL",
+        "TQGWA",
+        "GWCWD"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}
