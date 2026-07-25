@@ -278,7 +278,7 @@ def add_compression_args(parser: argparse.ArgumentParser) -> None:
     # Two orthogonal axes (selection level + scorer).
     parser.add_argument(
         "--compression-scorer", type=str, default="fastkvzip",
-        choices=["fastkvzip", "snapkv", "keydiff", "streamingllm", "tova",
+        choices=["fastkvzip", "snapkv", "cake", "keydiff", "streamingllm", "tova",
                  "expected_attention"],
         help="Score producer (axis 2). All but 'fastkvzip' are gate-free (no "
              "checkpoint); scores come from the model's post-RoPE query/key "
@@ -291,7 +291,8 @@ def add_compression_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--compression-level", default="crosslayer_head",
         choices=("crosslayer_head", "perlayer_head",
-                 "crosslayer_cluster", "perlayer_cluster", "uniform"),
+                 "crosslayer_cluster", "perlayer_cluster", "uniform",
+                 "cake_layer"),
         help="Selection level (axis 1), named {scope}_{granularity}. "
              "'crosslayer_head' (default): cross-layer global threshold, "
              "head-calibrated (divergent count per (layer, group)). "

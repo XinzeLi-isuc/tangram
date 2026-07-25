@@ -55,24 +55,47 @@ def load_ruler(
 ) -> list[dict[str, Any]]:
     """Load one RULER context-length config as normalized sample dicts.
 
+    Uses pyarrow to read the cached parquet/arrow file directly, bypassing
+    the datasets library (which has compatibility issues with Python 3.12).
+
     ``length`` is a config name (e.g. "4096"). ``tasks`` keeps only the listed
     task names (default: all). ``n_data`` caps the number of samples kept *per
     task* (default: all 500), matching how RULER reports per-task accuracy.
     Returns a flat list ordered by (task, original index)."""
-    from datasets import load_dataset
+    import pyarrow as pa
+    from pathlib import Path
 
     if length not in RULER_LENGTHS:
         raise ValueError(
-            f"Unknown RULER length {length!r}. Available: {list(RULER_LENGTHS)}."
-        )
+            f"Unknown RULER length {length!r}. Available: {list(RULER_LENGTHS)}.")
     keep = set(tasks) if tasks else None
 
-    samples = load_dataset(_RULER_REPO, length, split="test")
+    # Find the cached arrow file
+    cache_base = Path.home() / ".cache" / "huggingface" / "datasets" / "simonjegou___ruler"
+    arrow_files = sorted(cache_base.rglob("*.arrow"))
+    if not arrow_files:
+        # Fallback to datasets library
+        from datasets import load_dataset
+        samples = load_dataset(_RULER_REPO, length, split="test")
+        arrow_path = None
+    else:
+        arrow_path = arrow_files[0]
+
+    if arrow_path:
+        # Read directly from cached arrow file
+        with pa.ipc.open_stream(str(arrow_path)) as reader:
+            table = reader.read_all()
+        batch = table.to_pydict()
+    else:
+        # Use datasets library as fallback
+        from datasets import load_dataset
+        samples = load_dataset(_RULER_REPO, length, split="test")
+        batch = {col: [row[col] for row in samples] for col in samples.column_names}
 
     per_task_count: dict[str, int] = {}
     dataset: list[dict[str, Any]] = []
-    for row in samples:
-        task = row["task"]
+    for idx in range(len(batch["task"])):
+        task = batch["task"][idx]
         if keep is not None and task not in keep:
             continue
         if n_data is not None and per_task_count.get(task, 0) >= n_data:
@@ -80,12 +103,12 @@ def load_ruler(
         per_task_count[task] = per_task_count.get(task, 0) + 1
         dataset.append(
             {
-                "context": row["context"],
-                "question": row["question"],
-                "answer_prefix": row["answer_prefix"],
-                "answers": list(row["answer"]),
+                "context": batch["context"][idx],
+                "question": batch["question"][idx],
+                "answer_prefix": batch["answer_prefix"][idx],
+                "answers": list(batch["answer"][idx]) if isinstance(batch["answer"][idx], (list, tuple)) else [batch["answer"][idx]],
                 "task": task,
-                "max_new_tokens": int(row["max_new_tokens"]),
+                "max_new_tokens": int(batch["max_new_tokens"][idx]),
             }
         )
 

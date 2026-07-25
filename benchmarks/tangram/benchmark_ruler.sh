@@ -110,11 +110,14 @@ case "${SCORER}" in
         METHOD_ARGS+=(--compression-snap-window "${SNAP_WINDOW:-32}"
                       --compression-snap-kernel "${SNAP_KERNEL:-7}")
         ;;
+    cake)
+        DEFAULT_PG=4
+        ;;
     keydiff|streamingllm|tova|expected_attention)
         DEFAULT_PG=4
         ;;
     *)
-        echo "Unknown SCORER='${SCORER}' (use fastkvzip|snapkv|keydiff|streamingllm|tova|expected_attention)" >&2
+        echo "Unknown SCORER='${SCORER}' (use fastkvzip|snapkv|cake|keydiff|streamingllm|tova|expected_attention)" >&2
         exit 1
         ;;
 esac
