@@ -1,0 +1,1215 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "niah_multikey_1",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "cake",
+  "compression_level": "uniform",
+  "compression_ea_epsilon": null,
+  "ratio": 0.25,
+  "page_group_size": 4,
+  "max_tokens": 128,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.68,
+  "generation_time_sec": 63.3294,
+  "benchmark": {
+    "elapsed_sec": 63.3294,
+    "num_conversations": 50,
+    "total_input_tokens": 375781,
+    "total_output_tokens": 329,
+    "request_throughput_per_s": 0.7895,
+    "output_throughput_tok_per_s": 5.1951,
+    "total_token_throughput_tok_per_s": 5938.9478,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7514,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 8973915.",
+      "answers": [
+        "8973915"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7515,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4374754.",
+      "answers": [
+        "4374754"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7512,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 469",
+      "answers": [
+        "4694634"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7519,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 5672073.",
+      "answers": [
+        "5672073"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7516,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 2626229.",
+      "answers": [
+        "2626229"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7518,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4078418.",
+      "answers": [
+        "4078418"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7518,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 2642635.",
+      "answers": [
+        "2642635"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7510,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 8096887",
+      "answers": [
+        "8633773"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7516,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 1981186.",
+      "answers": [
+        "1981186"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7517,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 2149597.",
+      "answers": [
+        "2149597"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7520,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 2375453",
+      "answers": [
+        "5374922"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7514,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 6304573.",
+      "answers": [
+        "6304573"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7515,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 9874152.",
+      "answers": [
+        "3646552"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7513,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4533779.",
+      "answers": [
+        "4533779"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7518,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":  659637",
+      "answers": [
+        "6596150"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 7511,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 1604451.",
+      "answers": [
+        "1604451"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7513,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 7117837.",
+      "answers": [
+        "7117837"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7519,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 3726327",
+      "answers": [
+        "7907400"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7514,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":  686868",
+      "answers": [
+        "6866294"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7516,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 2164686",
+      "answers": [
+        "6891254"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7518,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 6262632.",
+      "answers": [
+        "6262632"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7515,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 4188992.",
+      "answers": [
+        "4188992"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7517,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 6038571.",
+      "answers": [
+        "6038571"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7513,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 7361002.",
+      "answers": [
+        "7361002"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7517,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 6406444.",
+      "answers": [
+        "6406444"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7514,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 3846949",
+      "answers": [
+        "2422633"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7518,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 7953166.",
+      "answers": [
+        "7953166"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7515,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 1093026.",
+      "answers": [
+        "1093026"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7523,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 6323376.",
+      "answers": [
+        "6323376"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7511,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 9130188",
+      "answers": [
+        "5652512"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7515,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 5558623.",
+      "answers": [
+        "5558623"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7514,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 8048838.",
+      "answers": [
+        "8048838"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7516,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4700025.",
+      "answers": [
+        "4700025"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7512,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 7523941.",
+      "answers": [
+        "7523941"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7513,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 7360307.",
+      "answers": [
+        "7360307"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7511,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 8072684.",
+      "answers": [
+        "8072684"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7517,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 2919136",
+      "answers": [
+        "3117636"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7518,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 7296605.",
+      "answers": [
+        "6218367"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7513,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 3030966",
+      "answers": [
+        "1689025"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7515,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":  707274",
+      "answers": [
+        "7076506"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7513,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 5118725.",
+      "answers": [
+        "5118725"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7518,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 9179730.",
+      "answers": [
+        "6452832"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7516,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 5049282.",
+      "answers": [
+        "5049282"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7515,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 7784725.",
+      "answers": [
+        "7784725"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7520,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 9907391.",
+      "answers": [
+        "9907391"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7519,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4106298.",
+      "answers": [
+        "4106298"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7520,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4256752.",
+      "answers": [
+        "4256752"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7514,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 9235577.",
+      "answers": [
+        "9235577"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7514,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ": 1861958",
+      "answers": [
+        "9014965"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7519,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ": 4786401.",
+      "answers": [
+        "4786401"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

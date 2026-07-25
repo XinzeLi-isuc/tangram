@@ -1,0 +1,1320 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "qa_1",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "snapkv",
+  "compression_level": "uniform",
+  "compression_ea_epsilon": null,
+  "ratio": 0.5,
+  "page_group_size": 4,
+  "max_tokens": 32,
+  "metric": "string_match_part",
+  "num_samples": 50,
+  "avg_score": 0.46,
+  "generation_time_sec": 63.9909,
+  "benchmark": {
+    "elapsed_sec": 63.9909,
+    "num_conversations": 50,
+    "total_input_tokens": 381164,
+    "total_output_tokens": 424,
+    "request_throughput_per_s": 0.7814,
+    "output_throughput_tok_per_s": 6.6259,
+    "total_token_throughput_tok_per_s": 5963.1563,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7486,
+      "output_tokens": 3,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " France.",
+      "answers": [
+        "France",
+        "France",
+        "France",
+        "France"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7591,
+      "output_tokens": 11,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The 10th to 13th centuries.",
+      "answers": [
+        "10th and 11th centuries",
+        "in the 10th and 11th centuries",
+        "10th and 11th centuries",
+        "10th and 11th centuries"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7705,
+      "output_tokens": 8,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Denmark, Norway, and Sweden.",
+      "answers": [
+        "Denmark, Iceland and Norway",
+        "Denmark, Iceland and Norway",
+        "Denmark, Iceland and Norway",
+        "Denmark, Iceland and Norway"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7583,
+      "output_tokens": 3,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Rollo",
+      "answers": [
+        "Rollo",
+        "Rollo",
+        "Rollo",
+        "Rollo"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7618,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " The 10th century.",
+      "answers": [
+        "10th century",
+        "the first half of the 10th century",
+        "10th",
+        "10th"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7579,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Duke William of Normandy.",
+      "answers": [
+        "William the Conqueror",
+        "William the Conqueror",
+        "William the Conqueror"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7402,
+      "output_tokens": 3,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Rollo",
+      "answers": [
+        "Richard I",
+        "Richard I",
+        "Richard I"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7574,
+      "output_tokens": 2,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Christianity",
+      "answers": [
+        "Catholic",
+        "Catholic orthodoxy",
+        "Catholic"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7601,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Norseman.",
+      "answers": [
+        "Viking",
+        "Norseman, Viking",
+        "Norseman, Viking"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7798,
+      "output_tokens": 5,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 9th century",
+      "answers": [
+        "9th century",
+        "9th century",
+        "9th century"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7775,
+      "output_tokens": 3,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 911",
+      "answers": [
+        "911",
+        "911",
+        "911"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7944,
+      "output_tokens": 9,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " King Charles III of West Francia.",
+      "answers": [
+        "King Charles III",
+        "King Charles III",
+        "King Charles III"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7439,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " The river Seine.",
+      "answers": [
+        "Seine",
+        "Epte",
+        "Seine"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7812,
+      "output_tokens": 3,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Rollo",
+      "answers": [
+        "Rollo",
+        "Rollo",
+        "Rollo"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7284,
+      "output_tokens": 17,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The Normans initially practiced paganism, but they eventually assimilated into Christianity.",
+      "answers": [
+        "Catholicism",
+        "Catholicism",
+        "Catholicism"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 8029,
+      "output_tokens": 16,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " The Normans were located in Normandy, a region in northern France.",
+      "answers": [
+        "north",
+        "the north",
+        "north"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7588,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Fighting men.",
+      "answers": [
+        "fighting horsemen",
+        "fighting horsemen",
+        "fighting horsemen"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7465,
+      "output_tokens": 27,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The Normans' main enemy in Italy, the Byzantine Empire and Armenia was the Saracens and the Byzantines.",
+      "answers": [
+        "Seljuk Turks",
+        "the Pechenegs, the Bulgars, and especially the Seljuk Turks",
+        "the Seljuk Turks"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7615,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The 10th century.",
+      "answers": [
+        "1050s",
+        "in the 1050s",
+        "in the 1050s"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7363,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The 11th century.",
+      "answers": [
+        "1060s",
+        "In the 1060s",
+        "In the 1060s"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7651,
+      "output_tokens": 11,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The Byzantine Alexios I Komnenos.",
+      "answers": [
+        "Alexius Komnenos",
+        "Alexius Komnenos",
+        "Alexius Komnenos"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7900,
+      "output_tokens": 8,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Not specified in the given documents.",
+      "answers": [
+        "Afranji",
+        "Afranji",
+        "Afranji"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7395,
+      "output_tokens": 5,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Ogedei Khan",
+      "answers": [
+        "Oursel",
+        "Oursel",
+        "Oursel"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7391,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The Turks.",
+      "answers": [
+        "Turkish forces",
+        "Turkish forces",
+        "Turkish forces"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7412,
+      "output_tokens": 32,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " They were of Norman descent, specifically originating from the Normans who were famed for their martial spirit and Christian piety, becoming exponents of the Catholic orthodoxy",
+      "answers": [
+        "Norman mercenary",
+        "an Italo-Norman named Raoul",
+        "descended from an Italo-Norman named Raoul"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7637,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Robert Guiscard",
+      "answers": [
+        "Robert Guiscard",
+        "Robert Guiscard",
+        "Robert Guiscard"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 8020,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " 1185",
+      "answers": [
+        "1082",
+        "February 1082",
+        "February 1082"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7677,
+      "output_tokens": 6,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " 30–75%",
+      "answers": [
+        "30,000",
+        "30,000",
+        "30,000"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7744,
+      "output_tokens": 15,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " De De The city of De De is not mentioned in the documents.",
+      "answers": [
+        "Deabolis",
+        "Deabolis",
+        "Deabolis"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7690,
+      "output_tokens": 5,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Bohemond I",
+      "answers": [
+        "Bohemond",
+        "Bohemond",
+        "Bohemond"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7699,
+      "output_tokens": 11,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The river was not specified in the given documents.",
+      "answers": [
+        "Deabolis",
+        "the river Deabolis",
+        "Deabolis"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7570,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " 1107",
+      "answers": [
+        "1185",
+        "in 1185",
+        "1185"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7629,
+      "output_tokens": 5,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Dyrrachium",
+      "answers": [
+        "Dyrrachium",
+        "Dyrrachium",
+        "Dyrrachium"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7311,
+      "output_tokens": 25,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " The Arbanon passes, Dibra, and the city of Deabolis, in what is now Albania.",
+      "answers": [
+        "the Adriatic",
+        "the Adriatic",
+        "Adriatic"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7453,
+      "output_tokens": 10,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " King Ethelred the Unready of England",
+      "answers": [
+        "King Ethelred II",
+        "Ethelred II",
+        "King Ethelred II"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7766,
+      "output_tokens": 7,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Duke Richard I of Normandy",
+      "answers": [
+        "Duke Richard II",
+        "Duke Richard II",
+        "Duke Richard II"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7524,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Normandy.",
+      "answers": [
+        "Normandy",
+        "Normandy",
+        "Normandy"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7531,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Sweyn Forkbeard",
+      "answers": [
+        "Sweyn Forkbeard",
+        "Sweyn Forkbeard",
+        "Sweyn Forkbeard"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7868,
+      "output_tokens": 5,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Harthacnut",
+      "answers": [
+        "Harthacnut",
+        "Harthacnut",
+        "Harthacnut"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7668,
+      "output_tokens": 4,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " 1016",
+      "answers": [
+        "1041",
+        "in 1041",
+        "1041"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7741,
+      "output_tokens": 32,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Robert Millikan is not mentioned in the text, however, Robert Millikan is not the correct answer to the question. The correct answer is Robert Millikan is",
+      "answers": [
+        "Robert of Jumièges",
+        "Robert of Jumièges",
+        "Robert of Jumièges"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 8067,
+      "output_tokens": 6,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " The Battle of Hastings.",
+      "answers": [
+        "Battle of Hastings",
+        "the Battle of Hastings",
+        "at the Battle of Hastings"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7746,
+      "output_tokens": 29,
+      "score": 0.0,
+      "correct": false,
+      "prediction": " Duke William of Normandy, also known as William the Conqueror, killed Harold II at the Battle of Hastings in 1066.",
+      "answers": [
+        "William II",
+        "Duke William II",
+        "Duke William II"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7450,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 1066",
+      "answers": [
+        "1066",
+        "In 1066",
+        "1066"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7483,
+      "output_tokens": 5,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Anglo-Saxons",
+      "answers": [
+        "Anglo-Saxons",
+        "the Anglo-Saxons",
+        "Anglo-Saxons"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7433,
+      "output_tokens": 7,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " It evolved into Modern English.",
+      "answers": [
+        "Modern English",
+        "Modern English",
+        "Modern English"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7366,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " 1169",
+      "answers": [
+        "1169",
+        "1169",
+        "1169"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7504,
+      "output_tokens": 2,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Ireland",
+      "answers": [
+        "Ireland",
+        "Ireland",
+        "Ireland"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7563,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Irish culture.",
+      "answers": [
+        "Irish",
+        "Irish",
+        "Irish"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 8024,
+      "output_tokens": 4,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " Edgar Atheling",
+      "answers": [
+        "Edgar",
+        "Edgar",
+        "Edgar Atheling"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

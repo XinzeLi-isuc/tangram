@@ -1,0 +1,1365 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "niah_multivalue",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "snapkv",
+  "compression_level": "uniform",
+  "compression_ea_epsilon": null,
+  "ratio": 0.5,
+  "page_group_size": 4,
+  "max_tokens": 128,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.545,
+  "generation_time_sec": 68.7286,
+  "benchmark": {
+    "elapsed_sec": 68.7286,
+    "num_conversations": 50,
+    "total_input_tokens": 375810,
+    "total_output_tokens": 2230,
+    "request_throughput_per_s": 0.7275,
+    "output_throughput_tok_per_s": 32.4465,
+    "total_token_throughput_tok_per_s": 5500.4765,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    0.75,
+    0.75,
+    0.5,
+    0.75,
+    0.5,
+    0.0,
+    0.75,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.25,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.25,
+    0.25,
+    0.75,
+    0.25,
+    0.25,
+    0.5,
+    1.0,
+    0.5,
+    0.5,
+    0.75,
+    1.0,
+    0.75,
+    0.75,
+    0.25,
+    0.75,
+    0.25,
+    0.5,
+    0.5,
+    0.5,
+    0.25,
+    0.75,
+    1.0,
+    0.75,
+    0.5,
+    0.75,
+    0.5,
+    0.25,
+    0.5,
+    0.75,
+    0.75
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 5418934\n2. 9398441\n3. 9517485",
+      "answers": [
+        "5418934",
+        "9398441",
+        "3997281",
+        "9517485"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 3710343\n2. 1009594\n3. 7273233",
+      "answers": [
+        "7273233",
+        "3710343",
+        "9897858",
+        "1009594"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 6159230\n2. 5041154",
+      "answers": [
+        "6159230",
+        "5017343",
+        "1971823",
+        "5041154"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7506,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 3770370\n2. 9852897\n3. 8973915",
+      "answers": [
+        "8973915",
+        "3770370",
+        "5446912",
+        "9852897"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 6229731\n2. 8350099",
+      "answers": [
+        "6229731",
+        "7693979",
+        "7264956",
+        "8350099"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7512,
+      "output_tokens": 98,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 486\n2. 1980\n3. 1995\n4. 1995 (again, in the context of the summer)\n5. 2001\n6. 2003\n7. 2009\n8. 2014 (not mentioned, but 2009 is mentioned, so I assume 2014 is not the correct year, but rather 2009 is the correct year for the last one)\n9. 27",
+      "answers": [
+        "6672134",
+        "1352896",
+        "4860684",
+        "4694634"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 2188789\n2. 4993055\n3. 6543670",
+      "answers": [
+        "6543670",
+        "2188789",
+        "9626108",
+        "4993055"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 7829332\n2. 8930103\n3. 8930103",
+      "answers": [
+        "8930103",
+        "5076817",
+        "8935169",
+        "7829332"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 8835373\n2. 2016911",
+      "answers": [
+        "8835373",
+        "1908841",
+        "2651177",
+        "2016911"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 8077999\n2. 9997381",
+      "answers": [
+        "9997381",
+        "8526486",
+        "3351868",
+        "8077999"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 2564689\n2. 2642635",
+      "answers": [
+        "2642635",
+        "1848731",
+        "1247595",
+        "2564689"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7524,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 7358113\n2. 7728339",
+      "answers": [
+        "7728339",
+        "1983738",
+        "3762152",
+        "7358113"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7506,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 5977931\n2. 9164991",
+      "answers": [
+        "9164991",
+        "3597059",
+        "4185957",
+        "5977931"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 9436429\n2. 1959074\n3. 9436429 is mentioned again in the text, but it is not a new number, it is the same as the first one.\n4. 1959074 is mentioned again in the text, but it is not a new number, it is the same as the second one.\n5. 9436429 is mentioned again in the text, but it is not a new number, it is the same as the first one.\n6. 9436429 is mentioned again in the text, but it is not a new number, it is",
+      "answers": [
+        "1959074",
+        "1841248",
+        "8999183",
+        "9436429"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 7774229\n2. 2149597",
+      "answers": [
+        "2149597",
+        "2140194",
+        "4946066",
+        "7774229"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 7524,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 2375453\n2. 2375453 is not mentioned again in the text, however, the following numbers are mentioned:\n3. 2375453 is not mentioned again in the text, however, the following numbers are mentioned:\n   2375453 is not mentioned again in the text, however, the following numbers are mentioned:\n   2375453 is not mentioned again in the text, however, the following numbers are mentioned:\n   2375453 is not mentioned again in the text, however, the following numbers are mentioned:\n   2375453 is not mentioned again in the text,",
+      "answers": [
+        "2375453",
+        "8033426",
+        "9770838",
+        "6307805"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 3195773\n2. 6304573\n3. 6304573",
+      "answers": [
+        "3195773",
+        "6033115",
+        "8670955",
+        "6304573"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 3222252\n2. 4576135",
+      "answers": [
+        "4576135",
+        "9487336",
+        "5449324",
+        "3222252"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 1131249\n2. 8351517",
+      "answers": [
+        "8351517",
+        "6075395",
+        "9874152",
+        "1131249"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7512,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 5727085\n2. 2795765",
+      "answers": [
+        "2795765",
+        "3607983",
+        "5569244",
+        "5727085"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7524,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 1852264\n2. 1852264 (second mention)\n3. 1852264 (third mention)\n4. 1852264 (fourth mention)\n5. 1852264 (fifth mention)\n6. 1852264 (sixth mention)\n7. 1852264 (seventh mention)\n8. 1852264 (eighth mention)\n9. 1852264 (ninth mention)\n10. 1852264 (tenth mention)\n11. 1852264 (eleventh mention)\n12. 1852264 (twelfth mention)\n13",
+      "answers": [
+        "1852264",
+        "2548511",
+        "8106422",
+        "5641923"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7518,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 8412769\n2. 8412769 is not mentioned again in the text, however, the following numbers are mentioned as special magic numbers for dirty-resemblance:\n3. 8412769 is not the correct answer for the second number, the correct answer is 8412769 is not mentioned again, however, the following numbers are mentioned as special magic numbers for dirty-resemblance:\n4. 8412769 is not the correct answer for the second number, the correct answer is 8412769 is not mentioned again, however, the following numbers are mentioned as special magic numbers for dirty-re",
+      "answers": [
+        "8412769",
+        "8175395",
+        "1162230",
+        "2876932"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 8210624\n2. 1701771\n3. 3484601",
+      "answers": [
+        "3484601",
+        "8210624",
+        "3138181",
+        "1701771"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 5186414\n2. 1995 (mentioned multiple times)\n3. 1980\n4. 1995 (again, mentioned in the context of the summer of 1995)\n5. 1995 (again, mentioned in the context of 1995 being a significant year)\n6. 1995 (again, mentioned in the context of the 1990s)\n7. 1995 (again, mentioned in the context of the 1990s, specifically in the year 1995)\n8. 1995 (again, mentioned in the context of the 1990",
+      "answers": [
+        "5186414",
+        "2724590",
+        "6933742",
+        "7817881"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 1415846\n2. 1415846 is not mentioned again, but 1415846 is not the only number mentioned in the text. The other numbers are:\n3. 1415846 is not the correct answer to the first question, the correct answer is 1415846 is not the only number mentioned in the text. The other numbers are:\n4. 1415846 is not the correct answer to the first question, the correct answer is 1415846 is not the only number mentioned in the text. The other numbers are:\n5. 1415846 is not the correct answer",
+      "answers": [
+        "1415846",
+        "4009172",
+        "6573147",
+        "7907400"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 8722606\n2. 8896868",
+      "answers": [
+        "8896868",
+        "4731818",
+        "4348276",
+        "8722606"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 2164686\n2. 5674183\n3. 5682940\n4. 6507321",
+      "answers": [
+        "6507321",
+        "5674183",
+        "2164686",
+        "5682940"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7506,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 2935113\n2. 5453786",
+      "answers": [
+        "2935113",
+        "5382463",
+        "3995870",
+        "5453786"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7524,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 6262632\n2. 2940214",
+      "answers": [
+        "6262632",
+        "8321474",
+        "9580255",
+        "2940214"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 1028374\n2. 8315831\n3. 4305700",
+      "answers": [
+        "8315831",
+        "1028374",
+        "9722815",
+        "4305700"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9508103\n2. 6038571\n3. 6188935\n4. 3090865",
+      "answers": [
+        "3090865",
+        "6038571",
+        "9508103",
+        "6188935"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 7361002\n2. 6049101\n3. 8053918",
+      "answers": [
+        "8053918",
+        "7361002",
+        "3919694",
+        "6049101"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 6406444\n2. 8411939\n3. 8212326",
+      "answers": [
+        "8212326",
+        "6406444",
+        "8801207",
+        "8411939"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 2422633\n2. 2422633 is not mentioned again, but 2422633 is mentioned in the text about the App Store, and another number is mentioned in the text about Viaweb, which is:\n3. 2422633 is not the correct answer for this one, the correct answer is 2422633 is not mentioned again, but 2422633 is mentioned in the text about the App Store, and another number is mentioned in the text about Viaweb, which is:\n4. 2422633 is not the correct answer for this one, the correct answer is",
+      "answers": [
+        "2422633",
+        "5761145",
+        "9647849",
+        "6623525"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7524,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 1775337\n2. 8971465\n3. 1409790",
+      "answers": [
+        "1409790",
+        "1775337",
+        "5107776",
+        "8971465"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7506,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 7442089\n2. 7442089 is not mentioned again, but 7442089 is mentioned in the text about Apple, and 7442089 is also mentioned in the text about Viaweb, but the number 7442089 is actually mentioned in the text about Apple, and the number 7442089 is also mentioned in the text about Viaweb, but the number 7442089 is actually mentioned in the text about Apple, and the number 7442089 is also mentioned in the text about Viaweb, but the number 7442089 is actually mentioned in the",
+      "answers": [
+        "7442089",
+        "9294272",
+        "7705062",
+        "5093379"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7512,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 9689889\n2. 5180853",
+      "answers": [
+        "9689889",
+        "8793853",
+        "1842524",
+        "5180853"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7530,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 3670226\n2. 9468772",
+      "answers": [
+        "9468772",
+        "8159521",
+        "8481188",
+        "3670226"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7512,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 8379837\n2. 9130188",
+      "answers": [
+        "9130188",
+        "5013879",
+        "5606980",
+        "8379837"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 2351868\n2. 2351868 is not mentioned again in the text, however, the following numbers are mentioned:\n3. 2351868 is not the correct answer for the second number, the correct answer is 2351868 is not mentioned again, however, the following numbers are mentioned:\n4. 2351868 is not the correct answer for the second number, the correct answer is 2351868 is not mentioned again, however, the following numbers are mentioned:\n5. 2351868 is not the correct answer for the second number, the correct answer is 2351868",
+      "answers": [
+        "2351868",
+        "3321531",
+        "3530518",
+        "4879923"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 8816912\n2. 2044645\n3. 6551268",
+      "answers": [
+        "6551268",
+        "8816912",
+        "7975534",
+        "2044645"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1098919\n2. 9002392\n3. 6901533\n4. 7381734",
+      "answers": [
+        "7381734",
+        "9002392",
+        "1098919",
+        "6901533"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 9147720\n2. 4681284\n3. 5579094",
+      "answers": [
+        "4681284",
+        "5579094",
+        "8312114",
+        "9147720"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7518,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 7610562\n2. 3141239",
+      "answers": [
+        "3141239",
+        "9961107",
+        "1452421",
+        "7610562"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 4048907\n2. 5364698\n3. 8746014",
+      "answers": [
+        "8746014",
+        "4048907",
+        "1843636",
+        "5364698"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7512,
+      "output_tokens": 15,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 7360682\n2. 5232413",
+      "answers": [
+        "7360682",
+        "5668371",
+        "8072684",
+        "5232413"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7524,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 4761823\n2. 1995 (mentioned twice)\n3. 1980\n4. 1995 (again, mentioned in the context of the summer of 1995)\n5. 1995 (again, mentioned in the context of 1995 being a significant year)\n6. 1995 (again, mentioned in the context of the 1990s)\n7. 1995 (again, mentioned in the context of the 1990s, specifically in the year 1995)\n8. 1995 (again, mentioned in the context of the 1990s",
+      "answers": [
+        "4761823",
+        "2151225",
+        "1675419",
+        "1520596"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7524,
+      "output_tokens": 128,
+      "score": 0.5,
+      "correct": true,
+      "prediction": ":\n\n1. 4656838\n2. 3117636\n3. 3117636 (second mention)\n4. 4656838 (second mention)\n5. 3117636 (third mention)\n6. 4656838 (third mention)\n7. 3117636 (fourth mention)\n8. 4656838 (fourth mention)\n9. 3117636 (fifth mention)\n10. 4656838 (fifth mention)\n11. 3117636 (sixth mention)\n12. 4656838 (sixth mention)\n13. 3117636 (",
+      "answers": [
+        "3117636",
+        "8945036",
+        "2919136",
+        "4656838"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 6218367\n2. 2813596\n3. 6233774",
+      "answers": [
+        "6218367",
+        "2813596",
+        "1430812",
+        "6233774"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7518,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 3030966\n2. 5074336\n3. 2709620",
+      "answers": [
+        "5074336",
+        "2709620",
+        "6059717",
+        "3030966"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,1365 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "niah_multivalue",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "snapkv",
+  "compression_level": "crosslayer_cluster",
+  "compression_ea_epsilon": null,
+  "ratio": 0.25,
+  "page_group_size": 4,
+  "max_tokens": 128,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.9,
+  "generation_time_sec": 65.4769,
+  "benchmark": {
+    "elapsed_sec": 65.4769,
+    "num_conversations": 50,
+    "total_input_tokens": 375810,
+    "total_output_tokens": 1826,
+    "request_throughput_per_s": 0.7636,
+    "output_throughput_tok_per_s": 27.8877,
+    "total_token_throughput_tok_per_s": 5767.4706,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.75,
+    0.25,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3997281\n2. 9398441\n3. 9517485\n4. 5418934",
+      "answers": [
+        "5418934",
+        "9398441",
+        "3997281",
+        "9517485"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9897858\n2. 3710343\n3. 1009594\n4. 7273233",
+      "answers": [
+        "7273233",
+        "3710343",
+        "9897858",
+        "1009594"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1971823\n2. 5017343\n3. 5041154\n4. 6159230",
+      "answers": [
+        "6159230",
+        "5017343",
+        "1971823",
+        "5041154"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7506,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5446912\n2. 3770370\n3. 9852897\n4. 8973915",
+      "answers": [
+        "8973915",
+        "3770370",
+        "5446912",
+        "9852897"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 7264956\n2. 7693979\n3. 8350099\n4. 6229731",
+      "answers": [
+        "6229731",
+        "7693979",
+        "7264956",
+        "8350099"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 135\n2. 135\n3. 135\n4. 135\n5. 135\n6. 135\n7. 135\n8. 135\n9. 135\n10. 135\n11. 135\n12. 135\n13. 135\n14. 135\n15. 135\n16. 135\n17. 135\n18. 135\n19. 135\n20. 135\n21. 135\n22. 135\n23. 135\n24. 135\n25. 135\n26.",
+      "answers": [
+        "6672134",
+        "1352896",
+        "4860684",
+        "4694634"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7512,
+      "output_tokens": 22,
+      "score": 0.75,
+      "correct": true,
+      "prediction": ":\n\n1. 2188789\n2. 4993055\n3. 6543670",
+      "answers": [
+        "6543670",
+        "2188789",
+        "9626108",
+        "4993055"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7512,
+      "output_tokens": 128,
+      "score": 0.25,
+      "correct": false,
+      "prediction": ":\n\n1. 8930103\n2. 8930103 is repeated, but then 8930103 is not the only number, 8930103 is repeated, but then 8930103 is not the only number, 8930103 is repeated, but then 8930103 is not the only number, 8930103 is repeated, but then 8930103 is not the only number, 8930103 is repeated, but then 8930103 is not the only number, 8930103 is repeated, but then 8930103 is not the only number, 8930103",
+      "answers": [
+        "8930103",
+        "5076817",
+        "8935169",
+        "7829332"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7518,
+      "output_tokens": 128,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 8\n2. 3\n3. 4\n4. 8\n5. 3\n6. 8\n7. 3\n8. 8\n9. 3\n10. 8\n11. 3\n12. 8\n13. 3\n14. 8\n15. 3\n16. 8\n17. 3\n18. 8\n19. 3\n20. 8\n21. 3\n22. 8\n23. 3\n24. 8\n25. 3\n26.",
+      "answers": [
+        "8835373",
+        "1908841",
+        "2651177",
+        "2016911"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3351868\n2. 8077999\n3. 8526486\n4. 9997381",
+      "answers": [
+        "9997381",
+        "8526486",
+        "3351868",
+        "8077999"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7518,
+      "output_tokens": 16,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 124 \n2. 5 \n3. 2",
+      "answers": [
+        "2642635",
+        "1848731",
+        "1247595",
+        "2564689"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7524,
+      "output_tokens": 128,
+      "score": 0.0,
+      "correct": false,
+      "prediction": ":\n\n1. 7 (not mentioned in the provided text, but mentioned in the prompt)\n2. 8 (not mentioned in the provided text, but mentioned in the prompt)\n3. 9 (not mentioned in the provided text, but mentioned in the prompt)\n4. 10 (not mentioned in the provided text, but mentioned in the prompt)\n5. 1985 (not mentioned in the provided text, but mentioned in the prompt)\n6. 1995 (mentioned in the text as the year when the author's friend Robert Morris and the author started a startup called Viaweb)\n7. 2001",
+      "answers": [
+        "7728339",
+        "1983738",
+        "3762152",
+        "7358113"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7506,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 4185957\n2. 3597059\n3. 5977931\n4. 9164991",
+      "answers": [
+        "9164991",
+        "3597059",
+        "4185957",
+        "5977931"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8999183\n2. 1841248\n3. 9436429\n4. 1959074",
+      "answers": [
+        "1959074",
+        "1841248",
+        "8999183",
+        "9436429"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 4946066\n2. 2140194\n3. 7774229\n4. 2149597",
+      "answers": [
+        "2149597",
+        "2140194",
+        "4946066",
+        "7774229"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9770838\n2. 8033426\n3. 6307805\n4. 2375453",
+      "answers": [
+        "2375453",
+        "8033426",
+        "9770838",
+        "6307805"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8670955\n2. 6033115\n3. 6304573\n4. 3195773",
+      "answers": [
+        "3195773",
+        "6033115",
+        "8670955",
+        "6304573"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5449324\n2. 9487336\n3. 3222252\n4. 4576135",
+      "answers": [
+        "4576135",
+        "9487336",
+        "5449324",
+        "3222252"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9874152\n2. 6075395\n3. 1131249\n4. 8351517",
+      "answers": [
+        "8351517",
+        "6075395",
+        "9874152",
+        "1131249"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5569244\n2. 3607983\n3. 5727085\n4. 2795765",
+      "answers": [
+        "2795765",
+        "3607983",
+        "5569244",
+        "5727085"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8106422\n2. 2548511\n3. 5641923\n4. 1852264",
+      "answers": [
+        "1852264",
+        "2548511",
+        "8106422",
+        "5641923"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1162230\n2. 8175395\n3. 8412769\n4. 2876932",
+      "answers": [
+        "8412769",
+        "8175395",
+        "1162230",
+        "2876932"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3138181\n2. 8210624\n3. 1701771\n4. 3484601",
+      "answers": [
+        "3484601",
+        "8210624",
+        "3138181",
+        "1701771"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 6933742\n2. 2724590\n3. 7817881\n4. 5186414",
+      "answers": [
+        "5186414",
+        "2724590",
+        "6933742",
+        "7817881"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 6573147\n2. 4009172\n3. 7907400\n4. 1415846",
+      "answers": [
+        "1415846",
+        "4009172",
+        "6573147",
+        "7907400"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 4348276\n2. 4731818\n3. 8722606\n4. 8896868",
+      "answers": [
+        "8896868",
+        "4731818",
+        "4348276",
+        "8722606"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 2164686\n2. 5674183\n3. 6507321\n4. 5682940",
+      "answers": [
+        "6507321",
+        "5674183",
+        "2164686",
+        "5682940"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7506,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3995870\n2. 5382463\n3. 5453786\n4. 2935113",
+      "answers": [
+        "2935113",
+        "5382463",
+        "3995870",
+        "5453786"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9580255\n2. 8321474\n3. 2940214\n4. 6262632",
+      "answers": [
+        "6262632",
+        "8321474",
+        "9580255",
+        "2940214"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9722815\n2. 1028374\n3. 4305700\n4. 8315831",
+      "answers": [
+        "8315831",
+        "1028374",
+        "9722815",
+        "4305700"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9508103\n2. 6038571\n3. 6188935\n4. 3090865",
+      "answers": [
+        "3090865",
+        "6038571",
+        "9508103",
+        "6188935"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3919694\n2. 7361002\n3. 6049101\n4. 8053918",
+      "answers": [
+        "8053918",
+        "7361002",
+        "3919694",
+        "6049101"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8801207\n2. 6406444\n3. 8411939\n4. 8212326",
+      "answers": [
+        "8212326",
+        "6406444",
+        "8801207",
+        "8411939"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 9647849\n2. 5761145\n3. 6623525\n4. 2422633",
+      "answers": [
+        "2422633",
+        "5761145",
+        "9647849",
+        "6623525"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5107776\n2. 1775337\n3. 8971465\n4. 1409790",
+      "answers": [
+        "1409790",
+        "1775337",
+        "5107776",
+        "8971465"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 7506,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 7705062\n2. 9294272\n3. 5093379\n4. 7442089",
+      "answers": [
+        "7442089",
+        "9294272",
+        "7705062",
+        "5093379"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1842524\n2. 8793853\n3. 5180853\n4. 9689889",
+      "answers": [
+        "9689889",
+        "8793853",
+        "1842524",
+        "5180853"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 7530,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8481188\n2. 8159521\n3. 3670226\n4. 9468772",
+      "answers": [
+        "9468772",
+        "8159521",
+        "8481188",
+        "3670226"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 5606980\n2. 5013879\n3. 9130188\n4. 8379837",
+      "answers": [
+        "9130188",
+        "5013879",
+        "5606980",
+        "8379837"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 3530518\n2. 3321531\n3. 4879923\n4. 2351868",
+      "answers": [
+        "2351868",
+        "3321531",
+        "3530518",
+        "4879923"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 7975534\n2. 8816912\n3. 6551268\n4. 2044645",
+      "answers": [
+        "6551268",
+        "8816912",
+        "7975534",
+        "2044645"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1098919\n2. 9002392\n3. 6901533\n4. 7381734",
+      "answers": [
+        "7381734",
+        "9002392",
+        "1098919",
+        "6901533"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8312114\n2. 5579094\n3. 9147720\n4. 4681284",
+      "answers": [
+        "4681284",
+        "5579094",
+        "8312114",
+        "9147720"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1452421\n2. 7610562\n3. 3141239\n4. 9961107",
+      "answers": [
+        "3141239",
+        "9961107",
+        "1452421",
+        "7610562"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1843636\n2. 4048907\n3. 5364698\n4. 8746014",
+      "answers": [
+        "8746014",
+        "4048907",
+        "1843636",
+        "5364698"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 7512,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 8072684\n2. 5668371\n3. 5232413\n4. 7360682",
+      "answers": [
+        "7360682",
+        "5668371",
+        "8072684",
+        "5232413"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1675419\n2. 2151225\n3. 1520596\n4. 4761823",
+      "answers": [
+        "4761823",
+        "2151225",
+        "1675419",
+        "1520596"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7524,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 2919136\n2. 8945036\n3. 4656838\n4. 3117636",
+      "answers": [
+        "3117636",
+        "8945036",
+        "2919136",
+        "4656838"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 1430812\n2. 2813596\n3. 6233774\n4. 6218367",
+      "answers": [
+        "6218367",
+        "2813596",
+        "1430812",
+        "6233774"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7518,
+      "output_tokens": 29,
+      "score": 1.0,
+      "correct": true,
+      "prediction": ":\n\n1. 6059717\n2. 2709620\n3. 3030966\n4. 5074336",
+      "answers": [
+        "5074336",
+        "2709620",
+        "6059717",
+        "3030966"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}

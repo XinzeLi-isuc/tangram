@@ -1,0 +1,1315 @@
+{
+  "benchmark_suite": "ruler",
+  "length": "8192",
+  "task": "fwe",
+  "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+  "compression_algo": "cake",
+  "compression_level": "cake_layer",
+  "compression_ea_epsilon": null,
+  "ratio": 0.25,
+  "page_group_size": 4,
+  "max_tokens": 50,
+  "metric": "string_match_all",
+  "num_samples": 50,
+  "avg_score": 0.8267,
+  "generation_time_sec": 70.0111,
+  "benchmark": {
+    "elapsed_sec": 70.0111,
+    "num_conversations": 50,
+    "total_input_tokens": 392674,
+    "total_output_tokens": 1844,
+    "request_throughput_per_s": 0.7142,
+    "output_throughput_tok_per_s": 26.3387,
+    "total_token_throughput_tok_per_s": 5635.0749,
+    "e2el_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ttft_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "tpot_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "prefill_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "decode_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "queued_ms": {
+      "count": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "percentiles": {
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "timing_source": "perf_counter+vllm.RequestOutput.metrics",
+    "elapsed_kind": "single llm.generate() wall-clock"
+  },
+  "scores": [
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    0.3333333333333333,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    1.0,
+    1.0,
+    1.0,
+    0.6666666666666666,
+    1.0
+  ],
+  "per_sample": [
+    {
+      "sample_idx": 0,
+      "input_tokens": 7955,
+      "output_tokens": 36,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rczbnn (appeared 73 times)\n2. rhrmlh (appeared 54 times)\n3. utibov (appeared 34 times)",
+      "answers": [
+        "rczbnn",
+        "rhrmlh",
+        "hmcxdl"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 1,
+      "input_tokens": 8181,
+      "output_tokens": 38,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. qvrbss (appeared 43 times)\n2. rgvxbz (appeared 24 times)\n3. fohqmp (appeared 23 times)",
+      "answers": [
+        "qvrbss",
+        "rgvxbz",
+        "fohqmp"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 2,
+      "input_tokens": 7737,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rwupen (appears 73 times)\n2. isumqe (appears 34 times)\n3. vneind (appears 23 times)",
+      "answers": [
+        "rwupen",
+        "rxusjy",
+        "isumqe"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 3,
+      "input_tokens": 7889,
+      "output_tokens": 37,
+      "score": 0.3333333333333333,
+      "correct": false,
+      "prediction": " \n\n1. rjdxml (appeared 43 times)\n2. vgoeqj (appeared 24 times)\n3. xwmzxh (appeared 20 times)",
+      "answers": [
+        "rjdxml",
+        "rjrmnp",
+        "gerxig"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 4,
+      "input_tokens": 7507,
+      "output_tokens": 38,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rhfurz (appears 73 times)\n2. risqae (appears 54 times)\n3. jeppwg (appears 34 times)",
+      "answers": [
+        "rhfurz",
+        "risqae",
+        "jeppwg"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 5,
+      "input_tokens": 7629,
+      "output_tokens": 36,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rrromw (appeared 73 times)\n2. rvmsnk (appeared 64 times)\n3. yalxji (appeared 44 times)",
+      "answers": [
+        "rrromw",
+        "rvmsnk",
+        "huzlxd"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 6,
+      "input_tokens": 7654,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. pvjjqp (appeared 73 times)\n2. gofnue (appeared 43 times)\n3. pwzfkn (appeared 42 times)",
+      "answers": [
+        "pvjjqp",
+        "pwzfkn",
+        "gofnue"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 7,
+      "input_tokens": 7734,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rwnfbv (appeared 73 times)\n2. scrwyt (appeared 43 times)\n3. hdftta (appeared 37 times)",
+      "answers": [
+        "rwnfbv",
+        "scrwyt",
+        "hdftta"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 8,
+      "input_tokens": 7912,
+      "output_tokens": 35,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. sjazjs (appeared 73 times)\n2. hxgibe (appeared 43 times)\n3. wahobp (appeared 36 times)",
+      "answers": [
+        "sjazjs",
+        "smlkka",
+        "hxgibe"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 9,
+      "input_tokens": 7901,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. pdtufp (appeared 73 times)\n2. pftxuo (appeared 64 times)\n3. hioxpv (appeared 56 times)",
+      "answers": [
+        "pdtufp",
+        "pftxuo",
+        "hioxpv"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 10,
+      "input_tokens": 7441,
+      "output_tokens": 35,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. platpm (appeared 73 times)\n2. gihvoe (appeared 43 times)\n3. wmenex (appeared 37 times)",
+      "answers": [
+        "platpm",
+        "ptdhfj",
+        "gihvoe"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 11,
+      "input_tokens": 7845,
+      "output_tokens": 40,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. syzfln (appears 134 times)\n2. iuwuki (appears 73 times)\n3. tccyau (appears 69 times)",
+      "answers": [
+        "syzfln",
+        "tccyau",
+        "iuwuki"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 12,
+      "input_tokens": 7935,
+      "output_tokens": 36,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qcmhok (appeared 73 times)\n2. xeaunc (appeared 44 times)\n3. gmhond (appeared 43 times)",
+      "answers": [
+        "qcmhok",
+        "qkevvl",
+        "gmhond"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 13,
+      "input_tokens": 8031,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. oobzww (appeared 43 times)\n2. pbzfrh (appeared 37 times)\n3. flmmmw (appeared 34 times)",
+      "answers": [
+        "oobzww",
+        "pbzfrh",
+        "flmmmw"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 14,
+      "input_tokens": 8095,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rcooiq (appeared 73 times)\n2. vnzpbh (appeared 34 times)\n3. hnktvq (appeared 33 times)",
+      "answers": [
+        "rcooiq",
+        "rgzflc",
+        "hnktvq"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 15,
+      "input_tokens": 8049,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qhagzb (appeared 43 times)\n2. qoyswm (appeared 34 times)\n3. ulzkge (appeared 24 times)",
+      "answers": [
+        "qhagzb",
+        "qoyswm",
+        "fnnnpw"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 16,
+      "input_tokens": 8014,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. sbudci (appeared 43 times)\n2. hzyqpg (appeared 24 times)\n3. sejxun (appeared 24 times)",
+      "answers": [
+        "sbudci",
+        "sejxun",
+        "hzyqpg"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 17,
+      "input_tokens": 7813,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rkthgn (appeared 73 times)\n2. gjqokb (appeared 34 times)\n3. rlkopy (appeared 33 times)",
+      "answers": [
+        "rkthgn",
+        "rlkopy",
+        "gjqokb"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 18,
+      "input_tokens": 7671,
+      "output_tokens": 39,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. stezdt (appears 73 times)\n2. hbdudx (appears 43 times)\n3. stkpwp (appears 37 times)",
+      "answers": [
+        "stezdt",
+        "stkpwp",
+        "hbdudx"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 19,
+      "input_tokens": 7740,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. ppydgm (appeared 73 times)\n2. prkvld (appeared 43 times)\n3. frunwu (appeared 34 times)",
+      "answers": [
+        "ppydgm",
+        "prkvld",
+        "frunwu"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 20,
+      "input_tokens": 8002,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rhdvsb (appeared 43 times)\n2. rwwtof (appeared 24 times)\n3. gtmmto (appeared 23 times)",
+      "answers": [
+        "rhdvsb",
+        "rwwtof",
+        "gtmmto"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 21,
+      "input_tokens": 7953,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. puamfh (appeared 73 times)\n2. pzwfro (appeared 64 times)\n3. wtbjtn (appeared 44 times)",
+      "answers": [
+        "puamfh",
+        "pzwfro",
+        "gzdrbj"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 22,
+      "input_tokens": 7889,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. osazmp (appeared 43 times)\n2. wqgxxw (appeared 24 times)\n3. otxjge (appeared 24 times)",
+      "answers": [
+        "osazmp",
+        "otxjge",
+        "ftuleq"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 23,
+      "input_tokens": 8009,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qhdozt (appeared 43 times)\n2. qjpqsj (appeared 34 times)\n3. vxjsvf (appeared 29 times)",
+      "answers": [
+        "qhdozt",
+        "qjpqsj",
+        "fylnrj"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 24,
+      "input_tokens": 7944,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qgnpts (appeared 43 times)\n2. qkxbbb (appeared 37 times)\n3. vzwvtc (appeared 26 times)",
+      "answers": [
+        "qgnpts",
+        "qkxbbb",
+        "gnrdfl"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 25,
+      "input_tokens": 7621,
+      "output_tokens": 38,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. ppgrnj (appears 73 times)\n2. puoudi (appears 54 times)\n3. gbceef (appears 34 times)",
+      "answers": [
+        "ppgrnj",
+        "puoudi",
+        "gbceef"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 26,
+      "input_tokens": 7997,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qqdmwy (appeared 73 times)\n2. gxrbzl (appeared 43 times)\n3. xhjtlw (appeared 37 times)",
+      "answers": [
+        "qqdmwy",
+        "qqkxji",
+        "gxrbzl"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 27,
+      "input_tokens": 7641,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rqjhks (appeared 73 times)\n2. rsuxse (appeared 64 times)\n3. ihnaqi (appeared 56 times)",
+      "answers": [
+        "rqjhks",
+        "rsuxse",
+        "ihnaqi"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 28,
+      "input_tokens": 7438,
+      "output_tokens": 36,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rkaojs (appeared 73 times)\n2. rwaere (appeared 54 times)\n3. wkwucq (appeared 24 times)",
+      "answers": [
+        "rkaojs",
+        "rwaere",
+        "gazmov"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 29,
+      "input_tokens": 7793,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qoxrdr (appeared 73 times)\n2. qtrcyo (appeared 43 times)\n3. vkllkr (appeared 34 times)",
+      "answers": [
+        "qoxrdr",
+        "qtrcyo",
+        "globux"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 30,
+      "input_tokens": 8019,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qjasil (appeared 43 times)\n2. vgrkzg (appeared 13 times)\n3. qmrtjx (appeared 13 times)",
+      "answers": [
+        "qjasil",
+        "qmrtjx",
+        "gtahux"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 31,
+      "input_tokens": 7518,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. pzjqap (appeared 73 times)\n2. qglyfh (appeared 54 times)\n3. ezlsts (appeared 46 times)",
+      "answers": [
+        "pzjqap",
+        "qglyfh",
+        "ezlsts"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 32,
+      "input_tokens": 7665,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. tdwyhm (appeared 73 times)\n2. hxogpa (appeared 43 times)\n3. tgjnln (appeared 42 times)",
+      "answers": [
+        "tdwyhm",
+        "tgjnln",
+        "hxogpa"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 33,
+      "input_tokens": 8121,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. pzjnht (appeared 43 times)\n2. qfgwqo (appeared 37 times)\n3. xgfutd (appeared 24 times)",
+      "answers": [
+        "pzjnht",
+        "qfgwqo",
+        "gaephm"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 34,
+      "input_tokens": 7882,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. pbdyql (appeared 73 times)\n2. pccnyj (appeared 43 times)\n3. voptwb (appeared 24 times)",
+      "answers": [
+        "pbdyql",
+        "pccnyj",
+        "gltgim"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 35,
+      "input_tokens": 8209,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. sjwfwg (appeared 43 times)\n2. sotdwc (appeared 24 times)\n3. xeqrla (appeared 8 times)",
+      "answers": [
+        "sjwfwg",
+        "sotdwc",
+        "ijkiaa"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 36,
+      "input_tokens": 7862,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rkpugm (appeared 43 times)\n2. rqhlky (appeared 34 times)\n3. iilfmh (appeared 26 times)",
+      "answers": [
+        "rkpugm",
+        "rqhlky",
+        "iilfmh"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 37,
+      "input_tokens": 8039,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. qcjhvs (appeared 63 times)\n2. qgmgxc (appeared 44 times)\n3. gdckcq (appeared 37 times)",
+      "answers": [
+        "qcjhvs",
+        "qgmgxc",
+        "gdckcq"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 38,
+      "input_tokens": 7753,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rxuegp (appeared 73 times)\n2. sjzghq (appeared 54 times)\n3. hdccnd (appeared 46 times)",
+      "answers": [
+        "rxuegp",
+        "sjzghq",
+        "hdccnd"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 39,
+      "input_tokens": 7879,
+      "output_tokens": 36,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qrllfp (appeared 43 times)\n2. qroaoy (appeared 37 times)\n3. uuuenh (appeared 23 times)",
+      "answers": [
+        "qrllfp",
+        "qroaoy",
+        "iohrix"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 40,
+      "input_tokens": 8011,
+      "output_tokens": 38,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. scqlyv (appeared 73 times)\n2. sfdzjr (appeared 34 times)\n3. xhyhwp (appeared 29 times)",
+      "answers": [
+        "scqlyv",
+        "sfdzjr",
+        "gkcypo"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 41,
+      "input_tokens": 7802,
+      "output_tokens": 39,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. qrqcqu (appears 83 times)\n2. qtabbf (appears 43 times)\n3. wbjmbk (appears 24 times)",
+      "answers": [
+        "qrqcqu",
+        "qtabbf",
+        "gkaqkl"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 42,
+      "input_tokens": 8110,
+      "output_tokens": 36,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. qhzvcm (appeared 73 times)\n2. qoqhip (appeared 64 times)\n3. iecgro (appeared 59 times)",
+      "answers": [
+        "qhzvcm",
+        "qoqhip",
+        "iecgro"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 43,
+      "input_tokens": 8016,
+      "output_tokens": 37,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rjurgq (appeared 73 times)\n2. rjvkwo (appeared 43 times)\n3. imobse (appeared 37 times)",
+      "answers": [
+        "rjurgq",
+        "rjvkwo",
+        "imobse"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 44,
+      "input_tokens": 7832,
+      "output_tokens": 37,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. rlnyce (appeared 73 times)\n2. rltoky (appeared 43 times)\n3. vrwjwb (appeared 24 times)",
+      "answers": [
+        "rlnyce",
+        "rltoky",
+        "gxthln"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 45,
+      "input_tokens": 8202,
+      "output_tokens": 38,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. qbbqqg (appeared 43 times)\n2. qbjjdm (appeared 24 times)\n3. fsqysb (appeared 20 times)",
+      "answers": [
+        "qbbqqg",
+        "qbjjdm",
+        "fsqysb"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 46,
+      "input_tokens": 7550,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. refgec (appeared 73 times)\n2. rfhhfq (appeared 64 times)\n3. hjtyth (appeared 44 times)",
+      "answers": [
+        "refgec",
+        "rfhhfq",
+        "hjtyth"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 47,
+      "input_tokens": 7554,
+      "output_tokens": 35,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rqdccp (appeared 73 times)\n2. hzigvi (appeared 43 times)\n3. rrshkc (appeared 42 times)",
+      "answers": [
+        "rqdccp",
+        "rrshkc",
+        "hzigvi"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 48,
+      "input_tokens": 7921,
+      "output_tokens": 39,
+      "score": 0.6666666666666666,
+      "correct": true,
+      "prediction": " \n\n1. ppglaw (appears 73 times)\n2. gyamdu (appears 34 times)\n3. wtoivw (appears 26 times)",
+      "answers": [
+        "ppglaw",
+        "ptxknz",
+        "gyamdu"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    },
+    {
+      "sample_idx": 49,
+      "input_tokens": 7709,
+      "output_tokens": 38,
+      "score": 1.0,
+      "correct": true,
+      "prediction": " \n\n1. rfdpou (appeared 73 times)\n2. gbnblt (appeared 34 times)\n3. rfjwaw (appeared 33 times)",
+      "answers": [
+        "rfdpou",
+        "rfjwaw",
+        "gbnblt"
+      ],
+      "timing_sec": {
+        "arrival_time": null,
+        "queued_time": null,
+        "prefill_time": null,
+        "decode_time": null,
+        "inference_time": null,
+        "e2e_latency": null,
+        "ttft": null,
+        "num_generation_tokens": null
+      }
+    }
+  ]
+}
