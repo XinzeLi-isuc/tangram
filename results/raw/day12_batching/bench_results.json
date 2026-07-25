@@ -1,0 +1,33 @@
+{
+  "config": {
+    "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "max_tokens": 128,
+    "length_dist": [[4096, 8192, 16384, 32768], [0.25, 0.35, 0.25, 0.15]]
+  },
+  "results": {
+    "fullkv": {
+      "1": {"batch_size": 1, "n_completed": 1, "elapsed_s": 4.3, "throughput_req_per_s": 0.2, "throughput_tok_per_s": 29.6},
+      "2": {"batch_size": 2, "n_completed": 2, "elapsed_s": 7.9, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 32.3},
+      "4": {"batch_size": 4, "n_completed": 4, "elapsed_s": 9.3, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 54.9},
+      "8": {"batch_size": 8, "n_completed": 8, "elapsed_s": 23.7, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 43.2},
+      "16": {"batch_size": 16, "n_completed": 16, "elapsed_s": 40.0, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 51.2},
+      "24": {"batch_size": 24, "n_completed": 24, "elapsed_s": 63.6, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 48.2}
+    },
+    "cake_50": {
+      "1": {"batch_size": 1, "n_completed": 1, "elapsed_s": 4.3, "throughput_req_per_s": 0.2, "throughput_tok_per_s": 29.8},
+      "2": {"batch_size": 2, "n_completed": 2, "elapsed_s": 7.6, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 33.6},
+      "4": {"batch_size": 4, "n_completed": 4, "elapsed_s": 15.0, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 34.2},
+      "8": {"batch_size": 8, "n_completed": 8, "elapsed_s": 24.1, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 42.4},
+      "16": {"batch_size": 16, "n_completed": 16, "elapsed_s": 40.7, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 50.3},
+      "24": {"batch_size": 24, "n_completed": 24, "elapsed_s": 64.2, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 47.8}
+    },
+    "cake_25": {
+      "1": {"batch_size": 1, "n_completed": 1, "elapsed_s": 4.4, "throughput_req_per_s": 0.2, "throughput_tok_per_s": 29.1},
+      "2": {"batch_size": 2, "n_completed": 2, "elapsed_s": 7.5, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 34.0},
+      "4": {"batch_size": 4, "n_completed": 4, "elapsed_s": 14.6, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 35.1},
+      "8": {"batch_size": 8, "n_completed": 8, "elapsed_s": 23.1, "throughput_req_per_s": 0.3, "throughput_tok_per_s": 44.3},
+      "16": {"batch_size": 16, "n_completed": 16, "elapsed_s": 38.3, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 53.5},
+      "24": {"batch_size": 24, "n_completed": 24, "elapsed_s": 56.9, "throughput_req_per_s": 0.4, "throughput_tok_per_s": 54.0}
+    }
+  }
+}
