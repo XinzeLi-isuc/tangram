@@ -1,0 +1,60 @@
+{
+  "ablation_window_size": {
+    "16": {
+      "mean_pref": 437.9799168109894,
+      "min_pref": 91.05774688720703,
+      "max_pref": 970.159912109375,
+      "time_ms": 4.535086452960968
+    },
+    "32": {
+      "mean_pref": 740.5743517875671,
+      "min_pref": 150.2459716796875,
+      "max_pref": 1646.603515625,
+      "time_ms": 0.5495920777320862
+    },
+    "64": {
+      "mean_pref": 1249.0005741119385,
+      "min_pref": 270.26715087890625,
+      "max_pref": 2762.968994140625,
+      "time_ms": 0.6499439477920532
+    }
+  },
+  "ablation_gamma": {
+    "0.0": {
+      "mean_pref": 740.5743517875671,
+      "min_pref": 150.2459716796875,
+      "max_pref": 1646.603515625
+    },
+    "0.5": {
+      "mean_pref": 740.5743517875671,
+      "min_pref": 150.2459716796875,
+      "max_pref": 1646.603515625
+    },
+    "1.0": {
+      "mean_pref": 740.5743517875671,
+      "min_pref": 150.2459716796875,
+      "max_pref": 1646.603515625
+    },
+    "2.0": {
+      "mean_pref": 740.5743517875671,
+      "min_pref": 150.2459716796875,
+      "max_pref": 1646.603515625
+    }
+  },
+  "negative_scorer_overhead": {
+    "snapkv_ms": 0.11242389678955078,
+    "cake_ms": 0.5762863159179688,
+    "ratio": 5.1260126394367385
+  },
+  "negative_short_vs_long": {
+    "short_mean_score": 0.001261080258700531,
+    "long_mean_score": 0.000411027807786013,
+    "ratio": 0.32593310770684253
+  },
+  "config": {
+    "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "long_prompt_tokens": 2001,
+    "short_prompt_tokens": 602,
+    "num_layers": 32
+  }
+}
