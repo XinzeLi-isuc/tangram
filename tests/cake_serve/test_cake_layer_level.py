@@ -54,7 +54,7 @@ def test_preferences_affect_budget():
 
 
 def test_budget_sum_matches():
-    """Total budget should match eval_len * num_layers * ratio."""
+    """Total budget should match eval_len * num_layers * num_groups * ratio."""
     level = CakeLayerLevel()
     for eval_len in [500, 1000, 2000]:
         for ratio in [0.25, 0.5, 0.75]:
@@ -63,8 +63,8 @@ def test_budget_sum_matches():
             ctx = SelectionContext(layer_preferences=prefs)
             counts = level.compute_counts(
                 eval_scores, ratio, None, 32, 8, 4, context=ctx)
-            expected = int(eval_len * 32 * ratio)
-            # Allow small rounding error (at most 1 per group)
+            # Each (layer, group) gets ~eval_len*ratio tokens
+            expected = int(eval_len * 32 * 4 * ratio)
             assert abs(counts.sum() - expected) <= 32 * 4, (
                 f"Sum {counts.sum()} != expected {expected} "
                 f"(eval_len={eval_len}, ratio={ratio})"
