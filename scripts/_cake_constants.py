@@ -8,7 +8,8 @@ Override via environment variables:
 """
 import os
 
-_MODEL_DEFAULT = "meta-llama/Llama-3.1-8B-Instruct"
+_MODEL_DEFAULT = os.path.expanduser(
+    "~/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct")
 
 # Resolve model path: env var > default HF model name
 MODEL_PATH = os.environ.get("CAKE_MODEL_PATH", _MODEL_DEFAULT)
