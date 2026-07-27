@@ -94,8 +94,19 @@ case "${SCORER}" in
         # Gate-free analytic expected attention; identity adjacency.
         DEFAULT_PG=4
         ;;
+    cake)
+        # Gate-free CAKE scorer; identity adjacency.
+        DEFAULT_PG=4
+        METHOD_ARGS+=(
+            --compression-cake-tau1 "${CAKE_TAU1:-1.0}"
+            --compression-cake-tau2 "${CAKE_TAU2:-1.0}"
+            --compression-cake-gamma "${CAKE_GAMMA:-1.0}"
+            --compression-cake-window-size "${CAKE_WINDOW_SIZE:-32}"
+            --compression-cake-kernel-size "${CAKE_KERNEL_SIZE:-5}"
+        )
+        ;;
     *)
-        echo "Unknown SCORER='${SCORER}' (use fastkvzip|snapkv|keydiff|streamingllm|tova|expected_attention)" >&2
+        echo "Unknown SCORER='${SCORER}' (use fastkvzip|snapkv|keydiff|streamingllm|tova|expected_attention|cake)" >&2
         exit 1
         ;;
 esac

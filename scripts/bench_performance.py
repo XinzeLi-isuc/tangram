@@ -11,9 +11,15 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 TEXT = ("KV cache compression is a critical technique for efficient LLM inference. " * 5000)
 
+MAX_MODEL_LEN = 32768 + 128  # room for output
+
 def make_32k_prompt(tokenizer):
+    target = MAX_MODEL_LEN - 128
     encoded = tokenizer.encode(TEXT)
-    return tokenizer.decode(encoded[:32768])
+    prompt = tokenizer.decode(encoded[:target])
+    actual = len(tokenizer.encode(prompt))
+    assert actual >= target - 100, f"prompt tokens {actual} < {target-100}"
+    return prompt
 
 def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
     from vllm import LLM, SamplingParams
@@ -22,7 +28,7 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
     prompt_32k = make_32k_prompt(tokenizer)
     sp = SamplingParams(temperature=0, max_tokens=128)
     results = {}
-    
+
     for bs in batch_sizes:
         print(f"\n  [{name}] batch={bs}", flush=True)
         prompts = [prompt_32k] * bs
@@ -30,7 +36,7 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
             llm = LLM(model=MODEL, compression_ratio=ratio,
                       compression_scorer=scorer, compression_level=level,
                       page_group_size=4,
-                      max_model_len=32768, gpu_memory_utilization=0.90,
+                      max_model_len=MAX_MODEL_LEN, gpu_memory_utilization=0.90,
                       max_num_seqs=bs+2)
             for w in range(warmup):
                 _ = llm.generate(prompts, sp)

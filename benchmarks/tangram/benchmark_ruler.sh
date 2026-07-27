@@ -85,16 +85,13 @@ if [ "${LOG_STATS:-0}" = "1" ]; then
     METHOD_ARGS+=(--enable-log-stats)
 fi
 
-# Compression keep-geometry overrides (the engine/bench defaults are tuned for
-# SCBench's long contexts: window 4096 / floor 512). For RULER's short contexts
-# those floors swamp the ratio, so set them small (e.g. WINDOW_SIZE=32 FLOOR_MIN=0)
-# to make the compression ratio the binding KV budget. Only applied when set.
-if [ -n "${WINDOW_SIZE:-}" ]; then
-    METHOD_ARGS+=(--compression-window-size "${WINDOW_SIZE}")
-fi
-if [ -n "${FLOOR_MIN:-}" ]; then
-    METHOD_ARGS+=(--compression-floor-min "${FLOOR_MIN}")
-fi
+# Compression keep-geometry overrides. RULER default: window=32 floor=0
+# so compression_ratio is the binding KV budget (not swamped by large
+# floors). Set WINDOW_SIZE/FLOOR_MIN env vars to override.
+_WINDOW=${WINDOW_SIZE:-32}
+_FLOOR=${FLOOR_MIN:-0}
+METHOD_ARGS+=(--compression-window-size "${_WINDOW}")
+METHOD_ARGS+=(--compression-floor-min "${_FLOOR}")
 
 case "${SCORER}" in
     fastkvzip)
