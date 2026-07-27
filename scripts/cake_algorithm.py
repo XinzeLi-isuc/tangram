@@ -81,6 +81,14 @@ def compute_cake_scores(
     scale = math.sqrt(head_size)
     attn = torch.matmul(q_obs, k_t.unsqueeze(1)) / scale
 
+    # Apply causal mask: each query at position chunk_len-window+i can only
+    # attend to keys at positions ≤ chunk_len-window+i.
+    q_indices = torch.arange(chunk_len - window, chunk_len,
+                             device=device, dtype=torch.long)
+    k_indices = torch.arange(chunk_len, device=device, dtype=torch.long)
+    causal_mask = (q_indices[:, None] >= k_indices[None, :])  # [window, T]
+    attn = attn.masked_fill(~causal_mask[None, None, :, :], float('-inf'))
+
     # --- Layer Preference ---
     # CAKE uses attention on the history region (excluding window) for preference
     hist_len = chunk_len - window
