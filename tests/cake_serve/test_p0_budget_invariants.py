@@ -82,6 +82,21 @@ class TestCakeLayerBudgetInvariants:
                                       num_layers, 8, num_groups, ctx)
         assert counts.sum() > 0, "NaN prefs should fallback to uniform"
 
+    def test_skewed_pref_waterfill(self):
+        """Skewed prefs that previously overflowed max_iter=10000."""
+        level = CakeLayerLevel()
+        num_layers, num_groups, eval_len = 32, 4, 8192
+        ratio = 0.75
+        dummy = torch.zeros(32 * 4 * 8, dtype=torch.long)
+        prefs = np.array([12000]*8 + [8000]*12 + [384]*12, dtype=np.float32)
+        ctx = SelectionContext(layer_preferences=torch.tensor(prefs))
+        scores = torch.zeros(32, 4, 8192)
+        counts = level.compute_counts(scores, ratio, dummy, 32, 8, 4, context=ctx)
+        expected = int(8192 * 32 * 4 * ratio)
+        assert abs(counts.sum() - expected) <= 32 * 4, (
+            f"Skewed pref water-fill failed: {counts.sum()} vs {expected}")
+        assert counts.max() <= eval_len
+
     def test_negative_prefs_fallback(self):
         level = CakeLayerLevel()
         num_layers, num_groups, eval_len = 16, 4, 2048

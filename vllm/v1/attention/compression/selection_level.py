@@ -536,26 +536,31 @@ class CakeLayerLevel(SelectionLevel):
                 # Re-clip after redistribution
                 budgets = np.minimum(budgets, eval_len)
 
-        # 5. Final adjustment to match total_budget exactly
+        # 5. Final adjustment: vectorized water-filling (no max_iter cap).
         diff = int(total_budget - budgets.sum())
-        max_iter = 10000
-        while diff != 0 and max_iter > 0:
-            max_iter -= 1
-            if diff > 0:
-                room = eval_len - budgets
-                candidates = np.where(room > 0)[0]
-                if len(candidates) == 0:
-                    break
-                idx = candidates[np.argmax(room[candidates])]
-                budgets[idx] += 1
-                diff -= 1
-            else:
-                candidates = np.where(budgets > 0)[0]
-                if len(candidates) == 0:
-                    break
-                idx = candidates[np.argmax(budgets[candidates])]
-                budgets[idx] -= 1
-                diff += 1
+        while diff > 0:
+            candidates = np.flatnonzero(budgets < eval_len)
+            if len(candidates) == 0:
+                break
+            share, remainder = divmod(diff, len(candidates))
+            if share == 0:
+                budgets[candidates[:remainder]] += 1
+                break
+            room = eval_len - budgets[candidates]
+            delta = np.minimum(room, share)
+            budgets[candidates] += delta
+            diff -= int(delta.sum())
+        while diff < 0:
+            candidates = np.flatnonzero(budgets > 0)
+            if len(candidates) == 0:
+                break
+            share, remainder = divmod(abs(diff), len(candidates))
+            if share == 0:
+                budgets[candidates[:remainder]] -= 1
+                break
+            delta = np.minimum(budgets[candidates], share)
+            budgets[candidates] -= delta
+            diff += int(delta.sum())
 
         # 6. 同一层的所有page groups使用相同长度 (CAKE 语义：层预算不需要在group间划分)
         per_group = np.zeros((num_layers, num_groups), dtype=np.int64)

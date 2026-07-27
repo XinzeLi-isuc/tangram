@@ -80,6 +80,7 @@ def run():
         
         llm = LLM(model=MODEL, compression_ratio=ratio,
                   compression_scorer=scorer, compression_level=level,
+                  page_group_size=4,
                   max_model_len=32768, gpu_memory_utilization=0.90,
                   tensor_parallel_size=1, max_num_seqs=4)
         

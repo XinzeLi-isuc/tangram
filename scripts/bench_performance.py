@@ -29,8 +29,9 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
         try:
             llm = LLM(model=MODEL, compression_ratio=ratio,
                       compression_scorer=scorer, compression_level=level,
-                      max_model_len=33792, gpu_memory_utilization=0.90,
-                      tensor_parallel_size=1, max_num_seqs=bs)
+                      page_group_size=4,
+                      max_model_len=32768, gpu_memory_utilization=0.90,
+                      max_num_seqs=bs+2)
             for w in range(warmup):
                 _ = llm.generate(prompts, sp)
                 print(f"    warmup {w+1}/{warmup} done", flush=True)

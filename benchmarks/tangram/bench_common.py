@@ -340,6 +340,26 @@ def add_compression_args(parser: argparse.ArgumentParser) -> None:
              "ranking, which the per-layer selection level needs. Set "
              "explicitly only to override for ablations.",
     )
+    parser.add_argument(
+        "--compression-cake-tau1", type=float, default=1.0,
+        help="CAKE: entropy exponent for layer preference.",
+    )
+    parser.add_argument(
+        "--compression-cake-tau2", type=float, default=1.0,
+        help="CAKE: temporal variance exponent for layer preference.",
+    )
+    parser.add_argument(
+        "--compression-cake-gamma", type=float, default=1.0,
+        help="CAKE: weight for temporal variance in token scores.",
+    )
+    parser.add_argument(
+        "--compression-cake-window-size", type=int, default=32,
+        help="CAKE: observation window size (trailing queries).",
+    )
+    parser.add_argument(
+        "--compression-cake-kernel-size", type=int, default=5,
+        help="CAKE: avg-pool1d kernel size for token score smoothing (odd).",
+    )
 
 
 # ---------------------------------------------------------------------------

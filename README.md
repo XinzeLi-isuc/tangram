@@ -63,16 +63,14 @@ print(outputs[0].outputs[0].text)
 
 ## Key Results (to be re-run after P0 fixes)
 
-Results below were collected before the preference lifecycle fix;
-`cake_layer` was effectively uniform. Re-benchmarking in progress.
-
-| Metric | FullKV | CAKE-Serve 25% |
 | Metric | FullKV | CAKE-Serve 25% |
 |--------|:------:|:--------------:|
-| Latency (batch=8) | 76.4s | **58.7s (-23%)** |
-| RULER 8K accuracy | 59.2% | 57.3% (-1.9%) |
-| KV memory | 4.00 GiB | **~1.00 GiB** |
+| Latency (batch=8) | TBD | TBD |
+| RULER 8K accuracy | TBD | TBD |
+| KV memory | TBD | TBD |
 
+> Results below were collected before the preference lifecycle fix;
+> `cake_layer` was effectively uniform. Re-benchmarking in progress.
 ---
 
 ## Architecture
@@ -151,11 +149,11 @@ python -m pytest tests/cake_serve/test_preference_chain.py -v
 - ✅ Algorithm port (CakeScorer + CakeLayerLevel)
 - ✅ Physical KV page reclamation
 - ✅ Chunked prefill adaptation (CAKE-Chunk)
-- ✅ 6-way ablation on RULER 8K
-- ✅ 32K performance benchmark (CAKE 25%: ~20% speedup)
-- ✅ SCBench multi-turn evaluation
-- ⬜ Online serving benchmark (vllm serve + bench)
-- ⬜ Qwen3-4B evaluation
+- ✅ Preference lifecycle fix (cake_layer ≠ uniform)
+- ⬜ RULER 8K/16K/32K re-benchmark
+- ⬜ 32K performance re-benchmark
+- ⬜ SCBench multi-turn evaluation
+- ⬜ Online serving benchmark
 
 ---
 

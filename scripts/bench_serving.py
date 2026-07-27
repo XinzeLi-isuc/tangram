@@ -41,7 +41,8 @@ def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=300):
         print("Server ready")
 
         bench_cmd = [
-            sys.executable, "-m", "vllm", "bench", "serve",
+            sys.executable, "-m", "vllm.entrypoints.cli.main",
+            "bench", "serve",
             "--backend", "vllm", "--model", MODEL_PATH,
             "--endpoint", "/v1/completions", "--base-url", base_url,
             "--dataset-name", "random", "--num-prompts", str(num_prompts),
@@ -52,7 +53,8 @@ def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=300):
             "--result-filename", f"{out_name}.json",
         ]
         r = subprocess.run(bench_cmd, capture_output=True, text=True,
-                           timeout=600, check=True)
+                           timeout=max(1800, int(num_prompts / max(request_rate, 0.01) + 900)),
+                           check=True)
         tail = r.stdout[-800:] if len(r.stdout) > 800 else r.stdout
         print(tail)
 
