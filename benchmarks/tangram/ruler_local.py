@@ -70,32 +70,38 @@ def load_ruler(
             f"Unknown RULER length {length!r}. Available: {list(RULER_LENGTHS)}.")
     keep = set(tasks) if tasks else None
 
-    # Find the cached arrow file for this specific length config.
-    # The cache layout is:   .../simonjegou___ruler/<length>/test-*.arrow
-    # Searching only the length-specific subdirectory prevents mixing data
-    # from different context lengths (which would make a length sweep
-    # meaningless — all lengths would read the same data).
+    # Find cached Arrow files for this specific length config.
+    # The HF datasets cache layout is:
+    #   .../simonjegou___ruler/<length>/<dataset_name>-test-*.arrow
+    # We search for *-test*.arrow (not test-*.arrow) and concat all shards.
     cache_base = Path.home() / ".cache" / "huggingface" / "datasets" / "simonjegou___ruler"
     config_dir = cache_base / length
-    arrow_files = sorted(config_dir.rglob("test-*.arrow")) if config_dir.is_dir() else []
-    if not arrow_files:
-        # Fallback to datasets library
-        from datasets import load_dataset
-        samples = load_dataset(_RULER_REPO, length, split="test")
-        arrow_path = None
-    else:
-        arrow_path = arrow_files[0]
+    arrow_files: list[Path] = []
+    if config_dir.is_dir():
+        candidates = sorted(config_dir.rglob("*-test*.arrow"))
+        # Deduplicate: same shard set may appear under multiple parent dirs
+        parents = {p.parent for p in candidates}
+        if len(parents) > 1:
+            raise RuntimeError(
+                f"Multiple RULER cache versions found under {config_dir}: "
+                f"{sorted(str(p) for p in parents)}. Clear the cache and "
+                f"re-download.")
+        if parents:
+            arrow_files = sorted(next(iter(parents)).glob("*-test*.arrow"))
 
-    if arrow_path:
-        # Read directly from cached arrow file
-        with pa.ipc.open_stream(str(arrow_path)) as reader:
-            table = reader.read_all()
-        batch = table.to_pydict()
-    else:
-        # Use datasets library as fallback
+    if not arrow_files:
+        # Fallback to datasets library (called only once)
         from datasets import load_dataset
         samples = load_dataset(_RULER_REPO, length, split="test")
         batch = {col: [row[col] for row in samples] for col in samples.column_names}
+    else:
+        # Read all shards and concatenate
+        tables = []
+        for path in arrow_files:
+            with pa.ipc.open_stream(str(path)) as reader:
+                tables.append(reader.read_all())
+        table = pa.concat_tables(tables)
+        batch = table.to_pydict()
 
     per_task_count: dict[str, int] = {}
     dataset: list[dict[str, Any]] = []
