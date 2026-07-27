@@ -219,6 +219,9 @@ class CompressionModelRunnerMixin:
                 ea_epsilon=cache_config.compression_ea_epsilon,
                 cake_tau1=cache_config.compression_cake_tau1,
                 cake_tau2=cache_config.compression_cake_tau2,
+                cake_window_size=cache_config.compression_cake_window_size,
+                cake_kernel_size=cache_config.compression_cake_kernel_size,
+                cake_gamma=cache_config.compression_cake_gamma,
             )
         # Bind the same member->cluster map the FlashAttention builder uses so
         # scoring max-pools over the physical clusters (cross-layer when a map

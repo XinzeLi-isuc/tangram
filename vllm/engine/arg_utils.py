@@ -571,6 +571,9 @@ class EngineArgs:
     compression_ea_epsilon: float = CacheConfig.compression_ea_epsilon
     compression_cake_tau1: float = CacheConfig.compression_cake_tau1
     compression_cake_tau2: float = CacheConfig.compression_cake_tau2
+    compression_cake_gamma: float = CacheConfig.compression_cake_gamma
+    compression_cake_window_size: int = CacheConfig.compression_cake_window_size
+    compression_cake_kernel_size: int = CacheConfig.compression_cake_kernel_size
     compression_retention_dump: str | None = \
         CacheConfig.compression_retention_dump
     multi_turn: bool = CacheConfig.multi_turn
@@ -1041,6 +1044,18 @@ class EngineArgs:
         cache_group.add_argument(
             "--compression-cake-tau2",
             **cache_kwargs["compression_cake_tau2"],
+        )
+        cache_group.add_argument(
+            "--compression-cake-gamma",
+            **cache_kwargs["compression_cake_gamma"],
+        )
+        cache_group.add_argument(
+            "--compression-cake-window-size",
+            **cache_kwargs["compression_cake_window_size"],
+        )
+        cache_group.add_argument(
+            "--compression-cake-kernel-size",
+            **cache_kwargs["compression_cake_kernel_size"],
         )
         cache_group.add_argument(
             "--compression-retention-dump",
@@ -1581,6 +1596,9 @@ class EngineArgs:
             compression_ea_epsilon=self.compression_ea_epsilon,
             compression_cake_tau1=self.compression_cake_tau1,
             compression_cake_tau2=self.compression_cake_tau2,
+            compression_cake_gamma=self.compression_cake_gamma,
+            compression_cake_window_size=self.compression_cake_window_size,
+            compression_cake_kernel_size=self.compression_cake_kernel_size,
             compression_retention_dump=self.compression_retention_dump,
             multi_turn=self.multi_turn,
         )

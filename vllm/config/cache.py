@@ -277,6 +277,18 @@ class CacheConfig:
     """CAKE: tau2 exponent for temporal variance in layer preference (higher =
     more variance-driven budget). Only used when ``compression_scorer ==
     "cake"``."""
+    compression_cake_gamma: float = 1.0
+    """CAKE: gamma multiplier for temporal variance in token scores.
+    A higher gamma amplifies variance, making volatile tokens more likely
+    to be retained. Only used when ``compression_scorer == "cake"``."""
+    compression_cake_window_size: int = 32
+    """CAKE: number of trailing query tokens in the observation window
+    used to compute attention statistics. Only used when
+    ``compression_scorer == "cake"``."""
+    compression_cake_kernel_size: int = 5
+    """CAKE: size of the 1d average-pooling kernel applied to token scores
+    for spatial smoothing. Must be an odd positive integer. Only used when
+    ``compression_scorer == "cake"``."""
 
     compression_retention_dump: str | None = None
     """Offline profiling only. When set to a directory path, the engine attaches
@@ -361,6 +373,9 @@ class CacheConfig:
             "compression_ea_epsilon",
             "compression_cake_tau1",
             "compression_cake_tau2",
+            "compression_cake_gamma",
+            "compression_cake_window_size",
+            "compression_cake_kernel_size",
             "compression_retention_dump",
             # Cluster map relabels physical KV placement only; it does not
             # change the compiled graph shape or kernel selection.
@@ -557,6 +572,19 @@ class CacheConfig:
                     raise ValueError(
                         "compression_ea_epsilon must be >= 0, got "
                         f"{self.compression_ea_epsilon}."
+                    )
+
+            if self.compression_scorer == "cake":
+                if (self.compression_cake_kernel_size <= 0
+                        or self.compression_cake_kernel_size % 2 == 0):
+                    raise ValueError(
+                        f"compression_cake_kernel_size must be a positive odd "
+                        f"integer, got {self.compression_cake_kernel_size}."
+                    )
+                if self.compression_cake_window_size <= 0:
+                    raise ValueError(
+                        f"compression_cake_window_size must be > 0, got "
+                        f"{self.compression_cake_window_size}."
                     )
 
         # Multi-turn rides on top of ragged paging but does not

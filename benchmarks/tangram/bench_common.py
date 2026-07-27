@@ -409,6 +409,16 @@ def build_llm(args: argparse.Namespace) -> LLM:
         # Only override the engine's validated default (1e-2) when given.
         if args.compression_ea_epsilon is not None:
             llm_kwargs["compression_ea_epsilon"] = args.compression_ea_epsilon
+        if args.compression_cake_tau1 != 1.0:
+            llm_kwargs["compression_cake_tau1"] = args.compression_cake_tau1
+        if args.compression_cake_tau2 != 1.0:
+            llm_kwargs["compression_cake_tau2"] = args.compression_cake_tau2
+        if args.compression_cake_gamma != 1.0:
+            llm_kwargs["compression_cake_gamma"] = args.compression_cake_gamma
+        if args.compression_cake_window_size != 32:
+            llm_kwargs["compression_cake_window_size"] = args.compression_cake_window_size
+        if args.compression_cake_kernel_size != 5:
+            llm_kwargs["compression_cake_kernel_size"] = args.compression_cake_kernel_size
 
     print(f"\nLoading model from {args.model_path} ...")
     return LLM(**llm_kwargs)
