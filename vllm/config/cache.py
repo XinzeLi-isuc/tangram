@@ -666,6 +666,20 @@ class CacheConfig:
         # level (which all-gathers and works under TP) rather than reject.
         # TODO: implement the gather and run cluster levels under TP directly.
         if self.compression_enabled and parallel_config.tensor_parallel_size > 1:
+            # CAKE layer preference is computed from local KV heads on each
+            # TP rank; without cross-rank aggregation, different ranks may
+            # derive different preferences → different per-layer budgets →
+            # inconsistent block decisions.
+            if (self.compression_scorer == "cake"
+                    and self.compression_level == "cake_layer"):
+                raise NotImplementedError(
+                    f"compression_scorer='cake' with "
+                    f"compression_level='cake_layer' is TP=1 only. "
+                    f"CAKE's layer preference aggregation across TP ranks is "
+                    f"not yet implemented. Please use "
+                    f"tensor_parallel_size=1 for CAKE-Serve."
+                )
+
             from vllm.v1.attention.compression.selection_level import (
                 TP1_ONLY_SELECTION_LEVELS,
                 TP_FALLBACK_LEVEL,
