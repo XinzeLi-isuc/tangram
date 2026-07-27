@@ -23,7 +23,7 @@ from scripts.cake_algorithm import compute_cake_scores, allocate_cake_budgets
 
 # Paths
 REF_DIR = "results/raw/day03_cake_reference"
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 
 # CAKE parameters (same as CAKE-Serve defaults)
 CAKE_PARAMS = {

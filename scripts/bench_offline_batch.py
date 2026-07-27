@@ -1,20 +1,32 @@
 """
-Day 12: Continuous Batching Benchmark (v2)
-==========================================
-More efficient version: load model once per config, then test multiple batch sizes.
-Uses max_num_seqs to control the maximum allowed concurrency.
+Offline Batch Benchmark (formerly "Continuous Batching")
+========================================================
+Static batch workload: a fixed set of prompts submitted via llm.generate()
+in a single call. This is NOT true online continuous batching (which would
+use vllm serve + async arrival of requests).
+
+Purpose: measure throughput scaling as batch size grows, isolating the
+KV compression benefit from prefix caching and online scheduling effects.
+
+Limitations acknowledged:
+  - Requests share a common corpus (prefix overlap possible)
+  - No async arrival; all prompts submitted at once
+  - enable_prefix_caching is disabled for fair comparison
+
+For true continuous batching benchmarks, use:
+    vllm serve ...  +  vllm bench serve ...
 
 Usage:
     conda activate cake-serve
     cd ~/cake-serve
-    CUDA_VISIBLE_DEVICES=0 python scripts/bench_continuous_batching.py 2>&1 | tee results/raw/day12_batching/bench.log
+    CUDA_VISIBLE_DEVICES=0 python scripts/bench_offline_batch.py 2>&1
 """
 import json
 import os
 import time
 import numpy as np
 
-MODEL = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH as MODEL
 OUTPUT_DIR = "results/raw/day12_batching"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

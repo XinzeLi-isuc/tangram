@@ -4,7 +4,7 @@ Day 5: Test CakeScorer with compression_scorer="cake" and uniform level.
 import time
 import sys
 
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 PROMPTS = {
     "1K": "What is KV cache compression? " * 50,
     "4K": ("KV cache compression is a critical technique for efficient large language model inference. "

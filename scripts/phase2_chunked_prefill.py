@@ -22,7 +22,7 @@ import torch.nn.functional as F
 import numpy as np
 from scipy.stats import spearmanr
 
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 OUTPUT_DIR = "results/raw/day11_phase2_chunked"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

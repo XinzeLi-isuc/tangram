@@ -7,7 +7,7 @@ import os
 import json
 import time
 
-MODEL = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH as MODEL
 
 # Short prompt that fits in one chunk
 SHORT_PROMPT = "What is KV cache compression? Explain briefly."

@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from scripts.cake_algorithm import compute_cake_scores, allocate_cake_budgets
 
 # === Configuration ===
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 NUM_LAYERS = 32
 NUM_KV_HEADS = 8
 NUM_Q_PER_KV = 4

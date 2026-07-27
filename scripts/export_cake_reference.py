@@ -15,7 +15,7 @@ import torch.nn.functional as F
 import numpy as np
 
 # === Configuration ===
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 OUTPUT_DIR = "results/raw/day03_cake_reference"
 
 # CAKE hyperparameters (from model2tau.json for Llama-3.1-8B, cache_size=1024)

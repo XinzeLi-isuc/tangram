@@ -964,7 +964,8 @@ class KVCompressor:
                         position_offset=pos_offsets.get(req, 0),
                     )
                     # Handle CakeScoreOutput (carries token scores + layer preference)
-                    if hasattr(result, 'token_scores') and hasattr(result, 'layer_preference'):
+                    from vllm.v1.attention.compression.cake import CakeScoreOutput
+                    if isinstance(result, CakeScoreOutput):
                         self.receive_score(
                             req, _idx, result.token_scores,
                             layer_preference=result.layer_preference,

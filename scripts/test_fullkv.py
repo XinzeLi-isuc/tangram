@@ -5,7 +5,7 @@ on Llama-3.1-8B-Instruct.
 import time
 import sys
 
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 PROMPT = "What is KV cache compression in large language models? Explain the key ideas in 3 paragraphs."
 MAX_TOKENS = 128
 

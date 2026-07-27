@@ -24,7 +24,7 @@ import torch.nn.functional as F
 import numpy as np
 from scipy.stats import spearmanr
 
-MODEL = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH as MODEL
 OUTPUT_DIR = "results/raw/day15_ablation"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

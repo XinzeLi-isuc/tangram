@@ -56,7 +56,7 @@ def main():
             try:
                 start = time.time()
                 llm = LLM(
-                    model="/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+                    model=MODEL_PATH,
                     compression_ratio=ratio,
                     compression_scorer=scorer,
                     compression_level=level,

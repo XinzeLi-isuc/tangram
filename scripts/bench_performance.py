@@ -5,7 +5,7 @@ Each config: warmup 2x, measurement 5x
 """
 import json, os, time, numpy as np
 
-MODEL = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH as MODEL
 OUTPUT_DIR = "results/raw/day14_perf"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

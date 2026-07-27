@@ -8,7 +8,7 @@ import numpy as np
 import math
 import os
 
-MODEL_PATH = "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct"
+from _cake_constants import MODEL_PATH
 OUTPUT_DIR = "results/raw/day11_debug_attention"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
