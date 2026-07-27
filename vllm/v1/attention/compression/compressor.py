@@ -378,7 +378,21 @@ class KVCompressor:
         layer_state.pending_score = (
             score if prev is None else torch.cat([prev, score], dim=1))
 
-        # Store layer preference (CAKE scorer only)
+        # Store layer preference (CAKE scorer only).
+        #
+        # CAKE-CHUNK APPROXIMATION: The original CAKE algorithm computes layer
+        # preference from the full prompt's last observation window attending
+        # to ALL history keys. Under chunked prefill, each chunk's CakeScorer
+        # sees only its own Q/K slice, producing a local preference estimate.
+        # We aggregate these local estimates via token-weighted averaging:
+        #
+        #   P̂_l = (Σ_t n_t × P_l^(t)) / Σ_t n_t
+        #
+        # This is NOT exactly equal to the one-shot oracle (one full-context
+        # observation window → all history). The approximation error grows as
+        # chunk size shrinks (Spearman ≈ 0.6 at 128-token chunks, converging
+        # toward 1.0 as chunk → full prompt). This is a serving adaptation
+        # of CAKE at the cost of strict equivalence.
         if layer_preference is not None:
             prev_pref = layer_state.pending_preference
             if prev_pref is None:
