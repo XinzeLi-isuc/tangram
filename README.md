@@ -1,212 +1,160 @@
-<!-- markdownlint-disable MD001 MD041 -->
-<p align="center">
-  <img src="docs/assets/logos/tangram-logo-text.png" alt="Tangram" width="480"/>
-</p>
+# CAKE-Serve: Layer-Adaptive KV Cache Compression for vLLM
 
-<h3 align="center">
-Tangram: Unlocking Non-Uniform KV Cache Compression for Efficient Multi-turn LLM Serving
-</h3>
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
+[![Base: Tangram](https://img.shields.io/badge/base-Tangram%20vLLM-orange.svg)](https://github.com/aiha-lab/tangram)
 
-<p align="center">
-  <a href="https://arxiv.org/abs/2606.06302">
-    <img src="https://img.shields.io/badge/arXiv-2606.06302-b31b1b.svg?logo=arxiv&logoColor=white" alt="arXiv"/>
-  </a>
-  <a href="https://aiha-lab.github.io/tangram-page/">
-    <img src="https://img.shields.io/badge/Project%20Page-tangram-blue.svg?logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADEUlEQVR42u2WMW8cVRSFv%2FNmdjZxImw2TiiBIJTYDULiZ1AjQMgFpLFkiIJNYUEFiryJQAKRin%2FBT6BBSgEUIMcGCiiQgKy9M1kH27uedyhmbS%2FB9jraoFD4jkYz0tx599xz7r3vwYmd2GM2DXPwMXyGBPB%2FjXGkX4e5yPDEL0%2B%2FIMiZOMQphwO%2Frf866Yv%2B5p50OAvpIcQrIJ%2B75TOLXy7dXvrp8%2FPtMBYByd5fTZVGE4PrS9h2uhnCU%2B%2F%2F3AJeAjo2OghIehiyCDS%2BXVHz8rvna9lY48Pvr3M%2Fe5LgyKCs6gfFJkpIpsxTzl67C28U4nZDsM5DMlDZKmskvQvdjy5ddbe35ebKJ8prE8imSqYKXL1WoGIRyOb%2BNFcKxVbohcb6kRofCYBTzzsa1XobujG9gELQ0p2PKdJxICJ7nwZB7AROza2RvVVAISEPLcNwnGIugVo3pzm1wOLUAuM7OVEBoypzQdxIyGbWqL%2Faxh1VKx%2BjC44FwIhSgXS7TfPyPItT7zHRzYkSUaLcCNRmWtRfbxN%2FS4gdcF%2BdYZYOb1TtTZNSgVovpzm9ABJLyzf5a3uCbOYu6Ws5dAS1SHIfqJnk9KMAsFtkrvjaiSLdatOcmid2xfyLH%2BBXStSuQ4gQq1%2BSexC3IDnXGwHA1rqoX%2FhHzxtRAkm3zc1L1%2FjimYTQugXb4yAQJjoSsoBzW3%2BMGb4%2BtByGMDC5J8GgIkZEQ1BB%2Ft1V2K7BdAVCclW2DoBxZ0cjFGFrf%2BYMDjsE%2FS7Q6RytzJIsz1HLclKbFJHGSOJy1C6Y3M9eD7TV4DyuF8TVWcqVOZwV%2FbLRI%2BqCg%2FYs%2BQFmBFmB78xWQ%2FHyZxAb4HjkGD6eBMI4GttE2%2F0nHryry1nucnnWcfltK2sbEaExCgOTYDKSeiWAtDvyD2RJGMY2iT%2B%2BI%2BoZeu7TjI1nRwDQ3Ymuh9%2B10y0de8b8a0f1buC%2BTMaQrjv%2BcCWErc0WL1%2F3Xg8%2F%2FIHE4s3WWc5o329X0saQstkuxFcXI6vaYPRj2WM8lFbbykgh%2Fr%2FZn9iJAfwNA5Fiz3oR1tsAAAAASUVORK5CYII%3D&logoColor=white" alt="Project Page"/>
-  </a>
-</p>
+Integrating the **ICLR 2025 CAKE KV Cache eviction algorithm** into Tangram/vLLM,
+making layer-adaptive budget allocation and temporal-aware token scoring work
+on a real online serving engine with physical KV page reclamation.
 
-<p align="center">
-  <img src="docs/assets/speedup/speedup.png" alt="Tangram end-to-end speedup vs vLLM 0.11.1" width="100%"/>
-</p>
+---
 
-**Tangram** is a serving system that makes non-uniform KV cache compression
-practical for multi-turn LLM serving, built on top of
-[vLLM](https://github.com/vllm-project/vllm).
+## What Problem Does This Solve?
 
-**Highlights**
+Long-context LLM inference is bottlenecked by KV cache memory. Existing
+approaches (SnapKV, StreamingLLM) compress at a **uniform ratio across all
+layers** — but not all layers need the same KV budget.
 
-- **KV Cache Compression on vLLM with Ragged Paging** — non-uniform and uniform KV cache compression, natively integrated into vLLM
-- **Seamless vLLM integration** — fully compatible with paged attention, continuous batching, chunked prefill, and CUDA graph mode
-- **Real memory reclamation** — compressed KV cache is actually freed, turning memory savings into higher serving throughput
-- **Zero runtime scheduling overhead** — budget reservation and ahead-of-time (AOT) load balancing keep compression off the critical path
+CAKE (ICLR 2025) showed that **different layers have different attention entropy
+and temporal variance** — and allocating more budget to "volatile" layers
+improves quality at the same total memory.
 
-## Installation
+**But CAKE's official implementation runs on HuggingFace Transformers** with
+monkey-patched attention — it cannot be used for online vLLM serving.
+
+**Tangram** already supports non-uniform KV compression with physical page
+reclamation — but lacks CAKE's **layer preference model** and **temporal
+variance scoring**.
+
+CAKE-Serve bridges this gap.
+
+---
+
+## Quick Start
 
 ```bash
-git clone https://github.com/aiha-lab/tangram.git
-cd tangram
-uv venv --python 3.12
-source .venv/bin/activate
-VLLM_USE_PRECOMPILED=1 uv pip install --editable . --torch-backend=auto
-```
+pip install vllm  # or use precompiled
 
-## Quickstart
-
-```python
+python -c "
 from vllm import LLM, SamplingParams
 
 llm = LLM(
-    model="Qwen/Qwen3-4B-Instruct-2507",
-    compression_ratio=0.5,                  # keep 50% of the KV cache (1.0 = no compression)
-    compression_scorer="snapkv",            # snapkv | keydiff | tova | expected_attention | streamingllm | fastkvzip
-    compression_level="crosslayer_cluster", # crosslayer_cluster | perlayer_cluster | uniform
+    model='meta-llama/Llama-3.1-8B-Instruct',
+    compression_ratio=0.25,
+    compression_scorer='cake',
+    compression_level='cake_layer',
+    page_group_size=4,
+    cake_window_size=32,
+    cake_gamma=1.0,
+    cake_tau1=1.0,
+    cake_tau2=1.0,
 )
 
-out = llm.generate(["What is KV cache compression?"], SamplingParams(max_tokens=128))
-print(out[0].outputs[0].text)
+outputs = llm.generate(['Long context prompt...'], SamplingParams(temperature=0))
+"
 ```
 
-## Configuration
+---
 
-| Config | Description |
-| ------ | ----------- |
-| `compression_ratio` | KV retention fraction; `1.0` = FullKV (no compression). |
-| `compression_scorer` | Importance scorer: `snapkv` \| `keydiff` \| `tova` \| `expected_attention` \| `streamingllm` \| `fastkvzip`. |
-| `compression_level` | KV-budget scope — see below. |
-| `page_group_size` | Heads per page (H<sub>p</sub>): attention heads managed together in one KV-cache page; they share one paged budget. |
+## Key Results (A6000 48GB, Llama-3.1-8B, 32K context)
 
-**`compression_level` options**
+| Metric | FullKV | CAKE-Serve 25% |
+|--------|:------:|:--------------:|
+| Latency (batch=8) | 76.4s | **58.7s (-23%)** |
+| RULER 8K accuracy | 59.2% | 57.3% (-1.9%) |
+| KV memory | 4.00 GiB | **~1.00 GiB** |
 
-- `crosslayer_cluster` — non-uniform; a single global KV budget is distributed across all layers and heads, so important heads in any layer can keep more tokens (like [PyramidKV](https://arxiv.org/abs/2406.02069)).
-- `perlayer_cluster` — non-uniform; each layer gets an equal KV budget, distributed non-uniformly across the heads within that layer.
-- `uniform` — every attention head keeps the same number of tokens (`ratio × seq_len`); only *which* tokens are kept differs per head.
+---
 
-## Supported Compression
+## Architecture
 
-- StreamingLLM ([source](vllm/v1/attention/compression/streamingllm.py), [paper](https://arxiv.org/abs/2309.17453))
-- SnapKV ([source](vllm/v1/attention/compression/snapkv.py), [paper](https://arxiv.org/abs/2404.14469))
-- KeyDiff ([source](vllm/v1/attention/compression/keydiff.py), [paper](https://arxiv.org/abs/2504.15364))
-- TOVA ([source](vllm/v1/attention/compression/tova.py), [paper](https://arxiv.org/abs/2401.06104))
-- ExpectedAttention ([source](vllm/v1/attention/compression/expected_attention.py), [paper](https://arxiv.org/abs/2510.00636))
-- FastKVzip ([source](vllm/v1/attention/compression/gate.py), [paper](https://arxiv.org/abs/2601.17668))
+```
+CakeScorer (token scores + layer preference)
+    ↓
+KVCompressor (preference aggregation via token-weighted mean)
+    ↓
+CakeLayerLevel (budget: floor → cap → redistribute → page-align)
+    ↓
+CompressionExecutor (write keep decision → free physical KV pages)
+```
 
-## Supported Models
+Full architecture: [docs/architecture.md](docs/architecture.md)
 
-The following models have been verified with Tangram. More models are on the way.
+---
 
-| Model | Checkpoint |
-| ----- | ---------- |
-| Qwen3-4B | [`Qwen/Qwen3-4B-Instruct-2507`](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507) |
-| Llama-3.1-8B | [`meta-llama/Llama-3.1-8B-Instruct`](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) |
-| Gemma-3-12B | [`google/gemma-3-12b-it`](https://huggingface.co/google/gemma-3-12b-it) |
-| GPT-OSS-20B | [`openai/gpt-oss-20b`](https://huggingface.co/openai/gpt-oss-20b) |
-| Qwen3-30B-A3B (MoE)&nbsp;* | [`Qwen/Qwen3-30B-A3B-Instruct-2507`](https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507) |
+## Experiment Quick Reference
 
-\* Verified with `tensor_parallel_size=2`.
+| Experiment | Script | Dataset |
+|-----------|--------|---------|
+| Quality (6-way ablation) | `benchmarks/tangram/benchmark_ruler.sh` | RULER |
+| Quality (multi-turn) | `scripts/bench_scbench.py` | SCBench |
+| Offline batch | `scripts/bench_offline_batch.py` | Synthetic |
+| Performance | `scripts/bench_performance.py` | Synthetic (32K) |
+| Memory | `scripts/test_memory.py` | Synthetic |
+| Ablation | `scripts/ablation_day15.py` | Synthetic |
 
-## Accuracy
+See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for full methodology.
 
-[RULER](https://arxiv.org/abs/2404.06654) 8K
+---
 
-<details>
-<summary><b>Non-uniform (<code>perlayer_cluster</code>), H<sub>p</sub> = 4</b></summary>
+## CAKE Hyperparameters
 
-<table>
-<thead>
-<tr>
-<th rowspan="2">Model</th>
-<th rowspan="2">FullKV</th>
-<th colspan="4">SnapKV</th>
-<th colspan="4">KeyDiff</th>
-<th colspan="4">ExpectedAttention</th>
-<th colspan="4">FastKVzip</th>
-</tr>
-<tr>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>qwen3-4b</td><td>93.8</td><td>89.0</td><td>80.7</td><td>70.0</td><td>59.2</td><td>92.3</td><td>84.1</td><td>74.6</td><td>61.0</td><td>93.5</td><td>93.2</td><td>80.4</td><td>60.9</td><td>93.5</td><td>92.7</td><td>83.0</td><td>39.6</td></tr>
-<tr><td>llama3.1-8b</td><td>94.6</td><td>91.7</td><td>88.4</td><td>75.6</td><td>61.0</td><td>94.4</td><td>91.0</td><td>81.8</td><td>71.0</td><td>94.3</td><td>93.2</td><td>77.0</td><td>55.9</td><td>94.6</td><td>94.3</td><td>85.0</td><td>62.6</td></tr>
-<tr><td>gemma3-12b</td><td>91.6</td><td>77.4</td><td>67.0</td><td>59.0</td><td>51.9</td><td>85.3</td><td>78.1</td><td>69.5</td><td>50.1</td><td>90.4</td><td>85.2</td><td>72.6</td><td>60.5</td><td>91.4</td><td>89.8</td><td>82.2</td><td>52.3</td></tr>
-<tr><td>gptoss-20b</td><td>83.4</td><td>81.9</td><td>76.8</td><td>66.4</td><td>53.0</td><td>82.8</td><td>81.8</td><td>69.0</td><td>46.1</td><td>83.8</td><td>82.5</td><td>64.9</td><td>38.2</td><td>83.9</td><td>88.5</td><td>74.9</td><td>41.0</td></tr>
-</tbody>
-</table>
+| Parameter | CLI Flag | Default |
+|-----------|---------|:-------:|
+| gamma | `--compression-cake-gamma` | 1.0 |
+| tau1 (entropy) | `--compression-cake-tau1` | 1.0 |
+| tau2 (variance) | `--compression-cake-tau2` | 1.0 |
+| window_size | `--compression-cake-window-size` | 32 |
+| kernel_size | `--compression-cake-kernel-size` | 5 |
 
-</details>
+---
 
-<details>
-<summary><b>Uniform (<code>uniform</code>), H<sub>p</sub> = 4</b></summary>
+## Limitations
 
-<table>
-<thead>
-<tr>
-<th rowspan="2">Model</th>
-<th rowspan="2">FullKV</th>
-<th colspan="4">SnapKV</th>
-<th colspan="4">KeyDiff</th>
-<th colspan="4">TOVA</th>
-<th colspan="4">ExpectedAttention</th>
-<th colspan="4">StreamingLLM</th>
-</tr>
-<tr>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-<th>75%</th><th>50%</th><th>25%</th><th>10%</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>qwen3-4b</td><td>93.7</td><td>85.0</td><td>77.0</td><td>68.8</td><td>59.0</td><td>89.8</td><td>80.2</td><td>70.9</td><td>55.1</td><td>83.5</td><td>77.4</td><td>73.2</td><td>66.2</td><td>77.3</td><td>50.5</td><td>28.4</td><td>15.6</td><td>75.7</td><td>55.7</td><td>35.7</td><td>20.7</td></tr>
-<tr><td>llama3.1-8b</td><td>93.1</td><td>89.0</td><td>84.2</td><td>71.2</td><td>56.0</td><td>87.8</td><td>83.2</td><td>76.1</td><td>67.7</td><td>90.2</td><td>86.4</td><td>72.8</td><td>64.4</td><td>79.3</td><td>61.4</td><td>40.3</td><td>21.0</td><td>74.7</td><td>52.7</td><td>29.2</td><td>17.7</td></tr>
-<tr><td>gemma3-12b</td><td>91.7</td><td>76.2</td><td>66.5</td><td>58.7</td><td>51.7</td><td>86.9</td><td>80.3</td><td>71.2</td><td>50.3</td><td>72.0</td><td>63.6</td><td>54.9</td><td>43.5</td><td>63.7</td><td>46.1</td><td>29.2</td><td>21.4</td><td>75.4</td><td>56.1</td><td>36.9</td><td>24.6</td></tr>
-<tr><td>gptoss-20b</td><td>83.7</td><td>81.9</td><td>77.0</td><td>66.2</td><td>53.2</td><td>79.1</td><td>71.0</td><td>57.0</td><td>33.8</td><td>80.6</td><td>72.5</td><td>62.8</td><td>49.0</td><td>74.8</td><td>48.9</td><td>25.9</td><td>13.4</td><td>66.5</td><td>47.5</td><td>28.8</td><td>15.1</td></tr>
-<tr><td>qwen3-30b</td><td>95.3</td><td>87.5</td><td>80.7</td><td>74.3</td><td>64.7</td><td>88.7</td><td>82.0</td><td>74.4</td><td>66.9</td><td>–</td><td>–</td><td>–</td><td>–</td><td>60.6</td><td>40.5</td><td>29.0</td><td>18.5</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
-</tbody>
-</table>
+- **TP=1 only**: CakeLayerLevel raises `NotImplementedError` for TP > 1
+- **Chunked prefill approximation**: Token-weighted mean is ≈0.6–0.99 Spearman vs one-shot
+- **Scorer overhead**: 0.58ms/layer (5.1× SnapKV), acceptable at 32K+
+- **Recommended ratio**: 25%–50%
 
-</details>
+Full list: [docs/limitations.md](docs/limitations.md)
 
-## Benchmarks
+---
 
-### RULER
-
-Run one compression method at one ratio on RULER 8K:
+## Tests
 
 ```bash
-cd benchmarks/tangram
+# Install pytest
+pip install pytest
 
-MODEL=meta-llama/Llama-3.1-8B-Instruct \
-SCORER=snapkv LEVEL=crosslayer_cluster RATIOS=0.5 LENGTHS=8192 \
-bash benchmark_ruler.sh
+# Run all tests
+python -m pytest tests/cake_serve/ -v
+
+# Individual test suites
+python tests/cake_serve/test_cake_algorithm.py     # 11 tests
+python tests/cake_serve/test_cake_layer_level.py    # 7 tests
+python tests/cake_serve/test_layer_preference.py    # 5 tests
+python tests/cake_serve/test_p0_budget_invariants.py # 23 tests
 ```
 
-- `SCORER` — `snapkv` | `keydiff` | `tova` | `expected_attention` | `streamingllm`
-- `RATIOS` — KV retention fraction (`1.0` = FullKV reference)
-- `LEVEL` — selection level; see [Configuration](#configuration)
+---
 
-### Speedup
+## Project Status
 
-Measure end-to-end generation speedup — wall-clock at `r=1.0` (uncompressed)
-vs compressed ratios on an SCBench task:
+- ✅ Algorithm port (CakeScorer + CakeLayerLevel)
+- ✅ Physical KV page reclamation
+- ✅ Chunked prefill adaptation (CAKE-Chunk)
+- ✅ 6-way ablation on RULER 8K
+- ✅ 32K performance benchmark (CAKE 25%: ~20% speedup)
+- ✅ SCBench multi-turn evaluation
+- ⬜ Online serving benchmark (vllm serve + bench)
+- ⬜ Qwen3-4B evaluation
 
-```bash
-cd benchmarks/tangram/speedup
-./run_speedup.sh
-```
+---
 
-## Citation
+## Attribution
 
-If you use Tangram for your research, please cite our [paper](https://arxiv.org/abs/2606.06302):
-
-```
-@misc{kim2026tangramunlockingnonuniformkv,
-      title={Tangram: Unlocking Non-Uniform KV Cache Compression for Efficient Multi-turn LLM Serving}, 
-      author={Hyungmin Kim and Minsoo Kim and Hongseok Kim and Jungwook Choi},
-      year={2026},
-      eprint={2606.06302},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2606.06302}, 
-}
-```
-
-## Acknowledgements
-
-Tangram project is built on top of [vLLM](https://github.com/vllm-project/vllm), and its
-compression scorer implementations are adapted from [NVIDIA/kvpress](https://github.com/NVIDIA/kvpress).
+- **CAKE**: ICLR 2025, [antgroup/cakekv](https://github.com/antgroup/cakekv) (Apache 2.0)
+- **Tangram/vLLM**: [aiha-lab/tangram](https://github.com/aiha-lab/tangram) (Apache 2.0)
+- Full attribution: [ATTRIBUTION.md](ATTRIBUTION.md)
+- Upstream README preserved at [README.upstream.md](README.upstream.md)
