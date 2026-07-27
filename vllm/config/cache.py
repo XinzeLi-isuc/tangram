@@ -586,6 +586,21 @@ class CacheConfig:
                         f"compression_cake_window_size must be > 0, got "
                         f"{self.compression_cake_window_size}."
                     )
+                if not (0 < self.compression_cake_tau1 < float('inf')):
+                    raise ValueError(
+                        f"compression_cake_tau1 must be > 0 and finite, got "
+                        f"{self.compression_cake_tau1}."
+                    )
+                if not (0 < self.compression_cake_tau2 < float('inf')):
+                    raise ValueError(
+                        f"compression_cake_tau2 must be > 0 and finite, got "
+                        f"{self.compression_cake_tau2}."
+                    )
+                if not (0 <= self.compression_cake_gamma < float('inf')):
+                    raise ValueError(
+                        f"compression_cake_gamma must be >= 0 and finite, got "
+                        f"{self.compression_cake_gamma}."
+                    )
 
         # Multi-turn rides on top of ragged paging but does not
         # require compression.

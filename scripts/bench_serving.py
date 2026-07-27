@@ -3,84 +3,85 @@ Online Serving Benchmark using vllm bench serve.
 True continuous batching with async request arrival.
 
 Usage:
-    python scripts/bench_serving.py 2>&1 | tee results/raw/day17_serving.log
+    CUDA_VISIBLE_DEVICES=0 python scripts/bench_serving.py 2>&1 | tee results/raw/day17_serving.log
 """
-import json, os, subprocess, sys, time
+import json, os, socket, subprocess, sys, time, urllib.request
 
 from _cake_constants import MODEL_PATH
 
 OUTPUT_DIR = "results/raw/day17_serving"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-GPU = os.environ.get("CUDA_VISIBLE_DEVICES", "0")
 
 
-def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=100):
+def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=300):
     """Start vllm serve, run bench, collect metrics."""
     print(f"\n{'='*60}")
     print(f"Benchmark: {config_name} (ratio={ratio}, rate={request_rate})")
     print(f"{'='*60}")
 
-    # Kill any existing server
-    subprocess.run(["pkill", "-f", "vllm.entrypoints.openai"], capture_output=True)
-    time.sleep(2)
+    port = _free_port()
+    base_url = f"http://localhost:{port}"
+    out_name = f"{config_name}_r{ratio}_qps{request_rate}"
 
-    # Start server in background
     server_cmd = [
         sys.executable, "-m", "vllm.entrypoints.openai.api_server",
-        "--model", MODEL_PATH,
-        "--dtype", "auto",
-        "--max-model-len", "16384",
-        "--gpu-memory-utilization", "0.85",
-        "--tensor-parallel-size", "1",
-        "--disable-log-requests",
-        "--port", "8000",
+        "--model", MODEL_PATH, "--dtype", "auto",
+        "--max-model-len", "16384", "--gpu-memory-utilization", "0.85",
+        "--tensor-parallel-size", "1", "--disable-log-requests",
+        "--port", str(port),
     ] + extra_args
 
-    server = subprocess.Popen(server_cmd,
-                              stdout=subprocess.DEVNULL,
-                              stderr=subprocess.DEVNULL)
-    print(f"Server PID: {server.pid}")
+    server_log = os.path.join(OUTPUT_DIR, f"{out_name}_server.log")
+    with open(server_log, "w") as lf:
+        server = subprocess.Popen(server_cmd, stdout=lf, stderr=subprocess.STDOUT)
+    print(f"Server PID={server.pid} port={port}")
 
-    # Wait for server to be ready
-    for _ in range(60):
+    try:
+        _wait_ready(base_url)
+        print("Server ready")
+
+        bench_cmd = [
+            sys.executable, "-m", "vllm", "bench", "serve",
+            "--backend", "vllm", "--model", MODEL_PATH,
+            "--endpoint", "/v1/completions", "--base-url", base_url,
+            "--dataset-name", "random", "--num-prompts", str(num_prompts),
+            "--request-rate", str(request_rate), "--tokenizer", MODEL_PATH,
+            "--random-input-len", "8192", "--random-output-len", "128",
+            "--random-range-ratio", "0.1", "--seed", "42",
+            "--save-result", "--result-dir", OUTPUT_DIR,
+            "--result-filename", f"{out_name}.json",
+        ]
+        r = subprocess.run(bench_cmd, capture_output=True, text=True,
+                           timeout=600, check=True)
+        tail = r.stdout[-800:] if len(r.stdout) > 800 else r.stdout
+        print(tail)
+
+    finally:
+        server.terminate()
         try:
-            import urllib.request
-            r = urllib.request.urlopen("http://localhost:8000/health", timeout=2)
+            server.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            server.kill()
+        time.sleep(1)
+
+
+def _free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        return s.getsockname()[1]
+
+
+def _wait_ready(base_url, timeout_s=120):
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        try:
+            r = urllib.request.urlopen(f"{base_url}/health", timeout=2)
             if r.status == 200:
-                break
+                return
         except Exception:
             pass
         time.sleep(2)
-    else:
-        print("ERROR: Server did not start")
-        server.kill()
-        return None
-
-    print("Server ready")
-
-    # Run benchmark
-    bench_cmd = [
-        "vllm", "bench", "serve",
-        "--backend", "vllm",
-        "--model", MODEL_PATH,
-        "--endpoint", "/v1/completions",
-        "--base-url", "http://localhost:8000",
-        "--dataset-name", "random",
-        "--dataset-path", "",
-        "--num-prompts", str(num_prompts),
-        "--request-rate", str(request_rate),
-        "--tokenizer", MODEL_PATH,
-        "--save-result",
-        "--result-dir", OUTPUT_DIR,
-        "--result-filename", f"{config_name}_r{ratio}_qps{request_rate}.json",
-    ]
-    result = subprocess.run(bench_cmd, capture_output=True, text=True, timeout=600)
-    print(result.stdout[-500:] if len(result.stdout) > 500 else result.stdout)
-
-    # Kill server
-    server.terminate()
-    server.wait(timeout=10)
-    time.sleep(2)
+    raise RuntimeError(f"Server at {base_url} did not become ready")
 
 
 if __name__ == "__main__":
@@ -102,7 +103,7 @@ if __name__ == "__main__":
 
     for name, args, ratio in configs:
         for rate in [0.5, 1.0, 2.0]:
-            run_bench(name, args, ratio, rate, num_prompts=50)
+            run_bench(name, args, ratio, rate)
 
     print(f"\nResults saved to {OUTPUT_DIR}/")
     print("DONE")

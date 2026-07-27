@@ -483,12 +483,21 @@ class CakeLayerLevel(SelectionLevel):
         total_budget = int(eval_len * num_layers * adjusted_ratio)
         num_clusters = num_layers * num_groups
 
-        # Get layer preferences from context; fallback to uniform
+        # Get layer preferences from context; validate before use.
         layer_prefs = None
         if context is not None and context.layer_preferences is not None:
-            layer_prefs = context.layer_preferences.cpu().numpy()
-        
-        if layer_prefs is None or layer_prefs.sum() <= 0:
+            raw = context.layer_preferences.cpu().numpy()
+            # Validation: shape, finite, non-negative, at least one > 0.
+            valid = (
+                raw.shape == (num_layers,)
+                and np.isfinite(raw).all()
+                and (raw >= 0).all()
+                and raw.sum() > 0
+            )
+            if valid:
+                layer_prefs = raw.astype(np.float64)
+
+        if layer_prefs is None:
             # Uniform fallback: same budget per (layer, group)
             k_uniform = max(1, int(eval_len * adjusted_ratio))
             return np.full((num_layers, num_groups), k_uniform, dtype=np.int64)

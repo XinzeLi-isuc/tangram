@@ -34,7 +34,10 @@ CAKE-Serve bridges this gap.
 ## Quick Start
 
 ```bash
-pip install vllm  # or use precompiled
+# Clone this fork (not official vLLM)
+git clone https://github.com/XinzeLi-isuc/tangram.git cake-serve
+cd cake-serve
+pip install -e .
 
 python -c "
 from vllm import LLM, SamplingParams
@@ -45,20 +48,25 @@ llm = LLM(
     compression_scorer='cake',
     compression_level='cake_layer',
     page_group_size=4,
-    cake_window_size=32,
-    cake_gamma=1.0,
-    cake_tau1=1.0,
-    cake_tau2=1.0,
+    compression_cake_window_size=32,
+    compression_cake_gamma=1.0,
+    compression_cake_tau1=1.0,
+    compression_cake_tau2=1.0,
 )
 
 outputs = llm.generate(['Long context prompt...'], SamplingParams(temperature=0))
+print(outputs[0].outputs[0].text)
 "
 ```
 
 ---
 
-## Key Results (A6000 48GB, Llama-3.1-8B, 32K context)
+## Key Results (to be re-run after P0 fixes)
 
+Results below were collected before the preference lifecycle fix;
+`cake_layer` was effectively uniform. Re-benchmarking in progress.
+
+| Metric | FullKV | CAKE-Serve 25% |
 | Metric | FullKV | CAKE-Serve 25% |
 |--------|:------:|:--------------:|
 | Latency (batch=8) | 76.4s | **58.7s (-23%)** |
@@ -128,13 +136,12 @@ Full list: [docs/limitations.md](docs/limitations.md)
 pip install pytest
 
 # Run all tests
-python -m pytest tests/cake_serve/ -v
+python -m pytest tests/cake_serve -v
 
-# Individual test suites
-python tests/cake_serve/test_cake_algorithm.py     # 11 tests
-python tests/cake_serve/test_cake_layer_level.py    # 7 tests
-python tests/cake_serve/test_layer_preference.py    # 5 tests
-python tests/cake_serve/test_p0_budget_invariants.py # 23 tests
+# Individual suites
+python -m pytest tests/cake_serve/test_p0_budget_invariants.py -v
+python -m pytest tests/cake_serve/test_cake_layer_level.py -v
+python -m pytest tests/cake_serve/test_preference_chain.py -v
 ```
 
 ---

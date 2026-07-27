@@ -1,0 +1,38 @@
+{
+  "FullKV": {
+    "scbench_choice_eng": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_qa_eng": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_mf": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_vt": {
+      "avg": 0.0,
+      "n": 30
+    }
+  },
+  "CAKE_25": {
+    "scbench_choice_eng": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_qa_eng": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_mf": {
+      "avg": 0.0,
+      "n": 30
+    },
+    "scbench_vt": {
+      "avg": 0.0,
+      "n": 30
+    }
+  }
+}

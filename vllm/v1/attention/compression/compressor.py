@@ -493,7 +493,7 @@ class KVCompressor:
         workspace = req.score_workspace
         workspace.fill_(neg_inf)
 
-        pending, prior, prev_locked = self._collect_layer_tensors(
+        pending, prior, prev_locked, layer_prefs = self._collect_layer_tensors(
             req, num_layers, num_groups, num_kv_heads,
             win_size, chunk_len, dtype, device, neg_inf)
         if win_size > 0:
@@ -550,9 +550,7 @@ class KVCompressor:
             req.cached_sorted_indices = self._rank_positions(
                 eval_scores, num_layers, num_kv_heads, num_groups)
             if adjusted_ratio > 0.0:
-                # Collect layer preferences for CAKE budget allocation
                 pref_context = None
-                layer_prefs = self._collect_preferences(req, num_layers)
                 if layer_prefs is not None:
                     pref_context = SelectionContext(
                         layer_preferences=layer_prefs)
@@ -753,15 +751,19 @@ class KVCompressor:
         dtype: torch.dtype,
         device: torch.device,
         neg_inf: float,
-    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor | None]:
         """Stack per-layer pending / prior / prev_locked into [L, ...]
-        tensors. Consumes pending_score on every layer."""
+        tensors. Reads and clears pending_score AND pending_preference,
+        returning preferences as a [num_layers] tensor (or None if no
+        CAKE scorer is active). Caller consumes preferences BEFORE
+        the tensors are handed to the keep-decision path."""
         empty_prior = torch.full(
             (num_kv_heads, win_size), neg_inf, dtype=dtype, device=device)
         zero_locked = torch.zeros(num_groups, dtype=torch.long, device=device)
         pending_list: list[torch.Tensor] = []
         prior_list: list[torch.Tensor] = []
         locked_list: list[torch.Tensor] = []
+        pref_list: list[torch.Tensor] = []
         for layer_idx in range(num_layers):
             state = req.layer_states.get(layer_idx)
             if state is None or state.pending_score is None:
@@ -770,8 +772,12 @@ class KVCompressor:
                     "— receive_score must run first.")
             fresh = state.pending_score
             state.pending_score = None
-            # Also consume pending_preference (CAKE scorer)
+            # Collect preference BEFORE clearing (CAKE scorer only).
+            pref = state.pending_preference
             state.pending_preference = None
+            pref_list.append(
+                pref.detach().view(1) if pref is not None
+                else torch.zeros(1, device=device, dtype=torch.float32))
             if fresh.shape[1] != chunk_len:
                 raise ValueError(
                     f"layer {layer_idx}: pending_score chunk_len "
@@ -802,7 +808,10 @@ class KVCompressor:
                      num_layers, num_kv_heads, 0,
                      dtype=dtype, device=device))
         prev_locked = torch.stack(locked_list, dim=0)
-        return pending, prior, prev_locked
+        # torch.stack avoids 32 × .item() GPU→CPU syncs.
+        prefs_stacked = torch.stack(pref_list, dim=0).view(num_layers)
+        layer_prefs = prefs_stacked if prefs_stacked.sum() > 0 else None
+        return pending, prior, prev_locked, layer_prefs
 
     def _collect_preferences(
         self,

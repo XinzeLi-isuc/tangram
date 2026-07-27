@@ -116,8 +116,7 @@ class CakeScorer(QKScorer):
         k = key.reshape(chunk_len, num_kv_heads, head_size)
 
         # Observation window: trailing queries only.
-        # Short chunks shrink the window to at least 1.
-        window = self.cake_window_size if chunk_len >= 1000 else min(16, chunk_len)
+        window = min(self.cake_window_size, chunk_len)
 
         # Use the last `window` queries: [num_kv_heads, num_q_per_kv, window, d]
         q_obs = q[chunk_len - window:].permute(1, 2, 0, 3)
@@ -153,7 +152,9 @@ class CakeScorer(QKScorer):
 
             # Temporal variance: var over query positions (dim=-2), then sum all
             # CAKE: var = torch.var(attention, dim=-2).sum(0).sum(0).sum(0)
-            temporal_var = torch.var(attn_hist, dim=-2).sum()
+            # Use correction=0 (population variance) to match CAKE reference
+            # and avoid NaN when the observation window has only 1 query.
+            temporal_var = torch.var(attn_hist, dim=-2, correction=0).sum()
 
             # Layer preference: P_l = entropy^(1/tau1) * var^(1/tau2)
             layer_pref = (entropy ** (1.0 / tau1) * temporal_var ** (1.0 / tau2)).to(
@@ -165,7 +166,7 @@ class CakeScorer(QKScorer):
         # --- Token Scores ---
         # CAKE: S = Mean_q(A) + gamma * Var_q(A), then avg_pool1d
         attn_mean = attn_soft.mean(dim=-2)       # [num_kv_heads, num_q_per_kv, T]
-        attn_var = attn_soft.var(dim=-2)         # [num_kv_heads, num_q_per_kv, T]
+        attn_var = attn_soft.var(dim=-2, correction=0)         # [num_kv_heads, num_q_per_kv, T]
 
         raw_score = attn_mean + gamma * attn_var  # [num_kv_heads, num_q_per_kv, T]
 
