@@ -548,15 +548,10 @@ class CakeLayerLevel(SelectionLevel):
                 budgets[idx] -= 1
                 diff += 1
 
-        # 6. Spread each layer's budget across its groups
-        #    For simplicity, divide evenly (floor + remainder)
+        # 6. 同一层的所有page groups使用相同长度 (CAKE 语义：层预算不需要在group间划分)
         per_group = np.zeros((num_layers, num_groups), dtype=np.int64)
         for l in range(num_layers):
-            layer_budget = budgets[l]
-            base = layer_budget // num_groups
-            extra_g = layer_budget % num_groups
-            per_group[l, :extra_g] = base + 1
-            per_group[l, extra_g:] = base
+            per_group[l, :] = int(budgets[l])
 
         return per_group
 
