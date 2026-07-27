@@ -2,55 +2,108 @@
 Day 14: Performance Benchmark (32K context, 128 output tokens)
 FullKV vs CAKE 25% vs CAKE 50%
 Each config: warmup 2x, measurement 5x
+
+Fixes:
+  - Use prompt_token_ids for precise token count (no encode→truncate→decode→encode drift)
+  - Record actual input/output token counts per trial
+  - Write per-config JSON before OOM break (was silently skipped)
+  - Verify actual_input_tokens + 128 <= max_model_len
 """
-import json, os, time, numpy as np
+import json, os, time
+import numpy as np
 
 from _cake_constants import MODEL_PATH as MODEL
 OUTPUT_DIR = "results/raw/day14_perf"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-TEXT = ("KV cache compression is a critical technique for efficient LLM inference. " * 5000)
-
+TEXT = "KV cache compression is a critical technique for efficient LLM inference. "
 MAX_MODEL_LEN = 32768 + 128  # room for output
+TARGET_INPUT_TOKENS = MAX_MODEL_LEN - 128
+MAX_OUTPUT_TOKENS = 128
 
-def make_32k_prompt(tokenizer):
-    target = MAX_MODEL_LEN - 128
-    encoded = tokenizer.encode(TEXT)
-    prompt = tokenizer.decode(encoded[:target])
-    actual = len(tokenizer.encode(prompt))
-    assert actual >= target - 100, f"prompt tokens {actual} < {target-100}"
-    return prompt
+
+def make_32k_prompt_ids(tokenizer):
+    """Build exact token_ids of TARGET_INPUT_TOKENS length by repeating TEXT."""
+    base_ids = tokenizer.encode(TEXT)
+    # strip BOS if present, we'll add it back
+    if base_ids and base_ids[0] == tokenizer.bos_token_id:
+        bos = base_ids[0]
+        rep = base_ids[1:]
+    else:
+        bos = base_ids[0] if base_ids else None
+        rep = base_ids
+
+    if not rep:
+        raise RuntimeError("TEXT encodes to 0 repeatable tokens")
+
+    prompt_ids = [bos] if bos is not None else []
+    while len(prompt_ids) + len(rep) <= TARGET_INPUT_TOKENS:
+        prompt_ids.extend(rep)
+    # Fill remaining to exact target
+    needed = TARGET_INPUT_TOKENS - len(prompt_ids)
+    if needed > 0:
+        prompt_ids.extend(rep[:needed])
+
+    assert len(prompt_ids) == TARGET_INPUT_TOKENS, \
+        f"prompt_ids length {len(prompt_ids)} != target {TARGET_INPUT_TOKENS}"
+    return prompt_ids
+
 
 def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
     from vllm import LLM, SamplingParams
     from transformers import AutoTokenizer
+
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
-    prompt_32k = make_32k_prompt(tokenizer)
-    sp = SamplingParams(temperature=0, max_tokens=128, min_tokens=128, ignore_eos=True)
+    prompt_ids = make_32k_prompt_ids(tokenizer)
+    sp = SamplingParams(
+        temperature=0, max_tokens=MAX_OUTPUT_TOKENS,
+        min_tokens=MAX_OUTPUT_TOKENS, ignore_eos=True,
+    )
     results = {}
 
     for bs in batch_sizes:
         print(f"\n  [{name}] batch={bs}", flush=True)
-        prompts = [prompt_32k] * bs
+        result_entry = None
+
         try:
-            llm = LLM(model=MODEL, compression_ratio=ratio,
-                      compression_scorer=scorer, compression_level=level,
-                      page_group_size=4,
-                      max_model_len=MAX_MODEL_LEN, gpu_memory_utilization=0.90,
-                      max_num_seqs=bs+2)
+            llm = LLM(
+                model=MODEL, compression_ratio=ratio,
+                compression_scorer=scorer, compression_level=level,
+                page_group_size=4,
+                max_model_len=MAX_MODEL_LEN, gpu_memory_utilization=0.90,
+                max_num_seqs=bs + 2,
+            )
+
+            # Warmup
             for w in range(warmup):
-                _ = llm.generate(prompts, sp)
+                _ = llm.generate(
+                    {"prompt_token_ids": prompt_ids}, sp,
+                )
                 print(f"    warmup {w+1}/{warmup} done", flush=True)
+
+            # Measurement
+            prompt_dict = {"prompt_token_ids": prompt_ids}
+            prompt_list = [prompt_dict] * bs
             times = []
-            for t in range(trials):
+            actual_output_lens = []
+            for t_idx in range(trials):
                 t0 = time.time()
-                out = llm.generate(prompts, sp)
+                out = llm.generate(prompt_list, sp)
                 elapsed = time.time() - t0
                 times.append(elapsed)
-                print(f"    trial {t+1}/{trials}: {elapsed:.1f}s", flush=True)
+                # Record actual output token counts from first sequence
+                out_len = len(out[0].outputs[0].token_ids)
+                actual_output_lens.append(out_len)
+                print(f"    trial {t_idx+1}/{trials}: {elapsed:.1f}s "
+                      f"(output={out_len} tok)", flush=True)
+
             t_arr = np.array(times)
-            results[bs] = {
-                "batch_size": bs, "config": name,
+            result_entry = {
+                "batch_size": bs,
+                "config": name,
+                "input_tokens": len(prompt_ids),
+                "output_tokens_actual": actual_output_lens,
+                "output_tokens_target": MAX_OUTPUT_TOKENS,
                 "median_s": float(np.median(t_arr)),
                 "p50_s": float(np.percentile(t_arr, 50)),
                 "p95_s": float(np.percentile(t_arr, 95)),
@@ -59,19 +112,34 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
                 "times_s": t_arr.tolist(),
                 "throughput_req_s": float(bs / np.median(t_arr)),
             }
+            results[bs] = result_entry
             del llm
+
         except Exception as e:
             if "OOM" in str(e).upper() or "out of memory" in str(e).lower():
                 print(f"    OOM at batch={bs}", flush=True)
-                results[bs] = {"batch_size": bs, "error": "OOM"}
+                result_entry = {"batch_size": bs, "error": "OOM"}
+                results[bs] = result_entry
+                # Write per-config JSON before breaking so OOM cell is preserved
+                _write_config_json(name, results)
                 break
-            raise  # fail-fast on other errors (code bugs, config issues)
-        with open(os.path.join(OUTPUT_DIR, f"{name}_results.json"), "w") as f:
-            json.dump(results, f, indent=2, default=str)
+            raise  # fail-fast on other errors
+        finally:
+            # Write per-config JSON after every batch size (even on success)
+            if result_entry is not None and "error" not in result_entry:
+                _write_config_json(name, results)
+
     return results
 
+
+def _write_config_json(name, results):
+    path = os.path.join(OUTPUT_DIR, f"{name}_results.json")
+    with open(path, "w") as f:
+        json.dump(results, f, indent=2, default=str)
+
+
 print("Day 14: Performance Benchmark (32K)", flush=True)
-print("="*60, flush=True)
+print("=" * 60, flush=True)
 
 batch_sizes = [1, 2, 4, 6, 8, 10]
 
@@ -79,16 +147,17 @@ r1 = run_config("FullKV", "snapkv", "uniform", 1.0, batch_sizes)
 r2 = run_config("CAKE_25", "cake", "cake_layer", 0.25, batch_sizes)
 r3 = run_config("CAKE_50", "cake", "cake_layer", 0.5, batch_sizes)
 
-print("\n\n" + "="*60, flush=True)
+print("\n\n" + "=" * 60, flush=True)
 print("SUMMARY", flush=True)
-print("="*60, flush=True)
+print("=" * 60, flush=True)
 print(f"{'Config':<12} {'Batch':>5} {'Med(s)':>8} {'P95(s)':>8} {'req/s':>8}", flush=True)
-print("-"*45, flush=True)
+print("-" * 45, flush=True)
 for name, r in [("FullKV", r1), ("CAKE_25", r2), ("CAKE_50", r3)]:
     for bs in sorted(r.keys()):
         d = r[bs]
         if "median_s" in d:
-            print(f"{name:<12} {bs:>5} {d['median_s']:>8.1f} {d['p95_s']:>8.1f} {d['throughput_req_s']:>8.1f}", flush=True)
+            print(f"{name:<12} {bs:>5} {d['median_s']:>8.1f} "
+                  f"{d['p95_s']:>8.1f} {d['throughput_req_s']:>8.1f}", flush=True)
         else:
             print(f"{name:<12} {bs:>5} {'OOM':>8}", flush=True)
 

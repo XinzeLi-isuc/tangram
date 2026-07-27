@@ -7,7 +7,8 @@ Usage:
     cd ~/cake-serve
     CUDA_VISIBLE_DEVICES=0 python scripts/test_memory.py
 """
-import json, os, shutil, sys, tempfile, time, numpy as np
+import json, os, shutil, sys, tempfile, time
+import numpy as np
 
 from _cake_constants import MODEL_PATH
 
@@ -24,6 +25,85 @@ LENGTH = 8192
 MAX_MODEL_LEN = 16384
 
 
+def _parse_retention_dump(dump_dir: str, requested_ratio: float):
+    """Parse retention dump .npz files and compute effective ratios.
+
+    Schema (from vllm/v1/attention/compression/profiling.py):
+        kept, total, sink, win, eval_len, req, rank
+
+    Returns (physical_ratio, context_ratio, total_kept, total_seen, num_dumps).
+    """
+    REQUIRED = {"kept", "total", "sink", "win", "eval_len", "req", "rank"}
+
+    npz_files = sorted(
+        f for f in os.listdir(dump_dir) if f.endswith(".npz"))
+
+    if not npz_files:
+        if requested_ratio < 1.0:
+            raise RuntimeError(
+                f"ratio={requested_ratio} < 1 but no retention dump .npz files "
+                f"found in {dump_dir} — compression may not have triggered. "
+                "Check max_model_len, prompt length, and compression config."
+            )
+        # FullKV (ratio=1.0): no compression dumps is expected
+        return 1.0, 1.0, 0, 0, 0
+
+    # Deduplicate by (req, rank): pick record with max eval_len.
+    # A single request can trigger multiple compression decisions
+    # (e.g. chunked prefill); only the final decision matters.
+    by_key: dict = {}
+    for fn in npz_files:
+        path = os.path.join(dump_dir, fn)
+        d = np.load(path, allow_pickle=False)
+
+        missing = REQUIRED - set(d.files)
+        if missing:
+            raise RuntimeError(
+                f"Invalid retention dump {fn}: missing fields {sorted(missing)}. "
+                f"Found: {sorted(d.files)}"
+            )
+
+        key = (str(d["req"]), int(d["rank"]))
+        eval_len = int(d["eval_len"])
+        if key not in by_key or eval_len > by_key[key]["eval_len"]:
+            by_key[key] = {
+                "kept": d["kept"].astype(np.int64),
+                "total": d["total"].astype(np.int64),
+                "sink": int(d["sink"]),
+                "win": int(d["win"]),
+                "eval_len": eval_len,
+            }
+
+    # Aggregate across all deduplicated (req, rank) records
+    kept_all = np.concatenate([rec["kept"].ravel() for rec in by_key.values()])
+    total_all = np.concatenate([rec["total"].ravel() for rec in by_key.values()])
+    physical_ratio = float(kept_all.sum() / total_all.sum()) if total_all.sum() > 0 else 1.0
+
+    # Context-only ratio: exclude always-kept sink + recent window
+    ctx_kept_parts = []
+    ctx_total_parts = []
+    for rec in by_key.values():
+        k = rec["kept"].ravel()
+        t = rec["total"].ravel()
+        sink = rec["sink"]
+        win = rec["win"]
+        ctx_k = np.clip(k - sink - win, 0, None)
+        ctx_t = np.maximum(t - sink, 1)
+        ctx_kept_parts.append(ctx_k)
+        ctx_total_parts.append(ctx_t)
+    context_kept = np.concatenate(ctx_kept_parts)
+    context_total = np.concatenate(ctx_total_parts)
+    context_ratio = float(context_kept.sum() / context_total.sum())
+
+    return (
+        physical_ratio,
+        context_ratio,
+        int(kept_all.sum()),
+        int(total_all.sum()),
+        len(by_key),
+    )
+
+
 def main():
     from vllm import LLM, SamplingParams
     from transformers import AutoTokenizer, AutoConfig
@@ -33,6 +113,12 @@ def main():
     num_kv_heads = getattr(config, "num_key_value_heads", config.num_attention_heads)
     head_dim = config.hidden_size // config.num_attention_heads
     num_groups = num_kv_heads // 4  # page_group_size=4
+
+    # Estimate KV cache GiB (fp16): 2 * L * H * D * 2 bytes
+    kv_bytes = 2 * num_layers * num_kv_heads * head_dim * 2
+    kv_gib = kv_bytes / (1024 ** 3)
+    print(f"Model: L={num_layers} H_kv={num_kv_heads} D={head_dim} "
+          f"groups={num_groups} KV_cache≈{kv_gib:.1f} GiB/token")
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
     ids = tokenizer.encode("KV cache compression reduces GPU memory. ")
@@ -52,6 +138,7 @@ def main():
 
         dump_dir = os.path.join(tempfile.mkdtemp(), "retention")
         os.makedirs(dump_dir)
+        success = False
 
         try:
             llm = LLM(
@@ -72,50 +159,50 @@ def main():
             num_out = len(out[0].outputs[0].token_ids)
             del llm
 
-            # Read retention dump to compute effective_ratio
-            npz_files = sorted(
-                f for f in os.listdir(dump_dir) if f.endswith(".npz"))
-            total_kept = 0
-            total_full = 0
-            for fn in npz_files:
-                data = np.load(os.path.join(dump_dir, fn))
-                total_kept += int(data.get("kept_lengths", np.array(0)).sum())
-                total_full += int(data.get("total_seen", np.array(0)).sum())
-
-            eff_ratio = (total_kept / total_full) if total_full > 0 else 1.0
+            phys_r, ctx_r, tot_kept, tot_seen, n_dumps = _parse_retention_dump(
+                dump_dir, ratio)
 
             results.append({
                 "config": label, "ratio": ratio,
                 "input_tokens": actual_tokens,
                 "output_tokens": num_out,
                 "time_s": round(elapsed, 2),
-                "effective_ratio": round(eff_ratio, 4),
-                "total_kept": total_kept,
-                "total_seen": total_full,
+                "physical_ratio": round(phys_r, 4),
+                "context_ratio": round(ctx_r, 4),
+                "total_kept": tot_kept,
+                "total_seen": tot_seen,
+                "num_dumps": n_dumps,
                 "status": "OK",
             })
             print(f"  OK: {num_out} tok, {elapsed:.1f}s, "
-                  f"eff_ratio={eff_ratio:.4f}")
+                  f"physical_ratio={phys_r:.4f}, context_ratio={ctx_r:.4f} "
+                  f"({n_dumps} dumps)")
+            success = True
         except Exception as e:
             results.append({
                 "config": label, "ratio": ratio,
-                "error": str(e)[:300], "status": "FAIL",
+                "error": f"{type(e).__name__}: {str(e)[:300]}",
+                "status": "FAIL",
             })
-            print(f"  FAIL: {type(e).__name__}")
+            print(f"  FAIL: {type(e).__name__}: {e}")
             raise
         finally:
-            shutil.rmtree(dump_dir, ignore_errors=True)
+            if success:
+                shutil.rmtree(dump_dir, ignore_errors=True)
+            else:
+                print(f"  (dump retained at {dump_dir} for debugging)")
 
     with open(os.path.join(OUTPUT_DIR, "memory_results.json"), "w") as f:
         json.dump(results, f, indent=2)
 
     print(f"\n{'='*60}")
-    print(f"{'Config':<12} {'Ratio':<6} {'EffRatio':<10} {'Toks':<8} {'Status'}")
-    print(f"{'-'*12} {'-'*6} {'-'*10} {'-'*8} {'-'*6}")
+    print(f"{'Config':<12} {'Ratio':<6} {'PhysR':<8} {'CtxR':<8} {'Toks':<8} {'Status'}")
+    print(f"{'-'*12} {'-'*6} {'-'*8} {'-'*8} {'-'*8} {'-'*6}")
     for r in results:
-        eff = f"{r.get('effective_ratio', 0):.4f}" if 'effective_ratio' in r else "N/A"
-        out = str(r.get("output_tokens", "ERR"))
-        print(f"{r['config']:<12} {r['ratio']:<6.2f} {eff:<10} {out:<8} {r['status']}")
+        phys = f"{r.get('physical_ratio', 0):.4f}" if 'physical_ratio' in r else "N/A"
+        ctx = f"{r.get('context_ratio', 0):.4f}" if 'context_ratio' in r else "N/A"
+        out_tok = str(r.get("output_tokens", "ERR"))
+        print(f"{r['config']:<12} {r['ratio']:<6.2f} {phys:<8} {ctx:<8} {out_tok:<8} {r['status']}")
 
     print(f"\nSaved: {OUTPUT_DIR}/memory_results.json")
     print("DONE")
