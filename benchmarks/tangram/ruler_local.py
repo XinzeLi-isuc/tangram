@@ -70,9 +70,14 @@ def load_ruler(
             f"Unknown RULER length {length!r}. Available: {list(RULER_LENGTHS)}.")
     keep = set(tasks) if tasks else None
 
-    # Find the cached arrow file
+    # Find the cached arrow file for this specific length config.
+    # The cache layout is:   .../simonjegou___ruler/<length>/test-*.arrow
+    # Searching only the length-specific subdirectory prevents mixing data
+    # from different context lengths (which would make a length sweep
+    # meaningless — all lengths would read the same data).
     cache_base = Path.home() / ".cache" / "huggingface" / "datasets" / "simonjegou___ruler"
-    arrow_files = sorted(cache_base.rglob("*.arrow"))
+    config_dir = cache_base / length
+    arrow_files = sorted(config_dir.rglob("test-*.arrow")) if config_dir.is_dir() else []
     if not arrow_files:
         # Fallback to datasets library
         from datasets import load_dataset

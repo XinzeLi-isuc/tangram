@@ -32,10 +32,9 @@ MAX_MODEL_LEN = 32768 + 128  # room for output
 
 def main():
     from vllm import LLM, SamplingParams
+    from transformers import AutoTokenizer
 
-    tokenizer = LLM(model=MODEL_PATH, max_model_len=100,
-                    enforce_eager=True, gpu_memory_utilization=0.3,
-                    disable_log_stats=True).get_tokenizer()
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
     # Build prompt with exact token count
     ids = tokenizer.encode("KV cache compression reduces GPU memory footprint. ")
     repeat_len = len(ids) - 1  # strip BOS

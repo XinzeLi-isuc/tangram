@@ -94,7 +94,7 @@ Full architecture: [docs/architecture.md](docs/architecture.md)
 | Experiment | Script | Dataset |
 |-----------|--------|---------|
 | Quality (6-way ablation) | `benchmarks/tangram/benchmark_ruler.sh` | RULER |
-| Quality (multi-turn) | `scripts/bench_scbench.py` | SCBench |
+| Quality (multi-turn) | `SCORER=cake bash benchmarks/tangram/benchmark_scbench.sh` | SCBench |
 | Offline batch | `scripts/bench_offline_batch.py` | Synthetic |
 | Performance | `scripts/bench_performance.py` | Synthetic (32K) |
 | Memory | `scripts/test_memory.py` | Synthetic |

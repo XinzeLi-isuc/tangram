@@ -26,7 +26,7 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
     prompt_32k = make_32k_prompt(tokenizer)
-    sp = SamplingParams(temperature=0, max_tokens=128)
+    sp = SamplingParams(temperature=0, max_tokens=128, min_tokens=128, ignore_eos=True)
     results = {}
 
     for bs in batch_sizes:
@@ -61,10 +61,11 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
             }
             del llm
         except Exception as e:
-            print(f"    FAIL: {str(e)[:200]}", flush=True)
-            results[bs] = {"batch_size": bs, "error": str(e)[:300]}
-            if "OOM" in str(e).upper():
+            if "OOM" in str(e).upper() or "out of memory" in str(e).lower():
+                print(f"    OOM at batch={bs}", flush=True)
+                results[bs] = {"batch_size": bs, "error": "OOM"}
                 break
+            raise  # fail-fast on other errors (code bugs, config issues)
         with open(os.path.join(OUTPUT_DIR, f"{name}_results.json"), "w") as f:
             json.dump(results, f, indent=2, default=str)
     return results
