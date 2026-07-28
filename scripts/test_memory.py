@@ -143,7 +143,16 @@ def main():
     num_layers = config.num_hidden_layers
     num_kv_heads = getattr(config, "num_key_value_heads", config.num_attention_heads)
     head_dim = config.hidden_size // config.num_attention_heads
-    dtype_bytes = 2  # fp16/bf16
+
+    # Detect real dtype from model config (not hardcoded fp16)
+    dt = getattr(config, "torch_dtype", None) or getattr(config, "dtype", None)
+    if dt is not None:
+        import torch
+        dtype_bytes = torch.tensor([], dtype=dt).element_size()
+        dtype_name = str(dt).split(".")[-1]  # e.g. "bfloat16"
+    else:
+        dtype_bytes = 2
+        dtype_name = "fp16"
 
     # KV cache size: 2 (K+V) × L × H_kv × D × dtype_bytes  bytes per token
     bytes_per_token = 2 * num_layers * num_kv_heads * head_dim * dtype_bytes
@@ -154,11 +163,11 @@ def main():
     prompt_ids = [ids[0]] + (ids[1:] * (LENGTH // repeat_len + 2))[:LENGTH]
     prompt = tokenizer.decode(prompt_ids)
     actual_tokens = len(tokenizer.encode(prompt))
-    full_kv_gib = bytes_per_token * actual_tokens / (1024 ** 3)
+    estimated_full_kv_gib = bytes_per_token * actual_tokens / (1024 ** 3)
 
     print(f"Model: L={num_layers} H_kv={num_kv_heads} D={head_dim} "
-          f"dtype_bytes={dtype_bytes} page_groups={PAGE_GROUP_SIZE}")
-    print(f"Prompt: {actual_tokens} tokens → full KV ≈ {full_kv_gib:.3f} GiB")
+          f"dtype={dtype_name} page_group_size={PAGE_GROUP_SIZE}")
+    print(f"Prompt: {actual_tokens} tokens → estimated full KV ≈ {estimated_full_kv_gib:.3f} GiB")
 
     sp = SamplingParams(temperature=0, max_tokens=32, ignore_eos=True)
     results = []
@@ -199,8 +208,8 @@ def main():
             phys_r, ctx_r, tot_kept, tot_seen, n_dumps = _parse_retention_dump(
                 dump_dir, ratio)
 
-            retained_kv_gib = full_kv_gib * phys_r
-            saved_kv_gib = full_kv_gib - retained_kv_gib
+            estimated_retained_kv_gib = estimated_full_kv_gib * phys_r
+            estimated_saved_kv_gib = estimated_full_kv_gib - estimated_retained_kv_gib
 
             results.append({
                 "config": label,
@@ -213,17 +222,17 @@ def main():
                 "total_kept": tot_kept,
                 "total_seen": tot_seen,
                 "num_dumps": n_dumps,
-                "full_kv_gib": round(full_kv_gib, 4),
-                "retained_kv_gib": round(retained_kv_gib, 4),
-                "saved_kv_gib": round(saved_kv_gib, 4),
+                "estimated_full_kv_gib": round(estimated_full_kv_gib, 4),
+                "estimated_retained_kv_gib": round(estimated_retained_kv_gib, 4),
+                "estimated_saved_kv_gib": round(estimated_saved_kv_gib, 4),
                 "status": "OK",
             })
             print(f"  OK: {num_out} tok, {elapsed:.1f}s, "
                   f"physical_ratio={phys_r:.4f}, context_ratio={ctx_r:.4f} "
                   f"({n_dumps} dumps)")
-            print(f"  KV: full={full_kv_gib:.3f} GiB, "
-                  f"retained={retained_kv_gib:.3f} GiB, "
-                  f"saved={saved_kv_gib:.3f} GiB")
+            print(f"  Est.KV: full={estimated_full_kv_gib:.3f} GiB, "
+                  f"retained={estimated_retained_kv_gib:.3f} GiB, "
+                  f"saved={estimated_saved_kv_gib:.3f} GiB")
             success = True
         except Exception as e:
             results.append({
@@ -244,7 +253,7 @@ def main():
         "model": MODEL_PATH,
         "gpu": _get_gpu_name(),
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "dtype": "fp16" if dtype_bytes == 2 else f"{dtype_bytes*8}-bit",
+        "dtype": dtype_name,
         "page_group_size": PAGE_GROUP_SIZE,
         "compression_window_size": COMPRESSION_WINDOW_SIZE,
         "compression_n_sink_tokens": COMPRESSION_N_SINK_TOKENS,
@@ -262,14 +271,15 @@ def main():
 
     print(f"\n{'='*60}")
     print(f"{'Config':<12} {'Ratio':<6} {'PhysR':<8} {'CtxR':<8} "
-          f"{'FullGiB':<8} {'SavedGiB':<8} {'Status'}")
-    print(f"{'-'*12} {'-'*6} {'-'*8} {'-'*8} {'-'*8} {'-'*8} {'-'*6}")
+          f"{'EstFull':<10} {'EstSaved':<10} {'Status'}")
+    print(f"{'-'*12} {'-'*6} {'-'*8} {'-'*8} {'-'*10} {'-'*10} {'-'*6}")
     for r in results:
         phys = f"{r.get('physical_ratio', 0):.4f}" if 'physical_ratio' in r else "N/A"
-        full = f"{r.get('full_kv_gib', 0):.3f}" if 'full_kv_gib' in r else "N/A"
-        saved = f"{r.get('saved_kv_gib', 0):.3f}" if 'saved_kv_gib' in r else "N/A"
-        print(f"{r['config']:<12} {r['ratio']:<6.2f} {phys:<8} "
-              f"{full:<8} {saved:<8} {r['status']}")
+        ctx  = f"{r.get('context_ratio', 0):.4f}" if 'context_ratio' in r else "N/A"
+        full = f"{r.get('estimated_full_kv_gib', 0):.3f}" if 'estimated_full_kv_gib' in r else "N/A"
+        saved = f"{r.get('estimated_saved_kv_gib', 0):.3f}" if 'estimated_saved_kv_gib' in r else "N/A"
+        print(f"{r['config']:<12} {r['ratio']:<6.2f} {phys:<8} {ctx:<8} "
+              f"{full:<10} {saved:<10} {r['status']}")
 
     print(f"\nSaved: {out_path}")
     print("DONE")

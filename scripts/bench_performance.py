@@ -95,10 +95,17 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
                     len(item.outputs[0].token_ids) for item in out
                 ]
                 all_output_lens.append(output_lens)
-                ok = sum(1 for n in output_lens if n == MAX_OUTPUT_TOKENS)
                 print(f"    trial {t_idx+1}/{trials}: {elapsed:.1f}s "
-                      f"(output={ok}/{bs} matched {MAX_OUTPUT_TOKENS})",
+                      f"(output={output_lens})",
                       flush=True)
+
+            # Fail-fast if any batch member didn't produce target output length
+            for t_idx, output_lens in enumerate(all_output_lens):
+                if any(n != MAX_OUTPUT_TOKENS for n in output_lens):
+                    raise RuntimeError(
+                        f"Trial {t_idx+1}: expected all outputs to be "
+                        f"{MAX_OUTPUT_TOKENS} tokens, got {output_lens}"
+                    )
 
             t_arr = np.array(times)
             result_entry = {
