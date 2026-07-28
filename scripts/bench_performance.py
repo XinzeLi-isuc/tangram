@@ -74,35 +74,38 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
                 max_num_seqs=bs + 2,
             )
 
-            # Warmup
+            prompt_dict = {"prompt_token_ids": prompt_ids}
+            prompt_list = [prompt_dict] * bs
+
+            # Warmup with same batch size as measurement
             for w in range(warmup):
-                _ = llm.generate(
-                    {"prompt_token_ids": prompt_ids}, sp,
-                )
+                _ = llm.generate(prompt_list, sp)
                 print(f"    warmup {w+1}/{warmup} done", flush=True)
 
             # Measurement
-            prompt_dict = {"prompt_token_ids": prompt_ids}
-            prompt_list = [prompt_dict] * bs
             times = []
-            actual_output_lens = []
+            all_output_lens = []
             for t_idx in range(trials):
                 t0 = time.time()
                 out = llm.generate(prompt_list, sp)
                 elapsed = time.time() - t0
                 times.append(elapsed)
-                # Record actual output token counts from first sequence
-                out_len = len(out[0].outputs[0].token_ids)
-                actual_output_lens.append(out_len)
+                # Record all output lengths, verify all hit target
+                output_lens = [
+                    len(item.outputs[0].token_ids) for item in out
+                ]
+                all_output_lens.append(output_lens)
+                ok = sum(1 for n in output_lens if n == MAX_OUTPUT_TOKENS)
                 print(f"    trial {t_idx+1}/{trials}: {elapsed:.1f}s "
-                      f"(output={out_len} tok)", flush=True)
+                      f"(output={ok}/{bs} matched {MAX_OUTPUT_TOKENS})",
+                      flush=True)
 
             t_arr = np.array(times)
             result_entry = {
                 "batch_size": bs,
                 "config": name,
                 "input_tokens": len(prompt_ids),
-                "output_tokens_actual": actual_output_lens,
+                "output_tokens_actual": all_output_lens,
                 "output_tokens_target": MAX_OUTPUT_TOKENS,
                 "median_s": float(np.median(t_arr)),
                 "p50_s": float(np.percentile(t_arr, 50)),
