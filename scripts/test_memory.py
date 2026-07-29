@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import numpy as np
 
 from _cake_constants import MODEL_PATH
+from _real_data import build_real_prompt_ids
 
 OUTPUT_DIR = "results/raw/day10_memory"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -158,11 +159,9 @@ def main():
     bytes_per_token = 2 * num_layers * num_kv_heads * head_dim * dtype_bytes
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-    ids = tokenizer.encode("KV cache compression reduces GPU memory. ")
-    repeat_len = len(ids) - 1
-    prompt_ids = [ids[0]] + (ids[1:] * (LENGTH // repeat_len + 2))[:LENGTH]
+    prompt_ids = build_real_prompt_ids(tokenizer, LENGTH)
     prompt = tokenizer.decode(prompt_ids)
-    actual_tokens = len(tokenizer.encode(prompt))
+    actual_tokens = len(prompt_ids)
     estimated_full_kv_gib = bytes_per_token * actual_tokens / (1024 ** 3)
 
     print(f"Model: L={num_layers} H_kv={num_kv_heads} D={head_dim} "

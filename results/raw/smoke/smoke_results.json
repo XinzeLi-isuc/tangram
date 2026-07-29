@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "git_commit": "b6e8c14ad2da406ec5aa7d50f4a5f3b521735d86",
+    "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "gpu": "NVIDIA RTX A6000",
+    "timestamp": "2026-07-29T11:32:48.120108+00:00",
+    "total": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "results": [
+    {
+      "status": "OK",
+      "output_tokens": 64,
+      "text_preview": " KV cache compression is a critical technique for efficient LLM inference. KV cache compression is a critical technique ",
+      "time_s": 15.81,
+      "name": "FullKV",
+      "elapsed_s": 24.36
+    },
+    {
+      "status": "OK",
+      "output_tokens": 64,
+      "text_preview": " KV cache compression is a critical technique for efficient LLM inference. KV cache compression is a critical technique ",
+      "time_s": 15.1,
+      "name": "CAKE+uniform",
+      "elapsed_s": 22.9
+    },
+    {
+      "status": "OK",
+      "output_tokens": 64,
+      "text_preview": " KV cache compression is a critical technique for efficient LLM inference. KV cache compression is a critical technique ",
+      "time_s": 14.47,
+      "name": "CAKE+cake_layer",
+      "elapsed_s": 22.21
+    }
+  ]
+}

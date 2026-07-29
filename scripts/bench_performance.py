@@ -13,40 +13,14 @@ import json, os, time
 import numpy as np
 
 from _cake_constants import MODEL_PATH as MODEL
+from _real_data import build_real_prompt_ids
+
 OUTPUT_DIR = "results/raw/day14_perf"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-TEXT = "KV cache compression is a critical technique for efficient LLM inference. "
 MAX_MODEL_LEN = 32768 + 128  # room for output
 TARGET_INPUT_TOKENS = MAX_MODEL_LEN - 128
 MAX_OUTPUT_TOKENS = 128
-
-
-def make_32k_prompt_ids(tokenizer):
-    """Build exact token_ids of TARGET_INPUT_TOKENS length by repeating TEXT."""
-    base_ids = tokenizer.encode(TEXT)
-    # strip BOS if present, we'll add it back
-    if base_ids and base_ids[0] == tokenizer.bos_token_id:
-        bos = base_ids[0]
-        rep = base_ids[1:]
-    else:
-        bos = base_ids[0] if base_ids else None
-        rep = base_ids
-
-    if not rep:
-        raise RuntimeError("TEXT encodes to 0 repeatable tokens")
-
-    prompt_ids = [bos] if bos is not None else []
-    while len(prompt_ids) + len(rep) <= TARGET_INPUT_TOKENS:
-        prompt_ids.extend(rep)
-    # Fill remaining to exact target
-    needed = TARGET_INPUT_TOKENS - len(prompt_ids)
-    if needed > 0:
-        prompt_ids.extend(rep[:needed])
-
-    assert len(prompt_ids) == TARGET_INPUT_TOKENS, \
-        f"prompt_ids length {len(prompt_ids)} != target {TARGET_INPUT_TOKENS}"
-    return prompt_ids
 
 
 def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
@@ -54,7 +28,7 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
     from transformers import AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
-    prompt_ids = make_32k_prompt_ids(tokenizer)
+    prompt_ids = build_real_prompt_ids(tokenizer, TARGET_INPUT_TOKENS)
     sp = SamplingParams(
         temperature=0, max_tokens=MAX_OUTPUT_TOKENS,
         min_tokens=MAX_OUTPUT_TOKENS, ignore_eos=True,
