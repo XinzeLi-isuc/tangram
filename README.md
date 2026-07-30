@@ -61,16 +61,26 @@ print(outputs[0].outputs[0].text)
 
 ---
 
-## Key Results (to be re-run after P0 fixes)
+## Key Results (A6000 48GB, Llama-3.1-8B-Instruct, SCBench real text)
 
-| Metric | FullKV | CAKE-Serve 25% |
-|--------|:------:|:--------------:|
-| Latency (batch=8) | TBD | TBD |
-| RULER 8K accuracy | TBD | TBD |
-| KV memory | TBD | TBD |
+### 32K Performance (batch=10)
+| Config | Latency | vs FullKV | Throughput |
+|--------|:------:|:---------:|:----------:|
+| Tangram FullKV | 93.2s | 1.00× | 0.107 req/s |
+| CAKE-Serve 50% | 94.1s | 0.99× | 0.106 req/s |
+| CAKE-Serve 25% | 74.6s | **1.25×** | 0.134 req/s |
 
-> Results below were collected before the preference lifecycle fix;
-> `cake_layer` was effectively uniform. Re-benchmarking in progress.
+### Retention Verification (7171 tokens)
+| Config | Physical Ratio | Context Ratio | KV Saved |
+|--------|:------:|:------:|:------:|
+| FullKV | 1.000 | 1.000 | 0 GiB |
+| CAKE 50% | 0.669 | 0.659 | 0.290 GiB |
+| CAKE 25% | 0.406 | 0.393 | 0.520 GiB |
+
+### Smoke Test
+3/3 PASS: FullKV, CAKE+uniform, CAKE+cake_layer.
+
+Full results: `results/raw/`
 ---
 
 ## Architecture
@@ -96,9 +106,9 @@ Full architecture: [docs/architecture.md](docs/architecture.md)
 | Quality (6-way ablation) | `benchmarks/tangram/benchmark_ruler.sh` | RULER |
 | Quality (multi-turn) | `SCORER=cake bash benchmarks/tangram/benchmark_scbench.sh` | SCBench |
 | Offline batch | `scripts/bench_offline_batch.py` | Synthetic |
-| Performance | `scripts/bench_performance.py` | Synthetic (32K) |
-| Memory | `scripts/test_memory.py` | Synthetic |
-| Ablation | `scripts/ablation_day15.py` | Synthetic |
+| 32K Performance | `scripts/bench_performance.py` | SCBench (real text) |
+| Retention / Memory | `scripts/test_memory.py` | SCBench (real text) |
+| Smoke test | `scripts/smoke_test.py` | SCBench (real text) |
 
 See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for full methodology.
 
@@ -119,9 +129,9 @@ See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for full methodolog
 ## Limitations
 
 - **TP=1 only**: CakeLayerLevel raises `NotImplementedError` for TP > 1
-- **Chunked prefill approximation**: Token-weighted mean is ≈0.6–0.99 Spearman vs one-shot
-- **Scorer overhead**: 0.58ms/layer (5.1× SnapKV), acceptable at 32K+
-- **Recommended ratio**: 25%–50%
+- **Chunked prefill approximation**: Token-weighted mean preference aggregation
+- **Scorer overhead**: scales with sequence length, acceptable at 32K+
+- **CAKE 25% recommended** for best speed/quality trade-off
 
 Full list: [docs/limitations.md](docs/limitations.md)
 
@@ -150,8 +160,10 @@ python -m pytest tests/cake_serve/test_preference_chain.py -v
 - ✅ Physical KV page reclamation
 - ✅ Chunked prefill adaptation (CAKE-Chunk)
 - ✅ Preference lifecycle fix (cake_layer ≠ uniform)
+- ✅ Smoke test pipeline (3/3 PASS)
+- ✅ Retention verification (effective ratio measured)
+- ✅ 32K performance benchmark (real SCBench data)
 - ⬜ RULER 8K/16K/32K re-benchmark
-- ⬜ 32K performance re-benchmark
 - ⬜ SCBench multi-turn evaluation
 - ⬜ Online serving benchmark
 
