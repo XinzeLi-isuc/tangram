@@ -172,7 +172,7 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
           f"{estimated_full_kv_gib:.3f} GiB")
     sys.stdout.flush()
 
-    sp = SamplingParams(temperature=0, max_tokens=MAX_OUTPUT_TOKENS,
+    sp = SamplingParams(temperature=0, max_tokens=32,  # small output for retention
                         ignore_eos=True)
     results = []
 

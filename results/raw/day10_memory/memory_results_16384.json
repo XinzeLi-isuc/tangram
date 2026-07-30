@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "git_commit": "8e30f7cebc1571e0ab7e107c2b7802672f696045",
+    "model": "/home/lixinze/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3.1-8B-Instruct",
+    "gpu": "NVIDIA RTX A6000",
+    "created_at": "2026-07-30T12:28:25.180428+00:00",
+    "dtype": "bfloat16",
+    "page_group_size": 4,
+    "compression_window_size": 32,
+    "compression_n_sink_tokens": 4,
+    "compression_floor_min": 0,
+    "compression_chunk_size": 2048,
+    "max_model_len": 16512,
+    "prompt_tokens": 16384,
+    "bytes_per_token": 131072,
+    "command": "scripts/test_memory.py"
+  },
+  "results": [
+    {
+      "config": "FullKV",
+      "ratio": 1.0,
+      "input_tokens": 16384,
+      "output_tokens": 128,
+      "time_s": 6.96,
+      "physical_ratio": 1.0,
+      "context_ratio": 1.0,
+      "total_kept": 0,
+      "total_seen": 0,
+      "num_dumps": 0,
+      "estimated_full_kv_gib": 2.0,
+      "estimated_retained_kv_gib": 2.0,
+      "estimated_saved_kv_gib": 0.0,
+      "status": "OK"
+    },
+    {
+      "config": "CAKE_25",
+      "ratio": 0.25,
+      "input_tokens": 16384,
+      "output_tokens": 128,
+      "time_s": 6.79,
+      "physical_ratio": 0.7323,
+      "context_ratio": 0.7264,
+      "total_kept": 265632,
+      "total_seen": 362752,
+      "num_dumps": 1,
+      "estimated_full_kv_gib": 2.0,
+      "estimated_retained_kv_gib": 1.4645,
+      "estimated_saved_kv_gib": 0.5355,
+      "status": "OK"
+    },
+    {
+      "config": "CAKE_50",
+      "ratio": 0.5,
+      "input_tokens": 16384,
+      "output_tokens": 128,
+      "time_s": 6.87,
+      "physical_ratio": 0.891,
+      "context_ratio": 0.8875,
+      "total_kept": 527640,
+      "total_seen": 592192,
+      "num_dumps": 1,
+      "estimated_full_kv_gib": 2.0,
+      "estimated_retained_kv_gib": 1.782,
+      "estimated_saved_kv_gib": 0.218,
+      "status": "OK"
+    }
+  ]
+}
