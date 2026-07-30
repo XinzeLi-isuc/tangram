@@ -1,0 +1,26 @@
+{
+  "note": "Theoretical max derived from vLLM KV cache pool size (219,424 tokens) / per-request effective tokens. Actual effective tokens = total_tokens * physical_ratio from retention test.",
+  "gpu": "NVIDIA RTX A6000 48GB",
+  "model": "Meta-Llama-3.1-8B-Instruct (BF16)",
+  "context_per_request": 32768,
+  "tangram_fullkv": {
+    "vllm_theoretical_max": 6.67,
+    "stable_max": 6,
+    "tested_max_batch_clean": 10,
+    "note": "batch=10 completed but likely via chunked prefill scheduling"
+  },
+  "cake_25": {
+    "physical_ratio": 0.4063,
+    "effective_tokens_per_req": 13314,
+    "theoretical_max": 16.5,
+    "stable_max": 16,
+    "tested_max_batch_clean": 10
+  },
+  "cake_50": {
+    "physical_ratio": 0.6692,
+    "effective_tokens_per_req": 21930,
+    "theoretical_max": 10.0,
+    "stable_max": 10,
+    "tested_max_batch_clean": 10
+  }
+}
