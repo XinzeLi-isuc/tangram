@@ -61,26 +61,53 @@ print(outputs[0].outputs[0].text)
 
 ---
 
-## Key Results (A6000 48GB, Llama-3.1-8B-Instruct, SCBench real text)
+## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16, SCBench real text)
 
-### 32K Performance (batch=10)
-| Config | Latency | vs FullKV | Throughput |
-|--------|:------:|:---------:|:----------:|
-| Tangram FullKV | 93.2s | 1.00× | 0.107 req/s |
-| CAKE-Serve 50% | 94.1s | 0.99× | 0.106 req/s |
-| CAKE-Serve 25% | 74.6s | **1.25×** | 0.134 req/s |
+### 1. Smoke Test — 3/3 PASS
 
-### Retention Verification (7171 tokens)
-| Config | Physical Ratio | Context Ratio | KV Saved |
-|--------|:------:|:------:|:------:|
-| FullKV | 1.000 | 1.000 | 0 GiB |
-| CAKE 50% | 0.669 | 0.659 | 0.290 GiB |
-| CAKE 25% | 0.406 | 0.393 | 0.520 GiB |
+| Config | Output | Time | Status |
+|--------|:------:|:----:|:------:|
+| FullKV | 64 tok | 15.8s | OK |
+| CAKE+uniform | 64 tok | 15.1s | OK |
+| CAKE+cake_layer | 64 tok | 14.5s | OK |
 
-### Smoke Test
-3/3 PASS: FullKV, CAKE+uniform, CAKE+cake_layer.
+### 2. Retention Verification (7171 input tokens)
 
-Full results: `results/raw/`
+| Config | PhysR | CtxR | Kept | Total | Est.Full | Est.Saved |
+|--------|:----:|:----:|-----:|------:|:--------:|:---------:|
+| FullKV | 1.000 | 1.000 | 0 | 0 | 0.875 GiB | 0 GiB |
+| CAKE 50% | 0.669 | 0.659 | 132K | 198K | 0.875 GiB | 0.290 GiB |
+| CAKE 25% | 0.406 | 0.393 | 67K | 166K | 0.875 GiB | 0.520 GiB |
+
+- window=32, sink=4, floor=0, chunk=2048
+- Context ratio excludes always-kept sink + recent window
+
+### 3. 32K Performance (32768 tokens, 128 output, batch 1–10)
+
+| Config | b=1 | b=2 | b=4 | b=6 | b=8 | b=10 |
+|--------|----:|----:|----:|----:|----:|-----:|
+| Native-vLLM | 11.7s | 20.5s | 37.7s | — | — | — |
+| Tangram FullKV | 11.9s | 20.6s | 37.8s | 55.1s | 75.7s | 93.2s |
+| CAKE 50% (0.67×) | 10.9s | 19.6s | 35.7s | 52.3s | 72.8s | 94.1s |
+| CAKE 25% (0.40×) | **9.8s** | **17.0s** | **30.8s** | **44.7s** | **58.8s** | **74.6s** |
+
+**Speedup vs Tangram FullKV @ batch=10: CAKE_25 = 1.25×, CAKE_50 = 0.99×**
+
+### 4. Max Concurrency (theoretical, from vLLM KV pool)
+
+| Config | Effective tokens/req | Stable Max |
+|--------|:--------------------:|:----------:|
+| Tangram FullKV | 32,768 | 6 |
+| CAKE 50% | 21,928 | 10 |
+| CAKE 25% | 13,312 | **16** |
+
+### 5. Verification
+
+- pytest: **38/38** passed
+- retention parser unit tests: **6/6** passed
+- py_compile: **5/5** OK
+
+Full results: `results/raw/smoke/`, `results/raw/day10_memory/`, `results/raw/day14_perf/`
 ---
 
 ## Architecture
