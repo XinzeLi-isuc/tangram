@@ -14,13 +14,17 @@ import numpy as np
 
 from _cake_constants import MODEL_PATH as MODEL
 from _real_data import build_real_prompt_ids
+from _experiment_config import (
+    CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
+    CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
+    PERF_PROMPT_LENGTH, MAX_OUTPUT_TOKENS, GPU_MEMORY_UTILIZATION,
+)
 
 OUTPUT_DIR = "results/raw/day14_perf"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-MAX_MODEL_LEN = 32768 + 128  # room for output
-TARGET_INPUT_TOKENS = MAX_MODEL_LEN - 128
-MAX_OUTPUT_TOKENS = 128
+MAX_MODEL_LEN = PERF_PROMPT_LENGTH + MAX_OUTPUT_TOKENS
+TARGET_INPUT_TOKENS = PERF_PROMPT_LENGTH
 
 
 def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
@@ -43,8 +47,13 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
             llm = LLM(
                 model=MODEL, compression_ratio=ratio,
                 compression_scorer=scorer, compression_level=level,
-                page_group_size=4,
-                max_model_len=MAX_MODEL_LEN, gpu_memory_utilization=0.90,
+                page_group_size=CAKE_PAGE_GROUP_SIZE,
+                compression_window_size=CAKE_WINDOW_SIZE,
+                compression_n_sink_tokens=CAKE_N_SINK_TOKENS,
+                compression_floor_min=CAKE_FLOOR_MIN,
+                compression_chunk_size=CAKE_CHUNK_SIZE,
+                max_model_len=MAX_MODEL_LEN,
+                gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
                 max_num_seqs=bs + 2,
             )
 

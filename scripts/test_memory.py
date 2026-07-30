@@ -14,6 +14,12 @@ import numpy as np
 
 from _cake_constants import MODEL_PATH
 from _real_data import build_real_prompt_ids
+from _experiment_config import (
+    CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
+    CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
+    RETENTION_PROMPT_LENGTH, MAX_OUTPUT_TOKENS, MAX_MODEL_LEN,
+    GPU_MEMORY_UTILIZATION,
+)
 
 OUTPUT_DIR = "results/raw/day10_memory"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -24,15 +30,14 @@ CONFIGS = [
     ("CAKE_50", "cake", "cake_layer", 0.5),
 ]
 
-LENGTH = 8192
-MAX_MODEL_LEN = 16384
+LENGTH = RETENTION_PROMPT_LENGTH
 
-# Explicit compression parameters (none left to default)
-COMPRESSION_WINDOW_SIZE = 32
-COMPRESSION_N_SINK_TOKENS = 4
-COMPRESSION_FLOOR_MIN = 0
-COMPRESSION_CHUNK_SIZE = 2048
-PAGE_GROUP_SIZE = 4
+# All compression parameters from _experiment_config
+COMPRESSION_WINDOW_SIZE = CAKE_WINDOW_SIZE
+COMPRESSION_N_SINK_TOKENS = CAKE_N_SINK_TOKENS
+COMPRESSION_FLOOR_MIN = CAKE_FLOOR_MIN
+COMPRESSION_CHUNK_SIZE = CAKE_CHUNK_SIZE
+PAGE_GROUP_SIZE = CAKE_PAGE_GROUP_SIZE
 
 
 def _get_git_commit():
@@ -63,6 +68,10 @@ def _parse_retention_dump(dump_dir: str, requested_ratio: float):
     Schema (from vllm/v1/attention/compression/profiling.py):
         kept, total, sink, win, eval_len, req, rank
 
+    Filename format: {req_id}_r{rank}_{seq}.npz where seq increments
+    per decision within the same rank. Only the highest-seq record per
+    (req, rank) contributes — earlier decisions are intermediate.
+
     Returns (physical_ratio, context_ratio, total_kept, total_seen, num_dumps).
     """
     REQUIRED = {"kept", "total", "sink", "win", "eval_len", "req", "rank"}
@@ -80,9 +89,13 @@ def _parse_retention_dump(dump_dir: str, requested_ratio: float):
         # FullKV (ratio=1.0): no compression dumps is expected
         return 1.0, 1.0, 0, 0, 0
 
-    # Deduplicate by (req, rank): pick record with max eval_len.
-    # A single request can trigger multiple compression decisions
-    # (e.g. chunked prefill); only the final decision matters.
+    # Deduplicate by (req, rank): pick record with highest sequence number.
+    # Filename: {req_id}_r{rank}_{seq}.npz — seq comes from Profiler._seq counter.
+    # Multiple decisions at same eval_len are possible (multi-chunk prefill);
+    # only the highest seq is the final decision for that (req, rank).
+    import re
+    _SEQ_RE = re.compile(r"_r\d+_(\d+)\.npz$")
+
     by_key: dict = {}
     for fn in npz_files:
         path = os.path.join(dump_dir, fn)
@@ -96,14 +109,16 @@ def _parse_retention_dump(dump_dir: str, requested_ratio: float):
             )
 
         key = (str(d["req"]), int(d["rank"]))
-        eval_len = int(d["eval_len"])
-        if key not in by_key or eval_len > by_key[key]["eval_len"]:
+        m = _SEQ_RE.search(fn)
+        seq = int(m.group(1)) if m else -1
+        if key not in by_key or seq > by_key[key]["seq"]:
             by_key[key] = {
                 "kept": d["kept"].astype(np.int64),
                 "total": d["total"].astype(np.int64),
                 "sink": int(d["sink"]),
                 "win": int(d["win"]),
-                "eval_len": eval_len,
+                "eval_len": int(d["eval_len"]),
+                "seq": seq,
             }
 
     # Aggregate across all deduplicated (req, rank) records
@@ -168,7 +183,7 @@ def main():
           f"dtype={dtype_name} page_group_size={PAGE_GROUP_SIZE}")
     print(f"Prompt: {actual_tokens} tokens → estimated full KV ≈ {estimated_full_kv_gib:.3f} GiB")
 
-    sp = SamplingParams(temperature=0, max_tokens=32, ignore_eos=True)
+    sp = SamplingParams(temperature=0, max_tokens=MAX_OUTPUT_TOKENS, ignore_eos=True)
     results = []
 
     for label, scorer, level, ratio in CONFIGS:
@@ -194,7 +209,7 @@ def main():
                 compression_chunk_size=COMPRESSION_CHUNK_SIZE,
                 compression_retention_dump=dump_dir,
                 max_model_len=MAX_MODEL_LEN,
-                gpu_memory_utilization=0.85,
+                gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
                 disable_log_stats=True,
             )
 

@@ -71,23 +71,42 @@ class TestRetentionParser:
             with pytest.raises(RuntimeError, match="missing.*win"):
                 _parse_retention_dump(d, requested_ratio=0.5)
 
-    def test_dedup_picks_max_eval_len(self):
-        """Same (req, rank) with different eval_len → picks the max one."""
+    def test_dedup_picks_max_seq(self):
+        """Same (req, rank) → picks highest sequence number from filename."""
         with tempfile.TemporaryDirectory() as d:
-            # First dump: eval_len=50, kept=5
+            # seq=0: eval_len=100, kept=5 (earlier intermediate decision)
             _write_npz(d, "req0_r0_0.npz",
                        kept=[[5]], total=[[20]], sink=4, win=0,
-                       eval_len=50, req="0", rank=0)
-            # Second dump: same key, eval_len=100, kept=8 (final decision)
+                       eval_len=100, req="0", rank=0)
+            # seq=1: same eval_len=100, kept=8 (final decision)
             _write_npz(d, "req0_r0_1.npz",
                        kept=[[8]], total=[[20]], sink=4, win=0,
                        eval_len=100, req="0", rank=0)
 
             phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
 
-            # Only the max eval_len record should contribute
+            # Only the highest-seq record should contribute, not max eval_len
             assert n == 1
-            assert kept == 8   # from the 100-eval_len record, not 5
+            assert kept == 8   # from seq=1, not seq=0
+            assert total == 20
+
+    def test_same_eval_len_different_seq(self):
+        """Two records with identical eval_len, different seq → picks higher seq."""
+        with tempfile.TemporaryDirectory() as d:
+            # Higher seq=2 but lower eval_len=50, kept=12
+            _write_npz(d, "req0_r0_2.npz",
+                       kept=[[12]], total=[[20]], sink=4, win=0,
+                       eval_len=50, req="0", rank=0)
+            # Lower seq=1 but higher eval_len=100, kept=3
+            _write_npz(d, "req0_r0_1.npz",
+                       kept=[[3]], total=[[20]], sink=4, win=0,
+                       eval_len=100, req="0", rank=0)
+
+            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
+
+            # seq=2 wins despite lower eval_len — final decision matters
+            assert n == 1
+            assert kept == 12
             assert total == 20
 
     def test_exact_ratios_known_data(self):
