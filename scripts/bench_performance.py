@@ -1,48 +1,42 @@
-"""
-Day 14: Performance Benchmark (32K context, 128 output tokens)
-FullKV vs CAKE 25% vs CAKE 50%
-Each config: warmup 2x, measurement 5x
+"""Offline batch performance benchmark with real SCBench data.
 
-Fixes:
-  - Use prompt_token_ids for precise token count (no encode→truncate→decode→encode drift)
-  - Record actual input/output token counts per trial
-  - Write per-config JSON before OOM break (was silently skipped)
-  - Verify actual_input_tokens + 128 <= max_model_len
+Usage: CUDA_VISIBLE_DEVICES=0 python scripts/bench_performance.py [8192] [16384]
 """
-import json, os, time
+import json, os, sys, time
 import numpy as np
 
 from _cake_constants import MODEL_PATH as MODEL
 from _real_data import build_real_prompt_ids
+from vllm.inputs import TokensPrompt
 from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
-    PERF_PROMPT_LENGTH, MAX_OUTPUT_TOKENS, GPU_MEMORY_UTILIZATION,
+    MAX_OUTPUT_TOKENS, GPU_MEMORY_UTILIZATION,
 )
 
-OUTPUT_DIR = "results/raw/day14_perf"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+OUT_DIR = "results/raw/day14_perf"
+os.makedirs(OUT_DIR, exist_ok=True)
 
-MAX_MODEL_LEN = PERF_PROMPT_LENGTH + MAX_OUTPUT_TOKENS
-TARGET_INPUT_TOKENS = PERF_PROMPT_LENGTH
+CONFIGS = [
+    ("FullKV", "snapkv", "uniform", 1.0),
+    ("CAKE_25", "cake", "cake_layer", 0.25),
+    ("CAKE_50", "cake", "cake_layer", 0.5),
+]
+BATCHES = [1, 4, 8, 10]
+WARMUP, TRIALS = 2, 5
 
 
-def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
+def run_config(name, scorer, level, ratio, prompt_ids, bs_list):
     from vllm import LLM, SamplingParams
-    from transformers import AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL)
-    prompt_ids = build_real_prompt_ids(tokenizer, TARGET_INPUT_TOKENS)
-    sp = SamplingParams(
-        temperature=0, max_tokens=MAX_OUTPUT_TOKENS,
-        min_tokens=MAX_OUTPUT_TOKENS, ignore_eos=True,
-    )
+    inp_len = len(prompt_ids)
+    model_len = inp_len + MAX_OUTPUT_TOKENS
+    sp = SamplingParams(temperature=0, max_tokens=MAX_OUTPUT_TOKENS,
+                        min_tokens=MAX_OUTPUT_TOKENS, ignore_eos=True)
     results = {}
 
-    for bs in batch_sizes:
+    for bs in bs_list:
         print(f"\n  [{name}] batch={bs}", flush=True)
-        result_entry = None
-
         try:
             llm = LLM(
                 model=MODEL, compression_ratio=ratio,
@@ -52,110 +46,93 @@ def run_config(name, scorer, level, ratio, batch_sizes, warmup=2, trials=5):
                 compression_n_sink_tokens=CAKE_N_SINK_TOKENS,
                 compression_floor_min=CAKE_FLOOR_MIN,
                 compression_chunk_size=CAKE_CHUNK_SIZE,
-                max_model_len=MAX_MODEL_LEN,
+                max_model_len=model_len,
                 gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
                 max_num_seqs=bs + 2,
             )
 
-            prompt_dict = {"prompt_token_ids": prompt_ids}
-            prompt_list = [prompt_dict] * bs
+            prompt = TokensPrompt(prompt_token_ids=prompt_ids)
+            prompt_list = [prompt] * bs
 
-            # Warmup with same batch size as measurement
-            for w in range(warmup):
+            for _ in range(WARMUP):
                 _ = llm.generate(prompt_list, sp)
-                print(f"    warmup {w+1}/{warmup} done", flush=True)
 
-            # Measurement
             times = []
-            all_output_lens = []
-            for t_idx in range(trials):
+            for trial in range(TRIALS):
                 t0 = time.time()
                 out = llm.generate(prompt_list, sp)
                 elapsed = time.time() - t0
                 times.append(elapsed)
-                # Record all output lengths, verify all hit target
-                output_lens = [
-                    len(item.outputs[0].token_ids) for item in out
-                ]
-                all_output_lens.append(output_lens)
-                print(f"    trial {t_idx+1}/{trials}: {elapsed:.1f}s "
-                      f"(output={output_lens})",
-                      flush=True)
-
-            # Fail-fast if any batch member didn't produce target output length
-            for t_idx, output_lens in enumerate(all_output_lens):
-                if any(n != MAX_OUTPUT_TOKENS for n in output_lens):
+                out_lens = [len(o.outputs[0].token_ids) for o in out]
+                if not all(l == MAX_OUTPUT_TOKENS for l in out_lens):
                     raise RuntimeError(
-                        f"Trial {t_idx+1}: expected all outputs to be "
-                        f"{MAX_OUTPUT_TOKENS} tokens, got {output_lens}"
-                    )
+                        f"Short output: {out_lens}, expected {MAX_OUTPUT_TOKENS}")
+                print(f"    trial {trial+1}/{TRIALS}: {elapsed:.1f}s "
+                      f"(output={out_lens[:3]}...)", flush=True)
 
-            t_arr = np.array(times)
-            result_entry = {
-                "batch_size": bs,
-                "config": name,
-                "input_tokens": len(prompt_ids),
-                "output_tokens_actual": all_output_lens,
-                "output_tokens_target": MAX_OUTPUT_TOKENS,
-                "median_s": float(np.median(t_arr)),
-                "p50_s": float(np.percentile(t_arr, 50)),
-                "p95_s": float(np.percentile(t_arr, 95)),
-                "mean_s": float(np.mean(t_arr)),
-                "std_s": float(np.std(t_arr)),
-                "times_s": t_arr.tolist(),
-                "throughput_req_s": float(bs / np.median(t_arr)),
-            }
-            results[bs] = result_entry
             del llm
+            med = round(float(np.median(times)), 2)
+            p95 = round(float(np.percentile(times, 95)), 2)
+            thr = round(bs / med, 4)
+
+            results[str(bs)] = {
+                "batch_size": bs, "config": name, "input_tokens": inp_len,
+                "median_s": med, "p95_s": p95, "throughput_req_s": thr,
+                "trials": times,
+            }
+            print(f"    median={med}s p95={p95}s thr={thr} req/s", flush=True)
 
         except Exception as e:
-            if "OOM" in str(e).upper() or "out of memory" in str(e).lower():
-                print(f"    OOM at batch={bs}", flush=True)
-                result_entry = {"batch_size": bs, "error": "OOM"}
-                results[bs] = result_entry
-                # Write per-config JSON before breaking so OOM cell is preserved
-                _write_config_json(name, results)
-                break
-            raise  # fail-fast on other errors
-        finally:
-            # Write per-config JSON after every batch size (even on success)
-            if result_entry is not None and "error" not in result_entry:
-                _write_config_json(name, results)
+            print(f"    FAIL: {e}", flush=True)
+            results[str(bs)] = {"batch_size": bs, "config": name, "error": str(e)}
 
+    out_path = os.path.join(OUT_DIR, f"{name}_results.json")
+    with open(out_path, "w") as f:
+        json.dump(results, f, indent=2, default=str)
     return results
 
 
-def _write_config_json(name, results):
-    path = os.path.join(OUTPUT_DIR, f"{name}_results.json")
-    with open(path, "w") as f:
-        json.dump(results, f, indent=2, default=str)
+def main():
+    from transformers import AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(MODEL)
+    lengths = [int(l) for l in sys.argv[1:]] if len(sys.argv) > 1 else [32768]
+
+    for length in lengths:
+        prompt_ids = build_real_prompt_ids(tokenizer, length)
+        print(f"\n{'#'*60}")
+        print(f"# PERFORMANCE: {length} tokens")
+        print(f"{'#'*60}")
+
+        all_results = {}
+        for label, scorer, level, ratio in CONFIGS:
+            print(f"\n{'='*50}")
+            print(f"  {label}")
+            print(f"{'='*50}")
+            r = run_config(label, scorer, level, ratio, prompt_ids, BATCHES)
+            all_results[label] = {"length": length, "results": r}
+
+        # Summary
+        print(f"\n{'='*60}\nSUMMARY {length}\n{'='*60}")
+        hdr = f"  {'Config':<12} {'Batch':>5} {'Med(s)':>8} {'P95(s)':>8} {'req/s':>8}"
+        print(hdr)
+        print(f"  {'-'*45}")
+        for label in [c[0] for c in CONFIGS]:
+            for bs in BATCHES:
+                k = str(bs)
+                if k in all_results[label]["results"]:
+                    d = all_results[label]["results"][k]
+                    if "median_s" in d:
+                        print(f"  {label:<12} {bs:>5} {d['median_s']:>8.1f} "
+                              f"{d['p95_s']:>8.1f} {d['throughput_req_s']:>8.3f}")
+        print()
+
+        # Aggregate
+        agg_path = os.path.join(OUT_DIR, f"perf_results_{length}.json")
+        with open(agg_path, "w") as f:
+            json.dump(all_results, f, indent=2, default=str)
+        print(f"  Saved: {agg_path}", flush=True)
 
 
-print("Day 14: Performance Benchmark (32K)", flush=True)
-print("=" * 60, flush=True)
-
-batch_sizes = [1, 2, 4, 6, 8, 10]
-
-r1 = run_config("FullKV", "snapkv", "uniform", 1.0, batch_sizes)
-r2 = run_config("CAKE_25", "cake", "cake_layer", 0.25, batch_sizes)
-r3 = run_config("CAKE_50", "cake", "cake_layer", 0.5, batch_sizes)
-
-print("\n\n" + "=" * 60, flush=True)
-print("SUMMARY", flush=True)
-print("=" * 60, flush=True)
-print(f"{'Config':<12} {'Batch':>5} {'Med(s)':>8} {'P95(s)':>8} {'req/s':>8}", flush=True)
-print("-" * 45, flush=True)
-for name, r in [("FullKV", r1), ("CAKE_25", r2), ("CAKE_50", r3)]:
-    for bs in sorted(r.keys()):
-        d = r[bs]
-        if "median_s" in d:
-            print(f"{name:<12} {bs:>5} {d['median_s']:>8.1f} "
-                  f"{d['p95_s']:>8.1f} {d['throughput_req_s']:>8.1f}", flush=True)
-        else:
-            print(f"{name:<12} {bs:>5} {'OOM':>8}", flush=True)
-
-all_results = {"FullKV": r1, "CAKE_25": r2, "CAKE_50": r3}
-with open(os.path.join(OUTPUT_DIR, "perf_results.json"), "w") as f:
-    json.dump(all_results, f, indent=2, default=str)
-print(f"\nResults saved", flush=True)
-print("DONE", flush=True)
+if __name__ == "__main__":
+    main()
