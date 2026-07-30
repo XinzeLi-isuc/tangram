@@ -163,6 +163,8 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
     actual_tokens = len(prompt_ids)
     estimated_full_kv_gib = bytes_per_token * actual_tokens / (1024 ** 3)
     model_len = prompt_length + MAX_OUTPUT_TOKENS
+    # Reduce memory pressure for longer contexts
+    gpu_util = GPU_MEMORY_UTILIZATION if prompt_length <= 8192 else 0.85
 
     print(f"\n  Model: L={num_layers} H_kv={num_kv_heads} D={head_dim} "
           f"dtype={dtype_name} page_group_size={PAGE_GROUP_SIZE}")
@@ -197,7 +199,7 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                 compression_chunk_size=COMPRESSION_CHUNK_SIZE,
                 compression_retention_dump=dump_dir,
                 max_model_len=model_len,
-                gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
+                gpu_memory_utilization=gpu_util,
                 disable_log_stats=True,
             )
 
@@ -206,6 +208,8 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
             elapsed = time.time() - t0
             num_out = len(out[0].outputs[0].token_ids)
             del llm
+            import gc; gc.collect()
+            import torch; torch.cuda.empty_cache()
 
             phys_r, ctx_r, tot_kept, tot_seen, n_dumps = _parse_retention_dump(
                 dump_dir, ratio)
