@@ -77,6 +77,12 @@ def run_and_collect(chunk_size, label):
     import torch; torch.cuda.empty_cache()
 
     records = load_final_decisions(dump_dir)
+    if not records:
+        shutil.rmtree(os.path.dirname(dump_dir), ignore_errors=True)
+        raise RuntimeError(
+            f"No retention decisions for chunk_size={chunk_size}. "
+            "Compression may not have triggered."
+        )
     logical_by_req = {out[0].request_id: engine_tokens}
     summary = summarize_retention(records, logical_by_req)
 
@@ -147,7 +153,15 @@ def main():
         d, records, eng_tok, summary, num_out, n_total, n_final = run_and_collect(chunk_size, "cake_layer")
         stats = analyze_layer_variance(records, eng_tok)
         label = f"chunk_{chunk_size}"
-        results[label] = {"summary": summary, "layer_stats": stats}
+        results[label] = {
+            "summary": summary,
+            "layer_stats": stats,
+            "run_stats": {
+                "output_tokens": num_out,
+                "num_decisions_total": n_total,
+                "num_final_records": n_final,
+            },
+        }
         all_phys[chunk_size] = summary["effective_physical_ratio"]
         shutil.rmtree(os.path.dirname(d), ignore_errors=True)
 
@@ -193,14 +207,15 @@ def main():
         "command": " ".join(sys.argv),
         "requested_ratio": 0.25,
         "prompt_length": PROMPT_LEN,
-        "output_tokens": num_out,
-        "num_decisions_total": n_total,
-        "num_final_records": n_final,
         "compression_window_size": CAKE_WINDOW_SIZE,
         "compression_n_sink_tokens": CAKE_N_SINK_TOKENS,
         "compression_floor_min": CAKE_FLOOR_MIN,
         "page_group_size": CAKE_PAGE_GROUP_SIZE,
         "chunk_sizes_tested": [2048, 8192],
+        "run_stats": {
+            "chunk_2048": results["chunk_2048"]["run_stats"],
+            "chunk_8192": results["chunk_8192"]["run_stats"],
+        },
     }
 
     print(f"\n  Budget correctness: {verdict['budget_correctness']}", flush=True)

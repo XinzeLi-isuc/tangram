@@ -76,7 +76,7 @@ print(outputs[0].outputs[0].text)
 | CAKE+uniform | 64 tok | 15.1s | OK |
 | CAKE+cake_layer | 64 tok | 14.5s | OK |
 
-*Note: smoke uses repeated synthetic sentences, not SCBench real text.*
+*Note: smoke uses repeated synthetic sentences.*
 
 ### 2. Retention Verification ⏳ (pending re-run)
 
@@ -94,7 +94,7 @@ Expected after fixed-metric re-run (`effective_physical_ratio` =
 
 ### 3. 32K Performance ⏳ (pending re-run with unified config)
 
-Previous data (collected pre-config-unification at `54bb0de`, real SCBench text).
+Previous data (collected pre-commit `54bb0de`, real SCBench text).
 **Do not cite as current.**
 
 <details>
@@ -155,7 +155,7 @@ Full architecture: [docs/architecture.md](docs/architecture.md)
 
 | Experiment | Script | Dataset |
 |-----------|--------|---------|
-| Quality (6-way ablation) | `benchmarks/tangram/benchmark_ruler.sh` | RULER |
+| Quality (5-way ablation) | `benchmarks/tangram/benchmark_ruler.sh` | RULER |
 | Quality (multi-turn) | `SCORER=cake bash benchmarks/tangram/benchmark_scbench.sh` | SCBench |
 | Offline batch | `scripts/bench_offline_batch.py` | Synthetic |
 | 32K Performance | `scripts/bench_performance.py` | SCBench (real text) |
@@ -182,8 +182,8 @@ See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for full methodolog
 
 - **TP=1 only**: CakeLayerLevel raises `NotImplementedError` for TP > 1
 - **Chunked prefill approximation**: Token-weighted mean preference aggregation
-- **Scorer overhead**: scales with sequence length, acceptable at 32K+
-- **CAKE 25% recommended** for best speed/quality trade-off
+- **Scorer overhead has not yet been isolated** from end-to-end latency
+- Recommended ratio TBD after quality benchmarks
 
 Full list: [docs/limitations.md](docs/limitations.md)
 
@@ -213,8 +213,9 @@ python -m pytest tests/cake_serve/test_preference_chain.py -v
 - ✅ Chunked prefill adaptation (CAKE-Chunk)
 - ✅ Preference lifecycle fix (cake_layer ≠ uniform)
 - ✅ Smoke test pipeline (3/3 PASS)
-- ✅ Retention verification (effective ratio measured)
-- ✅ 32K performance benchmark (real SCBench data)
+- ⏳ Retention verification — corrected-metric re-run pending
+- ⏳ 32K performance benchmark — unified-config re-run pending
+- ⏳ Chunk-size sensitivity experiment — run_stats fix pending re-run
 - ⬜ RULER 8K/16K/32K re-benchmark
 - ⬜ SCBench multi-turn evaluation
 - ⬜ Online serving benchmark
