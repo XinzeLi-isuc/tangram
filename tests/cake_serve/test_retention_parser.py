@@ -115,7 +115,7 @@ class TestRetentionParser:
             assert summary["logical_token_cells"] == 8192
 
     def test_evictable_ratio_excludes_sink_window(self):
-        """Evictable ratio: (kept - sink - win) / (logical - sink)."""
+        """Evictable ratio: (kept - sink - win) / (logical - sink - win)."""
         with tempfile.TemporaryDirectory() as d:
             _write_npz(d, "req0_r0_0.npz",
                        kept=[[40]], total=[[100]], sink=4, win=8,

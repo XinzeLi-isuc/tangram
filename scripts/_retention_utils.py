@@ -68,7 +68,7 @@ def summarize_retention(records, logical_tokens_by_req):
 
     Returns dict with:
         effective_physical_ratio: kept_capacity / logical_capacity
-        effective_evictable_ratio: (kept - sink - win) / (logical - sink) per cell
+        effective_evictable_ratio: (kept - sink - win) / (logical - sink - win) per cell
         final_step_shrink_ratio: kept_capacity / resident_before_final
         kept_token_cells: total kept cells (sum over all layers × groups)
         logical_token_cells: total capacity cells (= logical_tokens × num_cells)
