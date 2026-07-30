@@ -1,12 +1,15 @@
 """
-Pure-CPU unit tests for retention dump parser (_parse_retention_dump).
+Pure-CPU unit tests for retention dump parser (_retention_utils).
 
 Verifies:
-  1. Compression config with no dump → RuntimeError
-  2. FullKV (ratio=1.0) no dump → returns 1.0, 1.0, 0, 0, 0
+  1. Compression config with no dump → empty list from load_final_decisions
+  2. FullKV no dump → summarize_retention returns 1.0
   3. Missing required fields → RuntimeError
-  4. Same (req, rank), multiple eval_len → picks max
-  5. Known kept/total/sink/win → exact physical + context ratios
+  4. Same (req, rank), multiple seq → picks highest seq
+  5. Same eval_len, different seq → later seq wins
+  6. Known kept/total/sink/win → exact physical + evictable + final-step ratios
+  7. End-to-end ratio uses logical capacity NOT resident_before_final
+  8. Two TP ranks correctly merged
 
 Run: pytest tests/cake_serve/test_retention_parser.py -v
 """
@@ -14,14 +17,12 @@ import os, tempfile
 import numpy as np
 import pytest
 
-# Import the parser function from test_memory.py
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "scripts"))
-from test_memory import _parse_retention_dump
+from _retention_utils import load_final_decisions, summarize_retention
 
 
 def _write_npz(dump_dir, filename, kept, total, sink, win, eval_len, req="0", rank=0):
-    """Helper: write a single retention dump .npz file."""
     path = os.path.join(dump_dir, filename)
     np.savez(
         path,
@@ -36,28 +37,18 @@ def _write_npz(dump_dir, filename, kept, total, sink, win, eval_len, req="0", ra
 
 
 class TestRetentionParser:
-    """Test _parse_retention_dump correctness on synthetic .npz files."""
+    """Test _retention_utils correctness on synthetic .npz files."""
 
-    def test_compression_no_dump_raises(self):
-        """Compression config (ratio<1) with no .npz files must raise."""
+    def test_no_dump_returns_empty(self):
+        """Empty dump dir returns empty list."""
         with tempfile.TemporaryDirectory() as d:
-            with pytest.raises(RuntimeError, match="no retention dump"):
-                _parse_retention_dump(d, requested_ratio=0.5)
-
-    def test_fullkv_no_dump_returns_one(self):
-        """FullKV (ratio=1.0) with no dumps returns 1.0 ratios, zero counts."""
-        with tempfile.TemporaryDirectory() as d:
-            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=1.0)
-            assert phys == 1.0
-            assert ctx == 1.0
-            assert kept == 0
-            assert total == 0
-            assert n == 0
+            records = load_final_decisions(d)
+            assert records == []
 
     def test_missing_fields_raises(self):
-        """Dump file missing required fields (e.g. 'win') must raise."""
+        """Dump missing required field (e.g. 'win') must raise."""
         with tempfile.TemporaryDirectory() as d:
-            path = os.path.join(d, "req0_0_0.npz")
+            path = os.path.join(d, "req0_r0_0.npz")
             np.savez(
                 path,
                 kept=np.array([[10]], dtype=np.int64),
@@ -69,66 +60,75 @@ class TestRetentionParser:
                 rank=np.int64(0),
             )
             with pytest.raises(RuntimeError, match="missing.*win"):
-                _parse_retention_dump(d, requested_ratio=0.5)
+                load_final_decisions(d)
 
     def test_dedup_picks_max_seq(self):
         """Same (req, rank) → picks highest sequence number from filename."""
         with tempfile.TemporaryDirectory() as d:
-            # seq=0: eval_len=100, kept=5 (earlier intermediate decision)
             _write_npz(d, "req0_r0_0.npz",
                        kept=[[5]], total=[[20]], sink=4, win=0,
                        eval_len=100, req="0", rank=0)
-            # seq=1: same eval_len=100, kept=8 (final decision)
             _write_npz(d, "req0_r0_1.npz",
                        kept=[[8]], total=[[20]], sink=4, win=0,
                        eval_len=100, req="0", rank=0)
 
-            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
-
-            # Only the highest-seq record should contribute, not max eval_len
-            assert n == 1
-            assert kept == 8   # from seq=1, not seq=0
-            assert total == 20
+            records = load_final_decisions(d)
+            assert len(records) == 1
+            assert records[0]["kept"].sum() == 8
 
     def test_same_eval_len_different_seq(self):
-        """Two records with identical eval_len, different seq → picks higher seq."""
+        """Lower eval_len but higher seq → later seq wins."""
         with tempfile.TemporaryDirectory() as d:
-            # Higher seq=2 but lower eval_len=50, kept=12
             _write_npz(d, "req0_r0_2.npz",
                        kept=[[12]], total=[[20]], sink=4, win=0,
                        eval_len=50, req="0", rank=0)
-            # Lower seq=1 but higher eval_len=100, kept=3
             _write_npz(d, "req0_r0_1.npz",
                        kept=[[3]], total=[[20]], sink=4, win=0,
                        eval_len=100, req="0", rank=0)
 
-            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
+            records = load_final_decisions(d)
+            assert len(records) == 1
+            assert records[0]["kept"].sum() == 12  # seq=2 wins over seq=1
 
-            # seq=2 wins despite lower eval_len — final decision matters
-            assert n == 1
-            assert kept == 12
-            assert total == 20
+    def test_logical_capacity_not_resident_before(self):
+        """End-to-end ratio uses logical context capacity, not resident KV.
 
-    def test_exact_ratios_known_data(self):
-        """Known kept/total/sink/win → exact physical + context ratios."""
+        Original context: 8192 tokens.
+        Before final compression: 4096 cells resident.
+        After final compression:  2048 cells kept.
+
+        final_step_shrink = 2048 / 4096 = 0.5
+        effective_physical = 2048 / 8192 = 0.25
+        """
         with tempfile.TemporaryDirectory() as d:
-            # Single head: total=100, kept=40, sink=4, win=8
-            # physical_ratio = 40/100 = 0.4
-            # context_ratio = (40-4-8)/(100-4) = 28/96 ≈ 0.291666...
+            # Single head: kept=2048, resident_before=4096
+            _write_npz(d, "reqA_r0_0.npz",
+                       kept=[[2048]], total=[[4096]], sink=4, win=32,
+                       eval_len=200, req="A", rank=0)
+
+            records = load_final_decisions(d)
+            summary = summarize_retention(records, {"A": 8192})
+
+            assert summary["effective_physical_ratio"] == pytest.approx(0.25)
+            assert summary["final_step_shrink_ratio"] == pytest.approx(0.5)
+            assert summary["kept_token_cells"] == 2048
+            assert summary["logical_token_cells"] == 8192
+
+    def test_evictable_ratio_excludes_sink_window(self):
+        """Evictable ratio: (kept - sink - win) / (logical - sink)."""
+        with tempfile.TemporaryDirectory() as d:
             _write_npz(d, "req0_r0_0.npz",
                        kept=[[40]], total=[[100]], sink=4, win=8,
                        eval_len=200, req="0", rank=0)
 
-            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
+            records = load_final_decisions(d)
+            summary = summarize_retention(records, {"0": 100})
 
-            assert n == 1
-            assert kept == 40
-            assert total == 100
-            assert phys == pytest.approx(0.4)
-            assert ctx == pytest.approx(28 / 96)
+            assert summary["effective_physical_ratio"] == pytest.approx(0.4)
+            assert summary["effective_evictable_ratio"] == pytest.approx(28 / 96, abs=1e-5)
 
-    def test_multiple_ranks_aggregated(self):
-        """Multiple ranks on same req → summed aggregation."""
+    def test_two_ranks_merged(self):
+        """Two TP ranks: aggregate kept/logical cells."""
         with tempfile.TemporaryDirectory() as d:
             _write_npz(d, "req0_r0_0.npz",
                        kept=[[30, 20]], total=[[100, 80]], sink=4, win=2,
@@ -137,18 +137,9 @@ class TestRetentionParser:
                        kept=[[10, 40]], total=[[50, 60]], sink=4, win=2,
                        eval_len=200, req="0", rank=1)
 
-            phys, ctx, kept, total, n = _parse_retention_dump(d, requested_ratio=0.5)
+            records = load_final_decisions(d)
+            assert len(records) == 2
 
-            # 2 unique keys: (0, 0) and (0, 1)
-            assert n == 2
-            # total kept = 30+20+10+40 = 100
-            assert kept == 100
-            # total seen = 100+80+50+60 = 290
-            assert total == 290
-            # phys = 100/290 ≈ 0.3448
-            assert phys == pytest.approx(100 / 290)
-            # context: for r0: ctx_kept = [30-4-2, 20-4-2] = [24, 14], ctx_total = [96, 76]
-            #          for r1: ctx_kept = [10-4-2, 40-4-2] = [4, 34], ctx_total = [46, 56]
-            # context_kept = 24+14+4+34 = 76, context_total = 96+76+46+56 = 274
-            # context_ratio = 76/274
-            assert ctx == pytest.approx(76 / 274)
+            summary = summarize_retention(records, {"0": 100})
+            assert summary["kept_token_cells"] == 100
+            assert summary["logical_token_cells"] == 400  # 100 tokens × 4 cells

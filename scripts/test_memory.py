@@ -14,6 +14,7 @@ import numpy as np
 
 from _cake_constants import MODEL_PATH
 from _real_data import build_real_prompt_ids
+from _retention_utils import load_final_decisions, summarize_retention
 from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
@@ -62,108 +63,25 @@ def _get_gpu_name():
         return "unknown"
 
 
-def _parse_retention_dump(dump_dir: str, requested_ratio: float):
-    """Parse retention dump .npz files and compute effective ratios.
-
-    Schema (from vllm/v1/attention/compression/profiling.py):
-        kept, total, sink, win, eval_len, req, rank
-
-    Filename format: {req_id}_r{rank}_{seq}.npz where seq increments
-    per decision within the same rank. Only the highest-seq record per
-    (req, rank) contributes — earlier decisions are intermediate.
-
-    Returns (physical_ratio, context_ratio, total_kept, total_seen, num_dumps).
-    """
-    REQUIRED = {"kept", "total", "sink", "win", "eval_len", "req", "rank"}
-
-    npz_files = sorted(
-        f for f in os.listdir(dump_dir) if f.endswith(".npz"))
-
-    if not npz_files:
-        if requested_ratio < 1.0:
-            raise RuntimeError(
-                f"ratio={requested_ratio} < 1 but no retention dump .npz files "
-                f"found in {dump_dir} — compression may not have triggered. "
-                "Check max_model_len, prompt length, and compression config."
-            )
-        # FullKV (ratio=1.0): no compression dumps is expected
-        return 1.0, 1.0, 0, 0, 0
-
-    # Deduplicate by (req, rank): pick record with highest sequence number.
-    # Filename: {req_id}_r{rank}_{seq}.npz — seq comes from Profiler._seq counter.
-    # Multiple decisions at same eval_len are possible (multi-chunk prefill);
-    # only the highest seq is the final decision for that (req, rank).
-    import re
-    _SEQ_RE = re.compile(r"_r\d+_(\d+)\.npz$")
-
-    by_key: dict = {}
-    for fn in npz_files:
-        path = os.path.join(dump_dir, fn)
-        d = np.load(path, allow_pickle=False)
-
-        missing = REQUIRED - set(d.files)
-        if missing:
-            raise RuntimeError(
-                f"Invalid retention dump {fn}: missing fields {sorted(missing)}. "
-                f"Found: {sorted(d.files)}"
-            )
-
-        key = (str(d["req"]), int(d["rank"]))
-        m = _SEQ_RE.search(fn)
-        seq = int(m.group(1)) if m else -1
-        if key not in by_key or seq > by_key[key]["seq"]:
-            by_key[key] = {
-                "kept": d["kept"].astype(np.int64),
-                "total": d["total"].astype(np.int64),
-                "sink": int(d["sink"]),
-                "win": int(d["win"]),
-                "eval_len": int(d["eval_len"]),
-                "seq": seq,
-            }
-
-    # Aggregate across all deduplicated (req, rank) records
-    kept_all = np.concatenate([rec["kept"].ravel() for rec in by_key.values()])
-    total_all = np.concatenate([rec["total"].ravel() for rec in by_key.values()])
-    physical_ratio = float(kept_all.sum() / total_all.sum()) if total_all.sum() > 0 else 1.0
-
-    # Context-only ratio: exclude always-kept sink + recent window
-    ctx_kept_parts = []
-    ctx_total_parts = []
-    for rec in by_key.values():
-        k = rec["kept"].ravel()
-        t = rec["total"].ravel()
-        sink = rec["sink"]
-        win = rec["win"]
-        ctx_k = np.clip(k - sink - win, 0, None)
-        ctx_t = np.maximum(t - sink, 1)
-        ctx_kept_parts.append(ctx_k)
-        ctx_total_parts.append(ctx_t)
-    context_kept = np.concatenate(ctx_kept_parts)
-    context_total = np.concatenate(ctx_total_parts)
-    context_ratio = float(context_kept.sum() / context_total.sum())
-
-    return (
-        physical_ratio,
-        context_ratio,
-        int(kept_all.sum()),
-        int(total_all.sum()),
-        len(by_key),
-    )
 
 
 def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                   num_layers, num_kv_heads, head_dim):
-    """Run retention verification for a single prompt length."""
+    """Run retention verification for a single prompt length.
+
+    Uses TokensPrompt (no decode-retokenize) and logical context capacity
+    for end-to-end ratio computation.
+    """
     from vllm import LLM, SamplingParams
+    from vllm.inputs import TokensPrompt
     from transformers import AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
     prompt_ids = build_real_prompt_ids(tokenizer, prompt_length)
-    prompt = tokenizer.decode(prompt_ids)
+    prompt_input = TokensPrompt(prompt_token_ids=prompt_ids)
     actual_tokens = len(prompt_ids)
     estimated_full_kv_gib = bytes_per_token * actual_tokens / (1024 ** 3)
     model_len = prompt_length + MAX_OUTPUT_TOKENS
-    # Reduce memory pressure for longer contexts
     gpu_util = GPU_MEMORY_UTILIZATION if prompt_length <= 8192 else 0.85
 
     print(f"\n  Model: L={num_layers} H_kv={num_kv_heads} D={head_dim} "
@@ -204,29 +122,54 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
             )
 
             t0 = time.time()
-            out = llm.generate([prompt], sp)
+            out = llm.generate([prompt_input], sp)
             elapsed = time.time() - t0
+            engine_input_tokens = len(out[0].prompt_token_ids)
             num_out = len(out[0].outputs[0].token_ids)
             del llm
             import gc; gc.collect()
             import torch; torch.cuda.empty_cache()
 
-            phys_r, ctx_r, tot_kept, tot_seen, n_dumps = _parse_retention_dump(
-                dump_dir, ratio)
+            # Verify no decode-retokenize drift
+            assert engine_input_tokens == prompt_length, \
+                f"Engine saw {engine_input_tokens} tokens, expected {prompt_length}"
+
+            # End-to-end metrics using logical context capacity
+            records = load_final_decisions(dump_dir)
+            n_dumps = len(records)
+            if ratio < 1.0 and n_dumps == 0:
+                raise RuntimeError(
+                    f"ratio={ratio} < 1 but no retention dump in {dump_dir}")
+            elif n_dumps == 0:
+                summary = {"effective_physical_ratio": 1.0,
+                           "effective_evictable_ratio": 1.0,
+                           "final_step_shrink_ratio": 1.0,
+                           "kept_token_cells": 0, "logical_token_cells": 0}
+            else:
+                logical_by_req = {out[0].request_id: engine_input_tokens}
+                summary = summarize_retention(records, logical_by_req)
+
+            phys_r = summary["effective_physical_ratio"]
+            ctx_r = summary["effective_evictable_ratio"]
+            final_step = summary["final_step_shrink_ratio"]
+            kept_cells = summary["kept_token_cells"]
+            logical_cells = summary["logical_token_cells"]
 
             estimated_retained_kv_gib = estimated_full_kv_gib * phys_r
             estimated_saved_kv_gib = estimated_full_kv_gib - estimated_retained_kv_gib
 
             results.append({
                 "config": label,
-                "ratio": ratio,
+                "requested_ratio": ratio,
+                "effective_physical_ratio": round(phys_r, 6),
+                "effective_evictable_ratio": round(ctx_r, 6),
+                "final_step_shrink_ratio": round(final_step, 6),
                 "input_tokens": actual_tokens,
+                "engine_input_tokens": engine_input_tokens,
                 "output_tokens": num_out,
                 "time_s": round(elapsed, 2),
-                "physical_ratio": round(phys_r, 4),
-                "context_ratio": round(ctx_r, 4),
-                "total_kept": tot_kept,
-                "total_seen": tot_seen,
+                "kept_token_cells": kept_cells,
+                "logical_token_cells": logical_cells,
                 "num_dumps": n_dumps,
                 "estimated_full_kv_gib": round(estimated_full_kv_gib, 4),
                 "estimated_retained_kv_gib": round(estimated_retained_kv_gib, 4),
@@ -234,7 +177,8 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                 "status": "OK",
             })
             print(f"    OK: {num_out} tok, {elapsed:.1f}s, "
-                  f"phys={phys_r:.4f}, ctx={ctx_r:.4f} ({n_dumps} dumps)")
+                  f"phys={phys_r:.4f} final-step={final_step:.4f} "
+                  f"({n_dumps} dumps)")
             print(f"    Est.KV: full={estimated_full_kv_gib:.3f} GiB, "
                   f"retained={estimated_retained_kv_gib:.3f} GiB, "
                   f"saved={estimated_saved_kv_gib:.3f} GiB")
@@ -274,16 +218,17 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
     with open(out_path, "w") as f:
         json.dump({"meta": meta, "results": results}, f, indent=2)
 
-    print(f"\n  {'Config':<10} {'Ratio':<6} {'PhysR':<8} {'CtxR':<8} "
-          f"{'EstFull':<10} {'EstSaved':<10} {'Status'}")
-    print(f"  {'-'*10} {'-'*6} {'-'*8} {'-'*8} {'-'*10} {'-'*10} {'-'*6}")
+    print(f"\n  {'Config':<10} {'PhysR':>8} {'FinalR':>8} {'EstFull':>10} {'EstSaved':>10} {'Status'}")
+    print(f"  {'-'*10} {'-'*8} {'-'*8} {'-'*10} {'-'*10} {'-'*6}")
     for r in results:
-        phys = f"{r.get('physical_ratio', 0):.4f}" if 'physical_ratio' in r else "N/A"
-        ctx  = f"{r.get('context_ratio', 0):.4f}" if 'context_ratio' in r else "N/A"
+        if 'effective_physical_ratio' in r:
+            phys = f"{r['effective_physical_ratio']:.4f}"
+            final = f"{r.get('final_step_shrink_ratio', 0):.4f}"
+        else:
+            phys = final = "N/A"
         full = f"{r.get('estimated_full_kv_gib', 0):.3f}" if 'estimated_full_kv_gib' in r else "N/A"
         saved = f"{r.get('estimated_saved_kv_gib', 0):.3f}" if 'estimated_saved_kv_gib' in r else "N/A"
-        print(f"  {r['config']:<10} {r['ratio']:<6.2f} {phys:<8} {ctx:<8} "
-              f"{full:<10} {saved:<10} {r['status']}")
+        print(f"  {r['config']:<10} {phys:>8} {final:>8} {full:>10} {saved:>10} {r['status']}")
 
     print(f"\n  Saved: {out_path}")
 
