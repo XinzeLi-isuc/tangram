@@ -26,6 +26,18 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 PROMPT_LEN = 8192
 
 
+def _get_gpu_name():
+    import subprocess
+    try:
+        out = subprocess.check_output(
+            ["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"],
+            text=True,
+        ).strip()
+        return out.split("\n")[0] if out else "unknown"
+    except Exception:
+        return "unknown"
+
+
 def run_and_collect(chunk_size, label):
     """Run CAKE_25, return (dump_dir, final_records, engine_input_tokens)."""
     from vllm import LLM, SamplingParams
@@ -68,10 +80,12 @@ def run_and_collect(chunk_size, label):
     logical_by_req = {out[0].request_id: engine_tokens}
     summary = summarize_retention(records, logical_by_req)
 
-    print(f"  [{label}] chunk={chunk_size}: {len(records)} dumps, "
+    num_decisions_total = len([f for f in os.listdir(dump_dir) if f.endswith(".npz")])
+    print(f"  [{label}] chunk={chunk_size}: {len(records)} final records "
+          f"(total decisions: {num_decisions_total}), "
           f"phys={summary['effective_physical_ratio']:.4f}, "
           f"output={num_out} tok", flush=True)
-    return dump_dir, records, engine_tokens, summary
+    return dump_dir, records, engine_tokens, summary, num_out, num_decisions_total, len(records)
 
 
 def analyze_layer_variance(records, logical_tokens):
@@ -130,7 +144,7 @@ def main():
 
     for chunk_size in [2048, 8192]:
         print(f"\n--- chunk={chunk_size} ---", flush=True)
-        d, records, eng_tok, summary = run_and_collect(chunk_size, "cake_layer")
+        d, records, eng_tok, summary, num_out, n_total, n_final = run_and_collect(chunk_size, "cake_layer")
         stats = analyze_layer_variance(records, eng_tok)
         label = f"chunk_{chunk_size}"
         results[label] = {"summary": summary, "layer_stats": stats}
@@ -167,14 +181,21 @@ def main():
 
     # Add metadata
     import subprocess
+    from datetime import datetime, timezone
     results["meta"] = {
         "git_commit": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], text=True,
             cwd=os.path.dirname(__file__) + "/.."
         ).strip(),
         "model": MODEL,
+        "gpu": _get_gpu_name(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "command": " ".join(sys.argv),
         "requested_ratio": 0.25,
         "prompt_length": PROMPT_LEN,
+        "output_tokens": num_out,
+        "num_decisions_total": n_total,
+        "num_final_records": n_final,
         "compression_window_size": CAKE_WINDOW_SIZE,
         "compression_n_sink_tokens": CAKE_N_SINK_TOKENS,
         "compression_floor_min": CAKE_FLOOR_MIN,

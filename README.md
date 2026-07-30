@@ -61,12 +61,14 @@ print(outputs[0].outputs[0].text)
 
 ---
 
-## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16, SCBench real text)
+## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16)
 
-> ⚠️ 32K performance data was collected before the unified config fix (8e2d0ca).
-> Re-run pending. Readme stale until re-run completes.
+> **Implementation verified; corrected GPU measurement pending.**
+> All code-level fixes (logical-capacity denominator, seq-based parser,
+> unified config, TokensPrompt) are committed. Results below that are
+> marked ⏳ require re-run with corrected metrics before final reporting.
 
-### 1. Smoke Test — 3/3 PASS
+### 1. Smoke Test — 3/3 PASS ✅
 
 | Config | Output | Time | Status |
 |--------|:------:|:----:|:------:|
@@ -74,62 +76,63 @@ print(outputs[0].outputs[0].text)
 | CAKE+uniform | 64 tok | 15.1s | OK |
 | CAKE+cake_layer | 64 tok | 14.5s | OK |
 
-### 2. Retention Verification (end-to-end physical ratio, logical capacity denominator)
+*Note: smoke uses repeated synthetic sentences, not SCBench real text.*
 
-*Extracted with `_retention_utils.summarize_retention()` using `logical_tokens_by_req`.*
+### 2. Retention Verification ⏳ (pending re-run)
 
-| Config | 8K | 16K | 32K | Method |
-|--------|:--:|:---:|:---:|--------|
-| FullKV | 1.000 | 1.000 | 1.000 | No compression |
-| CAKE 25% | ~0.25 | ~0.25 | ~0.25 | cake_layer |
-| CAKE 50% | ~0.50 | ~0.50 | ~0.50 | cake_layer |
+Expected after fixed-metric re-run (`effective_physical_ratio` =
+`kept_token_cells / logical_token_cells`):
+
+| Config | 8K | 16K | 32K |
+|--------|:--:|:---:|:---:|
+| FullKV | 1.000 | 1.000 | 1.000 |
+| CAKE 25% | ~0.25 | ~0.25 | ~0.25 |
+| CAKE 50% | ~0.50 | ~0.50 | ~0.50 |
 
 - window=32, sink=4, floor=0, chunk=2048, page_group=4
-- `effective_evictable_ratio` = (kept − sink − win) / (logical − sink − win)
-- `final_step_shrink_ratio` = kept / resident_before_final (previous metric, ~0.85)
-- Results: `results/raw/day10_memory/` (pending re-run with fixed metrics)
+- `final_step_shrink_ratio` = kept / resident_before_final, was ~0.85
 
-### 3. 32K Performance (32768 tokens, 128 output, batch 1–10)
+### 3. 32K Performance ⏳ (pending re-run with unified config)
 
-*Collected pre-config-unification. Real SCBench text. Re-run pending.*
+Previous data (collected pre-config-unification at `54bb0de`, real SCBench text).
+**Do not cite as current.**
+
+<details>
+<summary>Legacy pre-unified-config results (click to expand)</summary>
 
 | Config | b=1 | b=2 | b=4 | b=6 | b=8 | b=10 |
 |--------|----:|----:|----:|----:|----:|-----:|
-| Native-vLLM | 11.7s | 20.5s | 37.7s | — | — | — |
 | Tangram FullKV | 11.9s | 20.6s | 37.8s | 55.1s | 75.7s | 93.2s |
 | CAKE 50% | 10.9s | 19.6s | 35.7s | 52.3s | 72.8s | 94.1s |
-| CAKE 25% | **9.8s** | **17.0s** | **30.8s** | **44.7s** | **58.8s** | **74.6s** |
+| CAKE 25% | 9.8s | 17.0s | 30.8s | 44.7s | 58.8s | 74.6s |
 
-Speedup vs Tangram FullKV @ batch=10: CAKE_25 = 1.25×, CAKE_50 = 0.99×
+CAKE_25 offline batch speedup: 1.21–1.29× over FullKV.
 
-### 4. Estimated KV-cache Capacity Reduction
+</details>
 
-| Config | 8K | 16K | 32K |
-|--------|---:|----:|----:|
-| CAKE 25% | ~0.75× | ~0.75× | ~0.75× |
-| CAKE 50% | ~0.50× | ~0.50× | ~0.50× |
+### 4. Estimated KV-cache Capacity Reduction ⏳
 
-Theoretical KV capacity reduction = 1 − effective_physical_ratio.
-NOT measured via nvidia-smi (vLLM pre-allocates GPU pool).
+Theoretical = 1 − effective_physical_ratio. NOT nvidia-smi (vLLM pre-allocates GPU pool).
 
-### 5. E2E Verification
+| Config | Reduction |
+|--------|:---------:|
+| CAKE 25% | ~75% |
+| CAKE 50% | ~50% |
 
-| Check | Result |
-|-------|--------|
-| cake_layer non-uniform | PASS (24/32 layers deviate) |
-| Budget correctness (chunk 2048) | PASS (~25% physical ratio) |
-| Budget correctness (chunk 8192) | PASS (~25% physical ratio) |
-| Chunk-size sensitivity | MODERATE/UNSTABLE (pending re-run) |
+### 5. E2E Verification ⏳ (pending re-run)
 
-Results: `results/raw/day16_e2e/` (pending re-run with fixed metrics)
+| Check | Expected |
+|-------|----------|
+| cake_layer non-uniform | ~24/32 layers deviate |
+| Budget correctness (chunk 2048) | phys ≈ 0.25 |
+| Budget correctness (chunk 8192) | phys ≈ 0.25 |
+| Chunk-size sensitivity | Spearman/MAE TBD |
 
-### 6. Verification
+### 6. Unit Tests ✅
 
-- pytest: **28/28** passed (CPU tests)
-- retention parser unit tests: **7/7** passed
+- pytest (CPU): **28/28** passed
+- retention parser: **7/7** passed
 - py_compile: **5/5** OK
-
-Full results: `results/raw/smoke/`, `results/raw/day10_memory/`, `results/raw/day14_perf/`
 ---
 
 ## Architecture

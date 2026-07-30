@@ -8,23 +8,27 @@
 - **SCBench** (recommended for multi-turn): scbench_choice_eng, scbench_qa_eng,
   scbench_mf, scbench_vt.
 
-### Configurations (6-way ablation)
+### Configurations (5-way ablation)
 | # | Scorer | Level | Purpose |
 |---|--------|-------|---------|
 | 1 | FullKV | — | Upper bound |
 | 2 | SnapKV | uniform | Tangram baseline |
 | 3 | SnapKV | crosslayer_cluster | Tangram strongest |
 | 4 | CAKE | uniform | Token scorer only |
-| 5 | SnapKV | cake_layer | Budget level only |
-| 6 | CAKE | cake_layer | Full CAKE-Serve |
+| 5 | CAKE | cake_layer | Full CAKE-Serve |
+
+Note: SnapKV + cake_layer is NOT "budget level only" — SnapKV
+produces no CAKE preference, so cake_layer falls back to uniform.
+That row was removed from the ablation matrix.
 
 ### Ratios
-75%, 50%, 25%, 10% (effective ratio, post sink/window/alignment).
+`requested_ratio` (e.g. 0.25) vs measured `effective_physical_ratio`
+after sink/window/alignment. Both must be reported.
 
 ### Commands
 ```bash
 # RULER
-CD ~/cake-serve
+cd ~/cake-serve
 MODEL=meta-llama/Llama-3.1-8B-Instruct \
 SCORER=cake LEVEL=cake_layer RATIOS="0.5 0.25" LENGTHS="8192" \
 bash benchmarks/tangram/benchmark_ruler.sh
