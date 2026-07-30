@@ -99,11 +99,12 @@ def summarize_retention(records, logical_tokens_by_req):
         resident_before_final += r.sum()
         logical_cells += logical_tokens * num_cells
 
-        # Evictable: exclude always-kept sink + window
+        # Evictable region: exclude always-kept sink + recent window
         sink = rec["sink"]
         win = rec["win"]
         ctx_kept += np.maximum(k - sink - win, 0).sum()
-        ctx_logical += max(logical_tokens - sink, 1) * num_cells
+        evictable_tokens = max(logical_tokens - sink - win, 0)
+        ctx_logical += evictable_tokens * num_cells
 
     physical = kept_cells / logical_cells if logical_cells > 0 else 1.0
     final_step = kept_cells / resident_before_final if resident_before_final > 0 else 1.0

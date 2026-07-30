@@ -125,7 +125,7 @@ class TestRetentionParser:
             summary = summarize_retention(records, {"0": 100})
 
             assert summary["effective_physical_ratio"] == pytest.approx(0.4)
-            assert summary["effective_evictable_ratio"] == pytest.approx(28 / 96, abs=1e-5)
+            assert summary["effective_evictable_ratio"] == pytest.approx(28 / 88)  # (kept-sink-win) / (logical-sink-win)
 
     def test_two_ranks_merged(self):
         """Two TP ranks: aggregate kept/logical cells."""
