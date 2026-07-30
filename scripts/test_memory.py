@@ -135,16 +135,28 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                 f"Engine saw {engine_input_tokens} tokens, expected {prompt_length}"
 
             # End-to-end metrics using logical context capacity
+            num_decisions_total = len([
+                f for f in os.listdir(dump_dir) if f.endswith(".npz")
+            ])
             records = load_final_decisions(dump_dir)
-            n_dumps = len(records)
-            if ratio < 1.0 and n_dumps == 0:
+            num_final_records = len(records)
+
+            if ratio < 1.0 and num_final_records == 0:
                 raise RuntimeError(
                     f"ratio={ratio} < 1 but no retention dump in {dump_dir}")
-            elif n_dumps == 0:
-                summary = {"effective_physical_ratio": 1.0,
-                           "effective_evictable_ratio": 1.0,
-                           "final_step_shrink_ratio": 1.0,
-                           "kept_token_cells": 0, "logical_token_cells": 0}
+            elif num_final_records == 0:
+                # FullKV: no compression, all cells kept = logical cells
+                num_groups = num_kv_heads // PAGE_GROUP_SIZE
+                logical_cells = engine_input_tokens * num_layers * num_groups
+                summary = {
+                    "effective_physical_ratio": 1.0,
+                    "effective_evictable_ratio": 1.0,
+                    "final_step_shrink_ratio": 1.0,
+                    "kept_token_cells": logical_cells,
+                    "logical_token_cells": logical_cells,
+                    "resident_before_final_cells": logical_cells,
+                    "num_unique_requests": 1,
+                }
             else:
                 logical_by_req = {out[0].request_id: engine_input_tokens}
                 summary = summarize_retention(records, logical_by_req)
@@ -170,7 +182,8 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                 "time_s": round(elapsed, 2),
                 "kept_token_cells": kept_cells,
                 "logical_token_cells": logical_cells,
-                "num_dumps": n_dumps,
+                "num_decisions_total": num_decisions_total,
+                "num_final_records": num_final_records,
                 "estimated_full_kv_gib": round(estimated_full_kv_gib, 4),
                 "estimated_retained_kv_gib": round(estimated_retained_kv_gib, 4),
                 "estimated_saved_kv_gib": round(estimated_saved_kv_gib, 4),
@@ -178,7 +191,7 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
             })
             print(f"    OK: {num_out} tok, {elapsed:.1f}s, "
                   f"phys={phys_r:.4f} final-step={final_step:.4f} "
-                  f"({n_dumps} dumps)")
+                  f"({num_decisions_total} total / {num_final_records} final)")
             print(f"    Est.KV: full={estimated_full_kv_gib:.3f} GiB, "
                   f"retained={estimated_retained_kv_gib:.3f} GiB, "
                   f"saved={estimated_saved_kv_gib:.3f} GiB")

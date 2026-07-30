@@ -143,3 +143,4 @@ class TestRetentionParser:
             summary = summarize_retention(records, {"0": 100})
             assert summary["kept_token_cells"] == 100
             assert summary["logical_token_cells"] == 400  # 100 tokens × 4 cells
+            assert summary["num_unique_requests"] == 1  # one request across both ranks

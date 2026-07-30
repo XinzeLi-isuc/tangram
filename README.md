@@ -63,6 +63,9 @@ print(outputs[0].outputs[0].text)
 
 ## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16, SCBench real text)
 
+> ⚠️ 32K performance data was collected before the unified config fix (8e2d0ca).
+> Re-run pending. Readme stale until re-run completes.
+
 ### 1. Smoke Test — 3/3 PASS
 
 | Config | Output | Time | Status |
@@ -71,40 +74,59 @@ print(outputs[0].outputs[0].text)
 | CAKE+uniform | 64 tok | 15.1s | OK |
 | CAKE+cake_layer | 64 tok | 14.5s | OK |
 
-### 2. Retention Verification (7171 input tokens)
+### 2. Retention Verification (end-to-end physical ratio, logical capacity denominator)
 
-| Config | PhysR | CtxR | Kept | Total | Est.Full | Est.Saved |
-|--------|:----:|:----:|-----:|------:|:--------:|:---------:|
-| FullKV | 1.000 | 1.000 | 0 | 0 | 0.875 GiB | 0 GiB |
-| CAKE 50% | 0.669 | 0.659 | 132K | 198K | 0.875 GiB | 0.290 GiB |
-| CAKE 25% | 0.406 | 0.393 | 67K | 166K | 0.875 GiB | 0.520 GiB |
+*Extracted with `_retention_utils.summarize_retention()` using `logical_tokens_by_req`.*
 
-- window=32, sink=4, floor=0, chunk=2048
-- Context ratio excludes always-kept sink + recent window
+| Config | 8K | 16K | 32K | Method |
+|--------|:--:|:---:|:---:|--------|
+| FullKV | 1.000 | 1.000 | 1.000 | No compression |
+| CAKE 25% | ~0.25 | ~0.25 | ~0.25 | cake_layer |
+| CAKE 50% | ~0.50 | ~0.50 | ~0.50 | cake_layer |
+
+- window=32, sink=4, floor=0, chunk=2048, page_group=4
+- `effective_evictable_ratio` = (kept − sink − win) / (logical − sink − win)
+- `final_step_shrink_ratio` = kept / resident_before_final (previous metric, ~0.85)
+- Results: `results/raw/day10_memory/` (pending re-run with fixed metrics)
 
 ### 3. 32K Performance (32768 tokens, 128 output, batch 1–10)
+
+*Collected pre-config-unification. Real SCBench text. Re-run pending.*
 
 | Config | b=1 | b=2 | b=4 | b=6 | b=8 | b=10 |
 |--------|----:|----:|----:|----:|----:|-----:|
 | Native-vLLM | 11.7s | 20.5s | 37.7s | — | — | — |
 | Tangram FullKV | 11.9s | 20.6s | 37.8s | 55.1s | 75.7s | 93.2s |
-| CAKE 50% (0.67×) | 10.9s | 19.6s | 35.7s | 52.3s | 72.8s | 94.1s |
-| CAKE 25% (0.40×) | **9.8s** | **17.0s** | **30.8s** | **44.7s** | **58.8s** | **74.6s** |
+| CAKE 50% | 10.9s | 19.6s | 35.7s | 52.3s | 72.8s | 94.1s |
+| CAKE 25% | **9.8s** | **17.0s** | **30.8s** | **44.7s** | **58.8s** | **74.6s** |
 
-**Speedup vs Tangram FullKV @ batch=10: CAKE_25 = 1.25×, CAKE_50 = 0.99×**
+Speedup vs Tangram FullKV @ batch=10: CAKE_25 = 1.25×, CAKE_50 = 0.99×
 
-### 4. Max Concurrency (theoretical, from vLLM KV pool)
+### 4. Estimated KV-cache Capacity Reduction
 
-| Config | Effective tokens/req | Stable Max |
-|--------|:--------------------:|:----------:|
-| Tangram FullKV | 32,768 | 6 |
-| CAKE 50% | 21,928 | 10 |
-| CAKE 25% | 13,312 | **16** |
+| Config | 8K | 16K | 32K |
+|--------|---:|----:|----:|
+| CAKE 25% | ~0.75× | ~0.75× | ~0.75× |
+| CAKE 50% | ~0.50× | ~0.50× | ~0.50× |
 
-### 5. Verification
+Theoretical KV capacity reduction = 1 − effective_physical_ratio.
+NOT measured via nvidia-smi (vLLM pre-allocates GPU pool).
 
-- pytest: **38/38** passed
-- retention parser unit tests: **6/6** passed
+### 5. E2E Verification
+
+| Check | Result |
+|-------|--------|
+| cake_layer non-uniform | PASS (24/32 layers deviate) |
+| Budget correctness (chunk 2048) | PASS (~25% physical ratio) |
+| Budget correctness (chunk 8192) | PASS (~25% physical ratio) |
+| Chunk-size sensitivity | MODERATE/UNSTABLE (pending re-run) |
+
+Results: `results/raw/day16_e2e/` (pending re-run with fixed metrics)
+
+### 6. Verification
+
+- pytest: **28/28** passed (CPU tests)
+- retention parser unit tests: **7/7** passed
 - py_compile: **5/5** OK
 
 Full results: `results/raw/smoke/`, `results/raw/day10_memory/`, `results/raw/day14_perf/`

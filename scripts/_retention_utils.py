@@ -117,5 +117,5 @@ def summarize_retention(records, logical_tokens_by_req):
         "kept_token_cells": int(kept_cells),
         "logical_token_cells": int(logical_cells),
         "resident_before_final_cells": int(resident_before_final),
-        "num_unique_requests": len(records),
+        "num_unique_requests": len({rec["req"] for rec in records}),
     }

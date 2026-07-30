@@ -153,19 +153,41 @@ def main():
     results["comparison"] = comparison
     results["phys_ratios"] = all_phys
 
-    verdict = "PASS" if (
-        not results["chunk_2048"]["layer_stats"]["is_uniform"]
-        and comparison["spearman_r"] > 0.8
-        and comparison["budget_mae"] < 0.1
-        and abs(all_phys[2048] - all_phys[8192]) < 0.05
-    ) else "NEEDS_INVESTIGATION"
+    is_non_uniform = not results["chunk_2048"]["layer_stats"]["is_uniform"]
+    both_close = all(abs(r - 0.25) < 0.03 for r in all_phys.values())
+
+    verdict = {
+        "budget_correctness": "PASS" if both_close else "FAIL",
+        "layer_adaptivity": "PASS" if is_non_uniform else "FAIL",
+        "chunk_size_stability": "PASS" if comparison["budget_mae"] < 0.05 else (
+            "UNSTABLE" if comparison["budget_mae"] > 0.1 else "MODERATE"
+        ),
+    }
     results["verdict"] = verdict
 
-    print(f"\n  Chunk comparison: Spearman={comparison['spearman_r']} "
-          f"top5={comparison['top5_overlap']} MAE={comparison['budget_mae']}",
-          flush=True)
-    print(f"  Phys: 2048={all_phys[2048]:.4f} 8192={all_phys[8192]:.4f} "
-          f"Δ={abs(all_phys[2048]-all_phys[8192]):.4f}", flush=True)
+    # Add metadata
+    import subprocess
+    results["meta"] = {
+        "git_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], text=True,
+            cwd=os.path.dirname(__file__) + "/.."
+        ).strip(),
+        "model": MODEL,
+        "requested_ratio": 0.25,
+        "prompt_length": PROMPT_LEN,
+        "compression_window_size": CAKE_WINDOW_SIZE,
+        "compression_n_sink_tokens": CAKE_N_SINK_TOKENS,
+        "compression_floor_min": CAKE_FLOOR_MIN,
+        "page_group_size": CAKE_PAGE_GROUP_SIZE,
+        "chunk_sizes_tested": [2048, 8192],
+    }
+
+    print(f"\n  Budget correctness: {verdict['budget_correctness']}", flush=True)
+    print(f"  Layer adaptivity:  {verdict['layer_adaptivity']}", flush=True)
+    print(f"  Chunk stability:   {verdict['chunk_size_stability']}", flush=True)
+    print(f"  Spearman={comparison['spearman_r']} top5={comparison['top5_overlap']} "
+          f"MAE={comparison['budget_mae']}", flush=True)
+    print(f"  Phys: 2048={all_phys[2048]:.4f} 8192={all_phys[8192]:.4f}", flush=True)
 
     out_path = os.path.join(OUTPUT_DIR, "e2e_verify.json")
     with open(out_path, "w") as f:
