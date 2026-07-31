@@ -17,7 +17,11 @@ OUTPUT_DIR = "results/raw/day17_serving"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=300):
+# Bypass HTTP proxy for localhost (required in restricted network env)
+os.environ.setdefault("no_proxy", "localhost,127.0.0.1")
+
+
+def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=200):
     """Start vllm serve, run bench, collect metrics."""
     print(f"\n{'='*60}")
     print(f"Benchmark: {config_name} (ratio={ratio}, rate={request_rate})")
@@ -86,7 +90,9 @@ def _wait_ready(base_url, timeout_s=180):
     deadline = time.time() + timeout_s
     while time.time() < deadline:
         try:
-            r = urllib.request.urlopen(f"{base_url}/ping", timeout=3)
+            req = urllib.request.Request(f"{base_url}/ping")
+            req.set_proxy("localhost:0", "http")  # bypass proxy
+            r = urllib.request.urlopen(req, timeout=3)
             if r.status == 200:
                 return
         except Exception:
