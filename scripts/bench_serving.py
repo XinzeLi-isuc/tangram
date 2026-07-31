@@ -90,10 +90,11 @@ def _wait_ready(base_url, timeout_s=180):
     deadline = time.time() + timeout_s
     while time.time() < deadline:
         try:
-            req = urllib.request.Request(f"{base_url}/v1/models")
-            # bypass proxy for localhost
-            req.set_proxy("", "http")
-            r = urllib.request.urlopen(req, timeout=3)
+            # Open without proxy (local server)
+            import urllib.request
+            proxy_handler = urllib.request.ProxyHandler({})
+            opener = urllib.request.build_opener(proxy_handler)
+            r = opener.open(f"{base_url}/v1/models", timeout=3)
             if r.status == 200:
                 return
         except Exception:
