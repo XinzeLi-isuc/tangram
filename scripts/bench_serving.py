@@ -82,16 +82,16 @@ def _free_port():
         return s.getsockname()[1]
 
 
-def _wait_ready(base_url, timeout_s=120):
+def _wait_ready(base_url, timeout_s=180):
     deadline = time.time() + timeout_s
     while time.time() < deadline:
         try:
-            r = urllib.request.urlopen(f"{base_url}/health", timeout=2)
+            r = urllib.request.urlopen(f"{base_url}/ping", timeout=3)
             if r.status == 200:
                 return
         except Exception:
             pass
-        time.sleep(2)
+        time.sleep(3)
     raise RuntimeError(f"Server at {base_url} did not become ready")
 
 
