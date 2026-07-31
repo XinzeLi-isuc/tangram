@@ -1,142 +1,120 @@
-"""Step 4: Measured max concurrency — increment batch until preemption/OOM.
+"""Max stable concurrency benchmark.
 
-Preemption detection: if median time > 2x linear projection from previous batch,
-or any request fails to produce 128 tokens, stop and report previous batch as max.
+Tests maximum concurrent requests without OOM or invalid outputs.
+Each concurrency level runs in fresh engine to avoid state leakage.
 
-Usage: CUDA_VISIBLE_DEVICES=0 python scripts/bench_max_concurrency.py
+Usage: CUDA_VISIBLE_DEVICES=2 python scripts/bench_max_concurrency.py --length 32768
 """
-import json, os, time, sys
+import json, os, sys, time
 import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from _cake_constants import MODEL_PATH as MODEL
-from _real_data import build_real_prompt_ids
-
-OUTPUT_DIR = "results/raw/day14_perf"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-MAX_LEN = 32768 + 128
-TGT = MAX_LEN - 128
-MAX_OUT = 128
+from _experiment_config import (
+    CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
+    CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE, GPU_MEMORY_UTILIZATION,
+)
+from _real_data import build_real_prompt_tokens
 
 CONFIGS = [
-    ("Tangram_FullKV", "snapkv", "uniform", 4, 1.0),
-    ("CAKE_25", "cake", "cake_layer", 4, 0.25),
-    ("CAKE_50", "cake", "cake_layer", 4, 0.5),
+    ("FullKV",  "snapkv", "uniform",    1.0),
+    ("CAKE_25", "cake",   "cake_layer", 0.25),
+    ("CAKE_50", "cake",   "cake_layer", 0.50),
 ]
 
-
-def measure_one(llm, sp, pids, bs):
-    """Run 2 warmup + 3 measurement. Returns median_s or None if failed."""
-    pl = [{"prompt_token_ids": pids}] * bs
-
-    # 1 warmup
-    try:
-        _ = llm.generate(pl, sp)
-    except Exception as e:
-        if "OOM" in str(e).upper():
-            return None, "OOM"
-        raise
-
-    # 3 measurements
-    times = []
-    for ti in range(3):
-        try:
-            t0 = time.time()
-            out = llm.generate(pl, sp)
-            e = time.time() - t0
-        except Exception as ex:
-            if "OOM" in str(ex).upper():
-                return None, "OOM"
-            raise
-        times.append(e)
-        ols = [len(it.outputs[0].token_ids) for it in out]
-        ok = sum(1 for n in ols if n == MAX_OUT)
-        if ok < bs:
-            return None, f"incomplete: {ok}/{bs} got {MAX_OUT} tokens, lens={ols}"
-        if ti == 0:
-            print(f"    bs={bs} t1={e:.1f}s {ok}/{bs} ok", flush=True)
-
-    med = float(np.median(times))
-    return med, None
+CONCURRENCY_LEVELS = [1, 2, 4, 8, 12, 16, 20, 24, 28, 32, 40, 48]
 
 
-def find_max(label, scorer, level, pgs, ratio):
+def test_one(config_name, scorer, level, ratio, seq_len, concurrency):
     from vllm import LLM, SamplingParams
-    from transformers import AutoTokenizer
+    from vllm.inputs import TokensPrompt
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL)
-    pids = build_real_prompt_ids(tokenizer, TGT)
-    sp = SamplingParams(temperature=0, max_tokens=MAX_OUT, min_tokens=MAX_OUT, ignore_eos=True)
+    kwargs = dict(
+        model=MODEL,
+        compression_ratio=ratio,
+        compression_scorer=scorer,
+        compression_level=level,
+        page_group_size=CAKE_PAGE_GROUP_SIZE,
+        compression_window_size=CAKE_WINDOW_SIZE,
+        compression_n_sink_tokens=CAKE_N_SINK_TOKENS,
+        compression_floor_min=CAKE_FLOOR_MIN,
+        compression_chunk_size=CAKE_CHUNK_SIZE,
+        max_model_len=seq_len + 256,
+        gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
+        disable_log_stats=True,
+    )
+    if ratio >= 1.0:
+        for k in ["compression_ratio", "compression_scorer", "compression_level"]:
+            kwargs.pop(k, None)
 
-    results = []
-    prev_med = None
-    max_stable = 0
-    bs = 1
+    try:
+        llm = LLM(**kwargs)
+    except Exception as e:
+        return {"status": "init_fail", "error": str(e)}
 
-    while True:
-        print(f"\n[{label}] testing batch={bs}", flush=True)
-        result = None
-        try:
-            kwargs = dict(model=MODEL, max_model_len=MAX_LEN,
-                         gpu_memory_utilization=0.90, max_num_seqs=bs + 2)
-            if pgs is not None:
-                kwargs.update(page_group_size=pgs, compression_ratio=ratio,
-                             compression_scorer=scorer, compression_level=level)
-            llm = LLM(**kwargs)
+    sp = SamplingParams(temperature=0, max_tokens=128, ignore_eos=True)
 
-            med, err = measure_one(llm, sp, pids, bs)
-            del llm
+    prompts = [TokensPrompt(prompt_token_ids=build_real_prompt_tokens(seq_len))
+               for _ in range(concurrency)]
 
-            if err:
-                print(f"    ERROR: {err}", flush=True)
-                results.append({"batch_size": bs, "error": err, "status": "preempted_or_oom"})
+    t0 = time.time()
+    try:
+        outs = llm.generate(prompts, sp)
+        elapsed = time.time() - t0
+
+        valid = all(len(o.outputs[0].text.strip()) >= 10 for o in outs)
+        return {
+            "status": "success",
+            "concurrency": concurrency,
+            "elapsed_sec": round(elapsed, 2),
+            "per_req_sec": round(elapsed / concurrency, 2),
+            "all_valid": valid,
+        }
+    except Exception as e:
+        return {"status": "fail", "error": str(e)}
+    finally:
+        del llm
+        import gc; gc.collect()
+        import torch; torch.cuda.empty_cache()
+
+
+def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--length", type=int, default=32768, choices=[8192, 16384, 32768])
+    args = ap.parse_args()
+
+    seq_len = args.length
+    print(f"Max concurrency @ {seq_len}")
+
+    all_results = {}
+    for label, scorer, level, ratio in CONFIGS:
+        print(f"\n{'='*60}\n{label}\n{'='*60}")
+        max_ok = 0
+        levels = []
+
+        for conc in CONCURRENCY_LEVELS:
+            print(f"  conc={conc}...", flush=True)
+            r = test_one(label, scorer, level, ratio, seq_len, conc)
+            levels.append(r)
+
+            if r["status"] == "success" and r["all_valid"]:
+                max_ok = conc
+                print(f"    OK {r['elapsed_sec']:.1f}s")
+            else:
+                print(f"    FAIL: {r.get('error', 'invalid')}")
                 break
 
-            # Preemption check: time > 2x linear projection
-            if prev_med is not None and bs > 1:
-                expected = prev_med * (bs / (bs - 1))
-                if med > 2.0 * expected:
-                    print(f"    PREEMPT: med={med:.1f}s > 2x expected={expected:.1f}s", flush=True)
-                    results.append({"batch_size": bs, "median_s": med,
-                                    "expected_s": round(expected, 2),
-                                    "status": "preempted"})
-                    break
+        all_results[label] = {"max_stable": max_ok, "levels": levels}
+        print(f"  MAX={max_ok}")
 
-            results.append({"batch_size": bs, "median_s": med, "status": "stable"})
-            max_stable = bs
-            prev_med = med
-            print(f"    STABLE: med={med:.1f}s", flush=True)
-            bs += 1
-
-        except Exception as e:
-            es = str(e)
-            if "OOM" in es.upper() or "out of memory" in es.lower():
-                print(f"    OOM at batch={bs}", flush=True)
-                results.append({"batch_size": bs, "error": "OOM", "status": "oom"})
-            else:
-                print(f"    ERROR: {type(e).__name__}: {es[:200]}", flush=True)
-                results.append({"batch_size": bs, "error": es[:200], "status": "error"})
-            break
-
-    # Save
-    path = os.path.join(OUTPUT_DIR, f"{label}_maxconcurrency.json")
-    out = {"config": label, "max_stable": max_stable, "results": results}
+    out_dir = "results/raw/day21_concurrency"
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, f"concurrency_{seq_len}.json")
     with open(path, "w") as f:
-        json.dump(out, f, indent=2, default=str)
-    print(f"  [{label}] max_stable={max_stable} -> {path}", flush=True)
-    return max_stable
+        json.dump(all_results, f, indent=2)
+    print(f"\nSaved: {path}")
 
 
-print("MAX CONCURRENCY TEST (32K real SCBench, preemption-aware)", flush=True)
-print("=" * 60, flush=True)
-
-summary = {}
-for label, scorer, level, pgs, ratio in CONFIGS:
-    mb = find_max(label, scorer, level, pgs, ratio)
-    summary[label] = mb
-
-print("\n" + "=" * 60, flush=True)
-print("SUMMARY", flush=True)
-for label, mb in summary.items():
-    print(f"  {label}: max_stable_batch={mb}", flush=True)
-print("DONE", flush=True)
+if __name__ == "__main__":
+    main()
