@@ -63,6 +63,7 @@ def run_level(config_name, scorer, level, ratio, seq_len, concurrency, out_path)
         "seq_len": seq_len, "status": "fail", "reason": None,
         "elapsed_sec": None, "per_req_sec": None,
         "num_preemptions": None, "num_failed": None, "all_outputs_valid": None,
+        "peak_running_reqs": None,
     }
 
     llm = None
@@ -72,12 +73,35 @@ def run_level(config_name, scorer, level, ratio, seq_len, concurrency, out_path)
                             ignore_eos=True)
         prompts = [TokensPrompt(prompt_token_ids=pids) for _ in range(concurrency)]
 
+        # Sample num_requests_running gauge in a background thread
+        import threading
+        peak_running = {"value": 0}
+        stop_flag = {"value": False}
+
+        def sampler():
+            while not stop_flag["value"]:
+                try:
+                    metrics = llm.llm_engine.get_metrics()
+                    running = next(
+                        (m.value for m in metrics
+                         if m.name == "vllm:num_requests_running"), 0)
+                    peak_running["value"] = max(peak_running["value"], running)
+                except Exception:
+                    pass
+                time.sleep(0.1)
+
+        t_sampler = threading.Thread(target=sampler, daemon=True)
+        t_sampler.start()
+
         t0 = time.time()
         outs = llm.generate(prompts, sp)
         elapsed = time.time() - t0
+        stop_flag["value"] = True
+        t_sampler.join(timeout=2)
 
         result["elapsed_sec"] = round(elapsed, 2)
         result["per_req_sec"] = round(elapsed / concurrency, 2)
+        result["peak_running_reqs"] = peak_running["value"]
 
         # Output validity
         valid = all(len(o.outputs[0].text.strip()) >= OUTPUT_MIN_CHARS
