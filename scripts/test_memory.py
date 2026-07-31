@@ -18,6 +18,7 @@ from _retention_utils import load_final_decisions, summarize_retention
 from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
+    CAKE_GAMMA, CAKE_TAU1, CAKE_TAU2,
     RETENTION_PROMPT_LENGTH, MAX_OUTPUT_TOKENS, MAX_MODEL_LEN,
     GPU_MEMORY_UTILIZATION,
 )
@@ -115,6 +116,9 @@ def run_one_length(prompt_length, output_dir, bytes_per_token, dtype_name,
                 compression_n_sink_tokens=COMPRESSION_N_SINK_TOKENS,
                 compression_floor_min=COMPRESSION_FLOOR_MIN,
                 compression_chunk_size=COMPRESSION_CHUNK_SIZE,
+                compression_cake_gamma=CAKE_GAMMA,
+                compression_cake_tau1=CAKE_TAU1,
+                compression_cake_tau2=CAKE_TAU2,
                 compression_retention_dump=dump_dir,
                 max_model_len=model_len,
                 gpu_memory_utilization=gpu_util,

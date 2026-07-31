@@ -11,6 +11,7 @@ from vllm.inputs import TokensPrompt
 from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
+    CAKE_GAMMA, CAKE_TAU1, CAKE_TAU2,
     MAX_OUTPUT_TOKENS, GPU_MEMORY_UTILIZATION,
 )
 
@@ -46,6 +47,9 @@ def run_config(name, scorer, level, ratio, prompt_ids, bs_list):
                 compression_n_sink_tokens=CAKE_N_SINK_TOKENS,
                 compression_floor_min=CAKE_FLOOR_MIN,
                 compression_chunk_size=CAKE_CHUNK_SIZE,
+                compression_cake_gamma=CAKE_GAMMA,
+                compression_cake_tau1=CAKE_TAU1,
+                compression_cake_tau2=CAKE_TAU2,
                 max_model_len=model_len,
                 gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
                 max_num_seqs=bs + 2,

@@ -15,6 +15,12 @@ CAKE_FLOOR_MIN = int(os.environ.get("CAKE_FLOOR_MIN", 0))
 CAKE_CHUNK_SIZE = int(os.environ.get("CAKE_CHUNK_SIZE", 2048))
 CAKE_PAGE_GROUP_SIZE = int(os.environ.get("CAKE_PAGE_GROUP_SIZE", 4))
 
+# ── CAKE scorer hyperparameters ───────────────────────────────────────
+# Paper defaults (gamma=200, tau1=1.6, tau2=0.4); production default 1/1/1.
+CAKE_GAMMA = float(os.environ.get("CAKE_GAMMA", 1.0))
+CAKE_TAU1 = float(os.environ.get("CAKE_TAU1", 1.0))
+CAKE_TAU2 = float(os.environ.get("CAKE_TAU2", 1.0))
+
 # ── Model / dataset ───────────────────────────────────────────────────
 # Override CAKE_MODEL_PATH env var if your model is elsewhere
 _MODEL_DEFAULT = os.path.expanduser(

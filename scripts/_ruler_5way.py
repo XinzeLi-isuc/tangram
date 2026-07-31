@@ -21,6 +21,7 @@ from _cake_constants import MODEL_PATH as MODEL
 from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE, GPU_MEMORY_UTILIZATION,
+    CAKE_GAMMA, CAKE_TAU1, CAKE_TAU2,
 )
 
 SAMPLES_PER_TASK = 50
@@ -79,6 +80,9 @@ def evaluate_config(config_name, scorer, level, ratio, task_samples, length):
         compression_n_sink_tokens=CAKE_N_SINK_TOKENS,
         compression_floor_min=CAKE_FLOOR_MIN,
         compression_chunk_size=CAKE_CHUNK_SIZE,
+        compression_cake_gamma=CAKE_GAMMA,
+        compression_cake_tau1=CAKE_TAU1,
+        compression_cake_tau2=CAKE_TAU2,
         max_model_len=length + 256,
         gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
         disable_log_stats=True,
