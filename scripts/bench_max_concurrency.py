@@ -14,7 +14,7 @@ from _experiment_config import (
     CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
     CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE, GPU_MEMORY_UTILIZATION,
 )
-from _real_data import build_real_prompt_tokens
+from _real_data import build_real_prompt_ids
 
 CONFIGS = [
     ("FullKV",  "snapkv", "uniform",    1.0),
@@ -54,7 +54,10 @@ def test_one(config_name, scorer, level, ratio, seq_len, concurrency):
 
     sp = SamplingParams(temperature=0, max_tokens=128, ignore_eos=True)
 
-    prompts = [TokensPrompt(prompt_token_ids=build_real_prompt_tokens(seq_len))
+    from transformers import AutoTokenizer
+    tokenizer = AutoTokenizer.from_pretrained(MODEL)
+    pids = build_real_prompt_ids(tokenizer, seq_len)
+    prompts = [TokensPrompt(prompt_token_ids=pids)
                for _ in range(concurrency)]
 
     t0 = time.time()
