@@ -90,7 +90,7 @@ def _wait_ready(base_url, timeout_s=180):
     deadline = time.time() + timeout_s
     while time.time() < deadline:
         try:
-            req = urllib.request.Request(f"{base_url}/ping")
+            req = urllib.request.Request(f"{base_url}/v1/models")
             req.set_proxy("localhost:0", "http")  # bypass proxy
             r = urllib.request.urlopen(req, timeout=3)
             if r.status == 200:
