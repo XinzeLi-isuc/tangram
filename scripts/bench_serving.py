@@ -8,6 +8,10 @@ Usage:
 import json, os, socket, subprocess, sys, time, urllib.request
 
 from _cake_constants import MODEL_PATH
+from _experiment_config import (
+    CAKE_WINDOW_SIZE, CAKE_N_SINK_TOKENS, CAKE_FLOOR_MIN,
+    CAKE_CHUNK_SIZE, CAKE_PAGE_GROUP_SIZE,
+)
 
 OUTPUT_DIR = "results/raw/day17_serving"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -28,6 +32,11 @@ def run_bench(config_name, extra_args, ratio, request_rate, num_prompts=300):
         "--model", MODEL_PATH, "--dtype", "auto",
         "--max-model-len", "16384", "--gpu-memory-utilization", "0.85",
         "--tensor-parallel-size", "1", "--disable-log-requests",
+        "--page-group-size", str(CAKE_PAGE_GROUP_SIZE),
+        "--compression-window-size", str(CAKE_WINDOW_SIZE),
+        "--compression-n-sink-tokens", str(CAKE_N_SINK_TOKENS),
+        "--compression-floor-min", str(CAKE_FLOOR_MIN),
+        "--compression-chunk-size", str(CAKE_CHUNK_SIZE),
         "--port", str(port),
     ] + extra_args
 

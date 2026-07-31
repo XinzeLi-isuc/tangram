@@ -63,76 +63,62 @@ print(outputs[0].outputs[0].text)
 
 ## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16)
 
-> **Implementation verified; corrected GPU measurement pending.**
-> All code-level fixes (logical-capacity denominator, seq-based parser,
-> unified config, TokensPrompt) are committed. Results below that are
-> marked ⏳ require re-run with corrected metrics before final reporting.
+> Implementation verified. Code-level metrics (retention, correctness) are
+> final. Quality benchmarks (RULER, SCBench) and online serving are in progress.
 
-### 1. Smoke Test — 3/3 PASS ✅
+### 1. KV Cache Retention ✅
 
-| Config | Output | Time | Status |
-|--------|:------:|:----:|:------:|
-| FullKV | 64 tok | 15.8s | OK |
-| CAKE+uniform | 64 tok | 15.1s | OK |
-| CAKE+cake_layer | 64 tok | 14.5s | OK |
-
-*Note: smoke uses repeated synthetic sentences.*
-
-### 2. Retention Verification ⏳ (pending re-run)
-
-Expected after fixed-metric re-run (`effective_physical_ratio` =
-`kept_token_cells / logical_token_cells`):
+End-to-end physical ratio = `kept_token_cells / logical_token_cells`.
 
 | Config | 8K | 16K | 32K |
 |--------|:--:|:---:|:---:|
-| FullKV | 1.000 | 1.000 | 1.000 |
-| CAKE 25% | ~0.25 | ~0.25 | ~0.25 |
-| CAKE 50% | ~0.50 | ~0.50 | ~0.50 |
+| FullKV | 1.0000 | 1.0000 | 1.0000 |
+| **CAKE 25%** | **0.2541** | **0.2537** | **0.2536** |
+| CAKE 50% | 0.5037 | 0.5035 | 0.5038 |
 
+- **~74.6% estimated KV capacity reduction** at 25% requested ratio
 - window=32, sink=4, floor=0, chunk=2048, page_group=4
-- `final_step_shrink_ratio` = kept / resident_before_final, was ~0.85
+- `final_step_shrink_ratio` = kept / resident_before_final ≈ 0.85
 
-### 3. 32K Performance ⏳ (pending re-run with unified config)
+### 2. 32K Offline Batch Performance ✅
 
-Previous data (collected pre-commit `54bb0de`, real SCBench text).
-**Do not cite as current.**
+TokensPrompt, unified config, 128 output tokens per request.
 
-<details>
-<summary>Legacy pre-unified-config results (click to expand)</summary>
+| Config | b=1 | b=4 | b=8 | b=10 | vs FullKV@b=10 |
+|--------|----:|----:|----:|-----:|:--------------:|
+| FullKV | 11.9s | 38.0s | 76.1s | 93.7s | — |
+| **CAKE 25%** | **9.9s** | **31.0s** | **59.2s** | **73.3s** | **1.28×** |
+| CAKE 50% | 11.0s | 36.0s | 73.6s | 95.5s | 0.98× |
 
-| Config | b=1 | b=2 | b=4 | b=6 | b=8 | b=10 |
-|--------|----:|----:|----:|----:|----:|-----:|
-| Tangram FullKV | 11.9s | 20.6s | 37.8s | 55.1s | 75.7s | 93.2s |
-| CAKE 50% | 10.9s | 19.6s | 35.7s | 52.3s | 72.8s | 94.1s |
-| CAKE 25% | 9.8s | 17.0s | 30.8s | 44.7s | 58.8s | 74.6s |
+- 8K: no speedup (KV pool too small); 16K: 1.07×
+- Full results: `results/raw/day14_perf/perf_results_*.json`
 
-CAKE_25 offline batch speedup: 1.21–1.29× over FullKV.
+### 3. E2E Correctness ✅
 
-</details>
+| Check | Result |
+|-------|--------|
+| cake_layer non-uniform | PASS (24/32 layers) |
+| Budget correctness (chunk 2048) | phys=0.2541 |
+| Budget correctness (chunk 8192) | phys=0.2515 |
+| Chunk-size stability | MODERATE (Spearman=0.52) |
 
-### 4. Estimated KV-cache Capacity Reduction ⏳
+### 4. Quality ⚠️ (RULER 4K pilot only)
 
-Theoretical = 1 − effective_physical_ratio. NOT nvidia-smi (vLLM pre-allocates GPU pool).
+| Task | FullKV | CAKE_25 |
+|------|:------:|:-------:|
+| niah_single_1 | 1.000 | 0.680 |
+| vt | 0.996 | 0.916 |
 
-| Config | Reduction |
-|--------|:---------:|
-| CAKE 25% | ~75% |
-| CAKE 50% | ~50% |
+RULER 8K/16K 5-way ablation + SCBench multi-turn: blocked by HF Hub.
+SnapKV 8K baseline (pre-existing): see `results/raw/snapkv_ruler_8k_baseline/`.
 
-### 5. E2E Verification ⏳ (pending re-run)
-
-| Check | Expected |
-|-------|----------|
-| cake_layer non-uniform | ~24/32 layers deviate |
-| Budget correctness (chunk 2048) | phys ≈ 0.25 |
-| Budget correctness (chunk 8192) | phys ≈ 0.25 |
-| Chunk-size sensitivity | Spearman/MAE TBD |
-
-### 6. Unit Tests ✅
+### 5. Unit Tests ✅
 
 - pytest (CPU): **28/28** passed
 - retention parser: **7/7** passed
-- py_compile: **5/5** OK
+- py_compile: scripts clean
+
+Full results: `results/raw/day10_memory/`, `results/raw/day14_perf/`, `results/raw/day16_e2e/`
 ---
 
 ## Architecture
