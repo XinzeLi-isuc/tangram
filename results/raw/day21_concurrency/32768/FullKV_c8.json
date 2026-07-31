@@ -1,0 +1,12 @@
+{
+  "config": "FullKV",
+  "concurrency": 8,
+  "seq_len": 32768,
+  "status": "fail",
+  "reason": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+  "elapsed_sec": null,
+  "per_req_sec": null,
+  "num_preemptions": null,
+  "num_failed": null,
+  "all_outputs_valid": null
+}

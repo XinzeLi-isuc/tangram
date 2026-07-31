@@ -1,0 +1,13 @@
+{
+  "config": "FullKV",
+  "concurrency": 2,
+  "seq_len": 32768,
+  "status": "success",
+  "reason": null,
+  "elapsed_sec": 17.65,
+  "per_req_sec": 8.83,
+  "num_preemptions": 0,
+  "num_failed": 0,
+  "all_outputs_valid": true,
+  "peak_running_reqs": 2.0
+}

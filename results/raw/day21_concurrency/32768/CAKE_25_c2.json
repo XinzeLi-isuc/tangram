@@ -1,0 +1,12 @@
+{
+  "config": "CAKE_25",
+  "concurrency": 2,
+  "seq_len": 32768,
+  "status": "success",
+  "reason": null,
+  "elapsed_sec": 15.01,
+  "per_req_sec": 7.5,
+  "num_preemptions": 0,
+  "num_failed": 0,
+  "all_outputs_valid": true
+}

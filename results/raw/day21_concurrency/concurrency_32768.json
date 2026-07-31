@@ -1,0 +1,56 @@
+{
+  "FullKV": {
+    "max_stable_no_preemption": 0,
+    "levels": [
+      {
+        "config": "FullKV",
+        "concurrency": 1,
+        "seq_len": 32768,
+        "status": "fail",
+        "reason": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+        "elapsed_sec": null,
+        "per_req_sec": null,
+        "num_preemptions": null,
+        "num_failed": null,
+        "all_outputs_valid": null
+      }
+    ],
+    "seq_len": 32768
+  },
+  "CAKE_25": {
+    "max_stable_no_preemption": 0,
+    "levels": [
+      {
+        "config": "CAKE_25",
+        "concurrency": 1,
+        "seq_len": 32768,
+        "status": "fail",
+        "reason": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+        "elapsed_sec": null,
+        "per_req_sec": null,
+        "num_preemptions": null,
+        "num_failed": null,
+        "all_outputs_valid": null
+      }
+    ],
+    "seq_len": 32768
+  },
+  "CAKE_50": {
+    "max_stable_no_preemption": 0,
+    "levels": [
+      {
+        "config": "CAKE_50",
+        "concurrency": 1,
+        "seq_len": 32768,
+        "status": "fail",
+        "reason": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+        "elapsed_sec": null,
+        "per_req_sec": null,
+        "num_preemptions": null,
+        "num_failed": null,
+        "all_outputs_valid": null
+      }
+    ],
+    "seq_len": 32768
+  }
+}

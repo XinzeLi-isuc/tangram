@@ -1,0 +1,24 @@
+{
+  "length": 8192,
+  "config": "SnapKV_uniform",
+  "scorer": "snapkv",
+  "level": "uniform",
+  "ratio": 0.25,
+  "task_accuracies": {
+    "niah_single_1": 0.74,
+    "niah_single_2": 0.58,
+    "niah_single_3": 0.0,
+    "niah_multikey_1": 0.3,
+    "niah_multikey_2": 0.22,
+    "niah_multikey_3": 0.16,
+    "niah_multivalue": 0.72,
+    "niah_multiquery": 0.76,
+    "qa_1": 0.38,
+    "qa_2": 0.5,
+    "vt": 0.84,
+    "cwe": 0.72,
+    "fwe": 1.0
+  },
+  "macro_avg": 0.5323,
+  "elapsed_sec": 3124.2
+}
