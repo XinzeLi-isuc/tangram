@@ -1,0 +1,24 @@
+{
+  "length": 8192,
+  "config": "CAKE_cake_layer",
+  "scorer": "cake",
+  "level": "cake_layer",
+  "ratio": 0.25,
+  "task_accuracies": {
+    "niah_single_1": 0.84,
+    "niah_single_2": 0.64,
+    "niah_single_3": 0.08,
+    "niah_multikey_1": 0.36,
+    "niah_multikey_2": 0.3,
+    "niah_multikey_3": 0.18,
+    "niah_multivalue": 0.76,
+    "niah_multiquery": 0.76,
+    "qa_1": 0.5,
+    "qa_2": 0.54,
+    "vt": 1.0,
+    "cwe": 0.16,
+    "fwe": 1.0
+  },
+  "macro_avg": 0.5477,
+  "elapsed_sec": 3131.4
+}

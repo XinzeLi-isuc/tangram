@@ -164,6 +164,9 @@ def main():
         print(f"  {label:<20} {r['macro_avg']:.4f}")
 
     out_dir = f"results/raw/day20_ruler_{length}"
+    # Paper-params (non-default gamma/tau) go to a separate directory
+    if CAKE_GAMMA != 1.0 or CAKE_TAU1 != 1.0 or CAKE_TAU2 != 1.0:
+        out_dir = f"results/raw/day21_paper_params/{length}"
     os.makedirs(out_dir, exist_ok=True)
     
     for label, r in all_results.items():
