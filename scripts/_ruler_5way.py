@@ -165,13 +165,18 @@ def main():
 
     out_dir = f"results/raw/day20_ruler_{length}"
     # Paper-params (non-default gamma/tau) go to a separate directory
+    # with the hyperparams in the filename (gamma ablation writes 1/50/200)
     if CAKE_GAMMA != 1.0 or CAKE_TAU1 != 1.0 or CAKE_TAU2 != 1.0:
         out_dir = f"results/raw/day21_paper_params/{length}"
     os.makedirs(out_dir, exist_ok=True)
-    
+
+    hyper_suffix = ""
+    if CAKE_GAMMA != 1.0 or CAKE_TAU1 != 1.0 or CAKE_TAU2 != 1.0:
+        hyper_suffix = f"_g{CAKE_GAMMA:g}_t1{CAKE_TAU1:g}_t2{CAKE_TAU2:g}"
+
     for label, r in all_results.items():
         safe = label.replace(" ", "_")
-        out_path = os.path.join(out_dir, f"ruler_{safe}.json")
+        out_path = os.path.join(out_dir, f"{safe}{hyper_suffix}.json")
         with open(out_path, "w") as f:
             json.dump(r, f, indent=2)
         print(f"Saved: {out_path}")
