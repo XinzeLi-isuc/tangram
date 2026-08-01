@@ -94,10 +94,14 @@ def evaluate_config(config_name, scorer, level, ratio, task_samples, length):
     llm = LLM(**kwargs)
 
     results = {}
+    # Per-sample records for paired bootstrap / McNemar tests
+    # aligned by (task, sample_index) across configs of the same run
+    per_sample = {}
     for task in TASKS:
         samples = task_samples[task]
         correct = 0
-        for idx, row in samples.iterrows():
+        per_sample[task] = []
+        for si, (idx, row) in enumerate(samples.iterrows()):
             text = row["context"] + "\n" + row["question"]
             pids = tokenizer.encode(text, add_special_tokens=True)
             prompt = TokensPrompt(prompt_token_ids=pids)
@@ -108,6 +112,14 @@ def evaluate_config(config_name, scorer, level, ratio, task_samples, length):
             match = any(str(a).lower() in pred.lower() for a in answers)
             correct += int(match)
 
+            per_sample[task].append({
+                "sample_id": int(si),
+                "task": task,
+                "correct": int(match),
+                "prediction": pred,
+                "reference": [str(a) for a in answers],
+            })
+
         acc = correct / SAMPLES_PER_TASK
         results[task] = round(acc, 4)
         print(f"    {task}: {acc:.4f}")
@@ -115,7 +127,7 @@ def evaluate_config(config_name, scorer, level, ratio, task_samples, length):
     del llm
     import gc; gc.collect()
     import torch; torch.cuda.empty_cache()
-    return results
+    return results, per_sample
 
 
 def main():
@@ -133,13 +145,15 @@ def main():
     configs = ABLATIONS if args.config_idx is None else [ABLATIONS[args.config_idx]]
 
     all_results = {}
+    all_per_sample = {}
     for label, scorer, level, ratio in configs:
         print(f"\n{'='*60}")
         print(f"Config: {label} (scorer={scorer}, level={level}, ratio={ratio})")
         print(f"{'='*60}")
 
         t0 = time.time()
-        task_accs = evaluate_config(label, scorer, level, ratio, task_samples, length)
+        task_accs, per_sample = evaluate_config(
+            label, scorer, level, ratio, task_samples, length)
         elapsed = time.time() - t0
 
         macro_avg = float(np.mean(list(task_accs.values())))
@@ -155,6 +169,7 @@ def main():
             "macro_avg": round(macro_avg, 4),
             "elapsed_sec": round(elapsed, 1),
         }
+        all_per_sample[label] = per_sample
 
     # Summary
     print(f"\n{'='*70}")
@@ -186,6 +201,13 @@ def main():
         with open(os.path.join(out_dir, "ruler_5way.json"), "w") as f:
             json.dump(all_results, f, indent=2)
         print(f"Combined: {out_dir}/ruler_5way.json")
+
+    # Per-sample records (aligned by task + sample_id across configs)
+    if all_per_sample:
+        per_path = os.path.join(out_dir, "per_sample.json")
+        with open(per_path, "w") as f:
+            json.dump(all_per_sample, f, indent=2, default=str)
+        print(f"Per-sample: {per_path}")
 
 
 if __name__ == "__main__":
