@@ -64,6 +64,8 @@ def run_level(config_name, scorer, level, ratio, seq_len, concurrency, out_path)
         "elapsed_sec": None, "per_req_sec": None,
         "num_preemptions": None, "num_failed": None, "all_outputs_valid": None,
         "peak_running_reqs": None,
+        "peak_kv_cache_usage_perc": None,
+        "min_free_kv_perc": None,
     }
 
     llm = None
@@ -73,19 +75,25 @@ def run_level(config_name, scorer, level, ratio, seq_len, concurrency, out_path)
                             ignore_eos=True)
         prompts = [TokensPrompt(prompt_token_ids=pids) for _ in range(concurrency)]
 
-        # Sample num_requests_running gauge in a background thread
+        # Sample num_requests_running + kv_cache_usage gauges in bg thread
         import threading
         peak_running = {"value": 0}
+        peak_kv_usage = {"value": 0.0}
+        min_free_kv = {"value": 1.0}
         stop_flag = {"value": False}
 
         def sampler():
             while not stop_flag["value"]:
                 try:
                     metrics = llm.llm_engine.get_metrics()
-                    running = next(
-                        (m.value for m in metrics
-                         if m.name == "vllm:num_requests_running"), 0)
-                    peak_running["value"] = max(peak_running["value"], running)
+                    for m in metrics:
+                        if m.name == "vllm:num_requests_running":
+                            peak_running["value"] = max(peak_running["value"],
+                                                        m.value)
+                        elif m.name == "vllm:kv_cache_usage_perc":
+                            v = float(m.value)
+                            peak_kv_usage["value"] = max(peak_kv_usage["value"], v)
+                            min_free_kv["value"] = min(min_free_kv["value"], 1.0 - v)
                 except Exception:
                     pass
                 time.sleep(0.1)
@@ -102,6 +110,8 @@ def run_level(config_name, scorer, level, ratio, seq_len, concurrency, out_path)
         result["elapsed_sec"] = round(elapsed, 2)
         result["per_req_sec"] = round(elapsed / concurrency, 2)
         result["peak_running_reqs"] = peak_running["value"]
+        result["peak_kv_cache_usage_perc"] = round(peak_kv_usage["value"], 4)
+        result["min_free_kv_perc"] = round(min_free_kv["value"], 4)
 
         # Output validity
         valid = all(len(o.outputs[0].text.strip()) >= OUTPUT_MIN_CHARS
