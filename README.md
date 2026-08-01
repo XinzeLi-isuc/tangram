@@ -63,8 +63,9 @@ print(outputs[0].outputs[0].text)
 
 ## Key Results (A6000 48GB, Llama-3.1-8B-Instruct BF16)
 
-> Implementation verified. Code-level metrics (retention, correctness) are
-> final. Quality benchmarks (RULER, SCBench) and online serving are in progress.
+> All numbers below are measured on this fork with the unified config
+> (window=32, sink=4, floor=0, chunk=2048, page_group=4). Full logs in
+> `results/raw/`.
 
 ### 1. KV Cache Retention ✅
 
@@ -102,17 +103,52 @@ TokensPrompt, unified config, 128 output tokens per request.
 | Budget correctness (chunk 8192) | phys=0.2515 |
 | Chunk-size stability | MODERATE (Spearman=0.52) |
 
-### 4. Quality ⚠️ (RULER 4K pilot only)
+### 4. Quality: RULER 5-way Ablation ✅ (4K / 8K / 16K)
 
-| Task | FullKV | CAKE_25 |
-|------|:------:|:-------:|
-| niah_single_1 | 1.000 | 0.680 |
-| vt | 0.996 | 0.916 |
+13 tasks × 50 samples/task, exact-answer matching, macro average accuracy.
 
-RULER 8K/16K 5-way ablation + SCBench multi-turn: blocked by HF Hub.
-SnapKV 8K baseline (pre-existing): see `results/raw/snapkv_ruler_8k_baseline/`.
+| Config | 4K | 8K | 16K |
+|--------|:--:|:--:|:--:|
+| FullKV (upper bound) | 0.9508 | 0.9385 | 0.9262 |
+| SnapKV + uniform | 0.6615 | 0.5323 | 0.4846 |
+| SnapKV + crosslayer_cluster | 0.6585 | 0.5431 | 0.4877 |
+| CAKE + uniform | 0.6323 | 0.5200 | 0.4908 |
+| **CAKE + cake_layer** | **0.6615** | **0.5446** | **0.5277** |
 
-### 5. Unit Tests ✅
+- **CAKE + cake_layer ≥ SnapKV baselines at every length**, with the gap
+  widening as context grows: 16K leads SnapKV_cluster by **+4.0 pp**
+  (0.5277 vs 0.4877)
+- CAKE layer budget (cake_layer vs uniform) is worth **+1.2–3.7 pp**
+- Full results: `results/raw/day20_ruler_4096|8192|16384/`
+
+### 5. CAKE Scorer Hyperparameter Sensitivity (γ ablation) ✅
+
+CAKE + cake_layer, tau1=1.6, tau2=0.4 fixed.
+
+| gamma | 4K | 8K |
+|-------|:--:|:--:|
+| 1 | 0.6662 | 0.5585 |
+| 50 | 0.6677 | 0.5554 |
+| 200 | 0.6615 | 0.5477 |
+
+- Quality is robust to γ within ±0.01; default (γ=1) is a safe choice
+- Full results: `results/raw/day21_paper_params/`
+
+### 6. Online Serving ✅ (16K, 3 configs × 3 QPS)
+
+OpenAI-compatible server, 200 requests, 16K input / 128 output.
+
+| Config | QPS | TTFT p50 | TTFT p99 | tok/s | req/s |
+|--------|:--:|:--:|:--:|:--:|:--:|
+| FullKV | 2.0 | 141.0s | 283.8s | 4254 | 0.510 |
+| **CAKE 25%** | **2.0** | **116.6s** | **229.2s** | **4987** | **0.598** |
+| CAKE 50% | 2.0 | 134.7s | 273.6s | 4379 | 0.526 |
+
+- **CAKE 25%: +17.2% token throughput, −17.3% TTFT p50 vs FullKV** at QPS=2.0
+- CAKE 50%: +2.9% token throughput
+- Full results: `results/raw/day17_serving/`
+
+### 7. Unit Tests ✅
 
 - pytest (CPU): **28/28** passed
 - retention parser: **7/7** passed
@@ -168,8 +204,12 @@ See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for full methodolog
 
 - **TP=1 only**: CakeLayerLevel raises `NotImplementedError` for TP > 1
 - **Chunked prefill approximation**: Token-weighted mean preference aggregation
-- **Scorer overhead has not yet been isolated** from end-to-end latency
-- Recommended ratio TBD after quality benchmarks
+- **Scorer overhead not fully isolated** from end-to-end latency
+- **Offline perf**: single repeated prompt per batch; no multi-sample diversity
+- **Online serving**: 3 fixed QPS levels, no saturation curve; preemption not
+  separately counted in the serving benchmark
+- **SCBench multi-turn**: pilot only; 16K truncation of 380K-char contexts and
+  exact-string matching limit its usefulness (see `results/raw/day18_scbench_pilot/`)
 
 Full list: [docs/limitations.md](docs/limitations.md)
 
@@ -199,12 +239,13 @@ python -m pytest tests/cake_serve/test_preference_chain.py -v
 - ✅ Chunked prefill adaptation (CAKE-Chunk)
 - ✅ Preference lifecycle fix (cake_layer ≠ uniform)
 - ✅ Smoke test pipeline (3/3 PASS)
-- ⏳ Retention verification — corrected-metric re-run pending
-- ⏳ 32K performance benchmark — unified-config re-run pending
-- ⏳ Chunk-size sensitivity experiment — run_stats fix pending re-run
-- ⬜ RULER 8K/16K/32K re-benchmark
-- ⬜ SCBench multi-turn evaluation
-- ⬜ Online serving benchmark
+- ✅ Retention verification (8K/16K/32K, corrected metric)
+- ✅ 32K performance benchmark (unified config)
+- ✅ Chunk-size sensitivity experiment
+- ✅ RULER 5-way ablation (4K/8K/16K, 13 tasks)
+- ✅ γ hyperparameter ablation (4K/8K)
+- ✅ Online serving benchmark (16K, 3 configs × 3 QPS)
+- ⬜ SCBench multi-turn evaluation (pilot done; full eval pending)
 
 ---
 
